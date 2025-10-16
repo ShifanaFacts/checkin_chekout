@@ -57,8 +57,8 @@ class _UserLoginState extends State<UserLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor: Theme.of(context).primaryColor,
+        // title: const Text('Login'),
+        // backgroundColor: Theme.of(context).primaryColor,
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
@@ -80,16 +80,8 @@ class _UserLoginState extends State<UserLogin> {
               child: Icon(Icons.person_pin, size: 40, color: Colors.white),
             ),
             const SizedBox(height: 20),
+
             // Welcome Text
-            Text(
-              'Welcome Back!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueGrey[900],
-              ),
-            ),
-            const SizedBox(height: 8),
             Text(
               'Log in to your employee account.',
               style: TextStyle(fontSize: 16, color: Colors.grey[600]),
@@ -133,11 +125,16 @@ class _UserLoginState extends State<UserLogin> {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15),
+                  backgroundColor: Colors.blue,
+
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const Text('Login', style: TextStyle(fontSize: 16)),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -154,32 +151,32 @@ class _UserLoginState extends State<UserLogin> {
                 style: TextStyle(color: Colors.blueGrey[900]),
               ),
             ),
-            const SizedBox(height: 20),
-            // Biometric Login
-            Text(
-              'For faster access, set up your biometric login.',
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: () {
-                // Add biometric login setup logic here
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Biometric Login pressed')),
-                );
-              },
-              icon: Icon(Icons.fingerprint, color: Colors.blueGrey[900]),
-              label: Text(
-                'Enable Biometric Login',
-                style: TextStyle(color: Colors.blueGrey[900]),
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+            // const SizedBox(height: 20),
+            // // Biometric Login
+            // Text(
+            //   'For faster access, set up your biometric login.',
+            //   style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            // ),
+            // const SizedBox(height: 10),
+            // OutlinedButton.icon(
+            //   onPressed: () {
+            //     // Add biometric login setup logic here
+            //     ScaffoldMessenger.of(context).showSnackBar(
+            //       const SnackBar(content: Text('Biometric Login pressed')),
+            //     );
+            //   },
+            //   icon: Icon(Icons.fingerprint, color: Colors.blueGrey[900]),
+            //   label: Text(
+            //     'Enable Biometric Login',
+            //     style: TextStyle(color: Colors.blueGrey[900]),
+            //   ),
+            //   style: OutlinedButton.styleFrom(
+            //     padding: const EdgeInsets.symmetric(vertical: 15),
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(10),
+            //     ),
+            //   ),
+            // ),
             const SizedBox(height: 20),
             // Display Device ID
             Text(

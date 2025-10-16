@@ -9,6 +9,7 @@ import 'package:checkin_checkout/presentation/screens/Location/location_enable.d
 import 'package:checkin_checkout/presentation/screens/Login/UserLogin.dart';
 import 'package:checkin_checkout/presentation/screens/Register/member_register.dart';
 import 'package:checkin_checkout/presentation/screens/SplashScreen/splash_screen.dart';
+import 'package:checkin_checkout/presentation/screens/UserSettings/userSettings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
           '/register': (context) => MemberRegister(),
           '/login': (context) => UserLogin(),
           '/location': (context) => LocationScreen(),
+          '/settings': (context) => UserSettings(),
           // Add other routes here
         },
         navigatorKey: navigatorKey, // Set navigatorKey for global access

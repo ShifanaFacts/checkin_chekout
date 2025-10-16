@@ -37,8 +37,14 @@ class _UserSettingsState extends State<UserSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true, // 👈 This forces the title to be centered
         title: const Text('Settings'),
-        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -69,11 +75,15 @@ class _UserSettingsState extends State<UserSettings> {
               onPressed: _saveUrl,
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
+                backgroundColor: Colors.blue,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Save URL'),
+              child: const Text(
+                'Save URL',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
             if (_savedUrl.isNotEmpty) ...[
               const SizedBox(height: 16),

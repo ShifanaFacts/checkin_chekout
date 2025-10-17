@@ -19,7 +19,6 @@ class UserDetailService implements UserDetailRepo {
   @override
   Future<Either<MainFailure, UserDataModel>> getUserDetails() async {
     final String url = await ApiEndPoints.getOpenSectionUrl();
-    log('${PublicObjects.instance.deviceId}');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final accessToken = prefs.getString('token');
     try {
@@ -42,7 +41,6 @@ class UserDetailService implements UserDetailRepo {
       if (response.statusCode == 200 || response.statusCode == 201) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
 
-        // log(jsonEncode(response.data));
         List<UserDataModel> userList = (response.data as List)
             .map((json) => UserDataModel.fromJson(json as Map<String, dynamic>))
             .toList();
@@ -51,13 +49,11 @@ class UserDetailService implements UserDetailRepo {
         if (userList.isNotEmpty) {
           if (userList != null && userList.isNotEmpty) {
             UserDataModel userData = userList.first;
-
             if (userData.DID == PublicObjects.instance.deviceId) {
               prefs.setString('DeviceValidated', userData.DID ?? "");
             } else {
-              prefs.setString('DeviceValidated', userData.DID ?? "");
+              prefs.setString('DeviceValidated', "");
             }
-            log('${userData.DID}...........');
             return Right(userData);
           } else {
             const Left(MainFailure.serverFailure());

@@ -24,7 +24,6 @@ class _UserLoginState extends State<UserLogin> {
   final _employeeIdController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  String? _isDeviceValidated;
   String? loginFeedback;
   bool _canUseBiometrics = false;
 
@@ -37,10 +36,6 @@ class _UserLoginState extends State<UserLogin> {
   Future<void> _initialize() async {
     await _getDeviceId();
     await _checkBiometricSupport();
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _isDeviceValidated = prefs.getString('DeviceValidated');
-    });
   }
 
   Future<void> _getDeviceId() async {
@@ -163,12 +158,10 @@ class _UserLoginState extends State<UserLogin> {
           },
         ),
         BlocListener<UserdataBloc, UserdataState>(
-          listener: (context, state) {
-            log('$_deviceId........_deviceId..........');
-            log('$_isDeviceValidated........_isDeviceValidated..........');
-            log('${state.datafetched}........datafetched..........');
-
-            if (state.datafetched && _isDeviceValidated == _deviceId) {
+          listener: (context, state) async {
+            final prefs = await SharedPreferences.getInstance();
+            final _isDeviceValidated = prefs.getString('DeviceValidated');
+            if (_isDeviceValidated == _deviceId) {
               Navigator.pushReplacementNamed(context, '/home');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -198,7 +191,8 @@ class _UserLoginState extends State<UserLogin> {
               });
             } else if (_isDeviceValidated != _deviceId) {
               setState(() {
-                loginFeedback = 'Device not validated. Please validate device.';
+                loginFeedback =
+                    'Device not recognized. Please log in using a registered device.  ';
               });
             }
           },

@@ -8,15 +8,22 @@ part of 'user_data_model.dart';
 
 UserDataModel _$UserDataModelFromJson(Map<String, dynamic> json) =>
     UserDataModel(
-      roleid: json['roleid'] as String?,
-      name: json['name'] as String?,
-      usertype: json['usertype'] as String?,
-    )..DID = json['DID'] as String?;
+      userdesig: json['userdesig'] as String?,
+      userdept: json['userdept'] as String?,
+      employeeId: json['employeeId'] as String?,
+      department: json['department'] as String?,
+      username: json['username'] as String?,
+      DID: json['DID'] as String?,
+      profileImage: json['profileImage'] as String?,
+    );
 
 Map<String, dynamic> _$UserDataModelToJson(UserDataModel instance) =>
     <String, dynamic>{
-      'roleid': instance.roleid,
-      'name': instance.name,
-      'usertype': instance.usertype,
+      'userdesig': instance.userdesig,
+      'userdept': instance.userdept,
+      'employeeId': instance.employeeId,
+      'department': instance.department,
+      'username': instance.username,
       'DID': instance.DID,
+      'profileImage': instance.profileImage,
     };

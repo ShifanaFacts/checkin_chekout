@@ -61,6 +61,7 @@ class _UserSettingsState extends State<UserSettings> {
         duration: const Duration(seconds: 3),
       ),
     );
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   void _showLogoutConfirmation() {
@@ -135,6 +136,7 @@ class _UserSettingsState extends State<UserSettings> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -145,69 +147,88 @@ class _UserSettingsState extends State<UserSettings> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Add URL',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            TextField(
-              controller: _urlController,
-              decoration: const InputDecoration(
-                labelText: 'Enter Base URL',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.link),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Add URL',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              keyboardType: TextInputType.url,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _saveUrl,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _urlController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Base URL',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.link),
+                ),
+                keyboardType: TextInputType.url,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _saveUrl,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: const Text(
+                  'Save URL',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-              child: const Text(
-                'Save URL',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            if (_savedUrl.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Saved URL: $_savedUrl',
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
+              if (_savedUrl.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(
+                  'Saved URL: $_savedUrl',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ],
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 8,
+                    top: 20,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _isLoggingOut
+                            ? null
+                            : _showLogoutConfirmation,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: _isLoggingOut
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Logout',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
-            const Spacer(),
-            ElevatedButton(
-              onPressed: _isLoggingOut ? null : _showLogoutConfirmation,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                backgroundColor: Colors.red,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: _isLoggingOut
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
-                  : const Text('Logout', style: TextStyle(color: Colors.white)),
-            ),
-          ],
+          ),
         ),
       ),
     );

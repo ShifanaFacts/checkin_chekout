@@ -4,15 +4,22 @@ part 'user_data_model.g.dart';
 
 @JsonSerializable()
 class UserDataModel {
-  String? roleid;
-  String? name;
-  String? usertype;
+  String? userdesig;
+  String? userdept;
+  String? employeeId;
+  String? department;
+  String? username;
   String? DID;
+  String? profileImage;
 
   UserDataModel({
-    required this.roleid,
-    required this.name,
-    required this.usertype,
+    required this.userdesig,
+    required this.userdept,
+    required this.employeeId,
+    required this.department,
+    required this.username,
+    required this.DID,
+    required this.profileImage,
   });
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {

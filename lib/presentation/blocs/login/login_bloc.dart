@@ -20,7 +20,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<Initialize>((event, emit) {});
 
     on<PerformUserLogout>((event, emit) async {
-      await _loginService.performLogout(event.context, event.logingId);
+      await _loginService.performLogout(event.context);
     });
 
     on<PerformLogin>((event, emit) async {
@@ -30,6 +30,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           isLoading: true,
           isError: false,
           loginSucceeded: false,
+          deviceValidation: false,
         ),
       );
 
@@ -47,6 +48,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             isLoading: false,
             isError: true,
             loginSucceeded: false,
+            deviceValidation: false,
           );
         },
         (LoginModel loginmodel) {
@@ -55,6 +57,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             isLoading: false,
             isError: false,
             loginSucceeded: true,
+            deviceValidation: true,
           );
         },
       );

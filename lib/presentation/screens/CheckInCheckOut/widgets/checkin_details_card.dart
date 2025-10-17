@@ -26,22 +26,21 @@ class CheckinDetailsCard extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            _tile(Icons.label, "Project", project),
-            _tile(Icons.business, "Department", department),
-            _tile(Icons.attach_money, "Cost Code", costCode),
-            _tile(Icons.play_arrow, "Activity", activity),
-            _tile(Icons.access_time, "Check-In Time", checkInTime),
+            _tile(Icons.label, project),
+            _tile(Icons.business, department),
+            _tile(Icons.attach_money, costCode),
+            _tile(Icons.play_arrow, activity),
+            _tile(Icons.access_time, checkInTime),
           ],
         ),
       ),
     );
   }
 
-  ListTile _tile(IconData icon, String label, String value) {
+  ListTile _tile(IconData icon, String value) {
     return ListTile(
       leading: Icon(icon, color: Colors.blue),
       title: Text(value),
-      subtitle: Text(label),
     );
   }
 }

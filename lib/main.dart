@@ -7,7 +7,6 @@ import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart'
 import 'package:checkin_checkout/presentation/screens/Home/home.dart';
 import 'package:checkin_checkout/presentation/screens/Location/location_enable.dart';
 import 'package:checkin_checkout/presentation/screens/Login/UserLogin.dart';
-import 'package:checkin_checkout/presentation/screens/Register/member_register.dart';
 import 'package:checkin_checkout/presentation/screens/SplashScreen/splash_screen.dart';
 import 'package:checkin_checkout/presentation/screens/UserSettings/userSettings.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -69,7 +68,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const SplashScreen(),
           '/home': (context) => const HomeScreen(),
-          '/register': (context) => MemberRegister(),
+
           '/login': (context) => UserLogin(),
           '/location': (context) => LocationScreen(),
           '/settings': (context) => UserSettings(),

@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.check_circle),
             label: 'Check In/Out',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Report'),
+          BottomNavigationBarItem(icon: Icon(Icons.report), label: 'Report'),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',

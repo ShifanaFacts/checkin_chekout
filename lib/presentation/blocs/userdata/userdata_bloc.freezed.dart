@@ -20,39 +20,33 @@ mixin _$UserdataEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(String logingId) getUserData,
-    required TResult Function(String logingId, String token) postUserFCMToken,
+    required TResult Function() getUserData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(String logingId)? getUserData,
-    TResult? Function(String logingId, String token)? postUserFCMToken,
+    TResult? Function()? getUserData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(String logingId)? getUserData,
-    TResult Function(String logingId, String token)? postUserFCMToken,
+    TResult Function()? getUserData,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
     required TResult Function(Initialize value) initialize,
     required TResult Function(GetUserData value) getUserData,
-    required TResult Function(PostUserFCMToken value) postUserFCMToken,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Initialize value)? initialize,
     TResult? Function(GetUserData value)? getUserData,
-    TResult? Function(PostUserFCMToken value)? postUserFCMToken,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Initialize value)? initialize,
     TResult Function(GetUserData value)? getUserData,
-    TResult Function(PostUserFCMToken value)? postUserFCMToken,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -129,8 +123,7 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(String logingId) getUserData,
-    required TResult Function(String logingId, String token) postUserFCMToken,
+    required TResult Function() getUserData,
   }) {
     return initialize();
   }
@@ -139,8 +132,7 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(String logingId)? getUserData,
-    TResult? Function(String logingId, String token)? postUserFCMToken,
+    TResult? Function()? getUserData,
   }) {
     return initialize?.call();
   }
@@ -149,8 +141,7 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(String logingId)? getUserData,
-    TResult Function(String logingId, String token)? postUserFCMToken,
+    TResult Function()? getUserData,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -164,7 +155,6 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   TResult map<TResult extends Object?>({
     required TResult Function(Initialize value) initialize,
     required TResult Function(GetUserData value) getUserData,
-    required TResult Function(PostUserFCMToken value) postUserFCMToken,
   }) {
     return initialize(this);
   }
@@ -174,7 +164,6 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Initialize value)? initialize,
     TResult? Function(GetUserData value)? getUserData,
-    TResult? Function(PostUserFCMToken value)? postUserFCMToken,
   }) {
     return initialize?.call(this);
   }
@@ -184,7 +173,6 @@ class _$InitializeImpl with DiagnosticableTreeMixin implements Initialize {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Initialize value)? initialize,
     TResult Function(GetUserData value)? getUserData,
-    TResult Function(PostUserFCMToken value)? postUserFCMToken,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -204,8 +192,6 @@ abstract class _$$GetUserDataImplCopyWith<$Res> {
     _$GetUserDataImpl value,
     $Res Function(_$GetUserDataImpl) then,
   ) = __$$GetUserDataImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String logingId});
 }
 
 /// @nodoc
@@ -219,91 +205,60 @@ class __$$GetUserDataImplCopyWithImpl<$Res>
 
   /// Create a copy of UserdataEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? logingId = null}) {
-    return _then(
-      _$GetUserDataImpl(
-        logingId: null == logingId
-            ? _value.logingId
-            : logingId // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
 class _$GetUserDataImpl with DiagnosticableTreeMixin implements GetUserData {
-  const _$GetUserDataImpl({required this.logingId});
-
-  @override
-  final String logingId;
+  const _$GetUserDataImpl();
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserdataEvent.getUserData(logingId: $logingId)';
+    return 'UserdataEvent.getUserData()';
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UserdataEvent.getUserData'))
-      ..add(DiagnosticsProperty('logingId', logingId));
+    properties..add(DiagnosticsProperty('type', 'UserdataEvent.getUserData'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$GetUserDataImpl &&
-            (identical(other.logingId, logingId) ||
-                other.logingId == logingId));
+        (other.runtimeType == runtimeType && other is _$GetUserDataImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, logingId);
-
-  /// Create a copy of UserdataEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GetUserDataImplCopyWith<_$GetUserDataImpl> get copyWith =>
-      __$$GetUserDataImplCopyWithImpl<_$GetUserDataImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(String logingId) getUserData,
-    required TResult Function(String logingId, String token) postUserFCMToken,
+    required TResult Function() getUserData,
   }) {
-    return getUserData(logingId);
+    return getUserData();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(String logingId)? getUserData,
-    TResult? Function(String logingId, String token)? postUserFCMToken,
+    TResult? Function()? getUserData,
   }) {
-    return getUserData?.call(logingId);
+    return getUserData?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(String logingId)? getUserData,
-    TResult Function(String logingId, String token)? postUserFCMToken,
+    TResult Function()? getUserData,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
-      return getUserData(logingId);
+      return getUserData();
     }
     return orElse();
   }
@@ -313,7 +268,6 @@ class _$GetUserDataImpl with DiagnosticableTreeMixin implements GetUserData {
   TResult map<TResult extends Object?>({
     required TResult Function(Initialize value) initialize,
     required TResult Function(GetUserData value) getUserData,
-    required TResult Function(PostUserFCMToken value) postUserFCMToken,
   }) {
     return getUserData(this);
   }
@@ -323,7 +277,6 @@ class _$GetUserDataImpl with DiagnosticableTreeMixin implements GetUserData {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(Initialize value)? initialize,
     TResult? Function(GetUserData value)? getUserData,
-    TResult? Function(PostUserFCMToken value)? postUserFCMToken,
   }) {
     return getUserData?.call(this);
   }
@@ -333,7 +286,6 @@ class _$GetUserDataImpl with DiagnosticableTreeMixin implements GetUserData {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(Initialize value)? initialize,
     TResult Function(GetUserData value)? getUserData,
-    TResult Function(PostUserFCMToken value)? postUserFCMToken,
     required TResult orElse(),
   }) {
     if (getUserData != null) {
@@ -344,190 +296,7 @@ class _$GetUserDataImpl with DiagnosticableTreeMixin implements GetUserData {
 }
 
 abstract class GetUserData implements UserdataEvent {
-  const factory GetUserData({required final String logingId}) =
-      _$GetUserDataImpl;
-
-  String get logingId;
-
-  /// Create a copy of UserdataEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GetUserDataImplCopyWith<_$GetUserDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$PostUserFCMTokenImplCopyWith<$Res> {
-  factory _$$PostUserFCMTokenImplCopyWith(
-    _$PostUserFCMTokenImpl value,
-    $Res Function(_$PostUserFCMTokenImpl) then,
-  ) = __$$PostUserFCMTokenImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String logingId, String token});
-}
-
-/// @nodoc
-class __$$PostUserFCMTokenImplCopyWithImpl<$Res>
-    extends _$UserdataEventCopyWithImpl<$Res, _$PostUserFCMTokenImpl>
-    implements _$$PostUserFCMTokenImplCopyWith<$Res> {
-  __$$PostUserFCMTokenImplCopyWithImpl(
-    _$PostUserFCMTokenImpl _value,
-    $Res Function(_$PostUserFCMTokenImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of UserdataEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? logingId = null, Object? token = null}) {
-    return _then(
-      _$PostUserFCMTokenImpl(
-        logingId: null == logingId
-            ? _value.logingId
-            : logingId // ignore: cast_nullable_to_non_nullable
-                  as String,
-        token: null == token
-            ? _value.token
-            : token // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$PostUserFCMTokenImpl
-    with DiagnosticableTreeMixin
-    implements PostUserFCMToken {
-  const _$PostUserFCMTokenImpl({required this.logingId, required this.token});
-
-  @override
-  final String logingId;
-  @override
-  final String token;
-
-  @override
-  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserdataEvent.postUserFCMToken(logingId: $logingId, token: $token)';
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties
-      ..add(DiagnosticsProperty('type', 'UserdataEvent.postUserFCMToken'))
-      ..add(DiagnosticsProperty('logingId', logingId))
-      ..add(DiagnosticsProperty('token', token));
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PostUserFCMTokenImpl &&
-            (identical(other.logingId, logingId) ||
-                other.logingId == logingId) &&
-            (identical(other.token, token) || other.token == token));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, logingId, token);
-
-  /// Create a copy of UserdataEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PostUserFCMTokenImplCopyWith<_$PostUserFCMTokenImpl> get copyWith =>
-      __$$PostUserFCMTokenImplCopyWithImpl<_$PostUserFCMTokenImpl>(
-        this,
-        _$identity,
-      );
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initialize,
-    required TResult Function(String logingId) getUserData,
-    required TResult Function(String logingId, String token) postUserFCMToken,
-  }) {
-    return postUserFCMToken(logingId, token);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initialize,
-    TResult? Function(String logingId)? getUserData,
-    TResult? Function(String logingId, String token)? postUserFCMToken,
-  }) {
-    return postUserFCMToken?.call(logingId, token);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialize,
-    TResult Function(String logingId)? getUserData,
-    TResult Function(String logingId, String token)? postUserFCMToken,
-    required TResult orElse(),
-  }) {
-    if (postUserFCMToken != null) {
-      return postUserFCMToken(logingId, token);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initialize value) initialize,
-    required TResult Function(GetUserData value) getUserData,
-    required TResult Function(PostUserFCMToken value) postUserFCMToken,
-  }) {
-    return postUserFCMToken(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initialize value)? initialize,
-    TResult? Function(GetUserData value)? getUserData,
-    TResult? Function(PostUserFCMToken value)? postUserFCMToken,
-  }) {
-    return postUserFCMToken?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initialize value)? initialize,
-    TResult Function(GetUserData value)? getUserData,
-    TResult Function(PostUserFCMToken value)? postUserFCMToken,
-    required TResult orElse(),
-  }) {
-    if (postUserFCMToken != null) {
-      return postUserFCMToken(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class PostUserFCMToken implements UserdataEvent {
-  const factory PostUserFCMToken({
-    required final String logingId,
-    required final String token,
-  }) = _$PostUserFCMTokenImpl;
-
-  String get logingId;
-  String get token;
-
-  /// Create a copy of UserdataEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PostUserFCMTokenImplCopyWith<_$PostUserFCMTokenImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory GetUserData() = _$GetUserDataImpl;
 }
 
 /// @nodoc
@@ -536,9 +305,7 @@ mixin _$UserdataState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get datafetched => throw _privateConstructorUsedError;
-  List<BottomNavigationBarItem> get btmNavitems =>
-      throw _privateConstructorUsedError;
-  List<Widget> get screens => throw _privateConstructorUsedError;
+  MainFailure? get failure => throw _privateConstructorUsedError;
 
   /// Create a copy of UserdataState
   /// with the given fields replaced by the non-null parameter values.
@@ -559,9 +326,10 @@ abstract class $UserdataStateCopyWith<$Res> {
     bool isLoading,
     bool isError,
     bool datafetched,
-    List<BottomNavigationBarItem> btmNavitems,
-    List<Widget> screens,
+    MainFailure? failure,
   });
+
+  $MainFailureCopyWith<$Res>? get failure;
 }
 
 /// @nodoc
@@ -583,8 +351,7 @@ class _$UserdataStateCopyWithImpl<$Res, $Val extends UserdataState>
     Object? isLoading = null,
     Object? isError = null,
     Object? datafetched = null,
-    Object? btmNavitems = null,
-    Object? screens = null,
+    Object? failure = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -604,17 +371,27 @@ class _$UserdataStateCopyWithImpl<$Res, $Val extends UserdataState>
                 ? _value.datafetched
                 : datafetched // ignore: cast_nullable_to_non_nullable
                       as bool,
-            btmNavitems: null == btmNavitems
-                ? _value.btmNavitems
-                : btmNavitems // ignore: cast_nullable_to_non_nullable
-                      as List<BottomNavigationBarItem>,
-            screens: null == screens
-                ? _value.screens
-                : screens // ignore: cast_nullable_to_non_nullable
-                      as List<Widget>,
+            failure: freezed == failure
+                ? _value.failure
+                : failure // ignore: cast_nullable_to_non_nullable
+                      as MainFailure?,
           )
           as $Val,
     );
+  }
+
+  /// Create a copy of UserdataState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MainFailureCopyWith<$Res>? get failure {
+    if (_value.failure == null) {
+      return null;
+    }
+
+    return $MainFailureCopyWith<$Res>(_value.failure!, (value) {
+      return _then(_value.copyWith(failure: value) as $Val);
+    });
   }
 }
 
@@ -632,9 +409,11 @@ abstract class _$$UserdataStateImplCopyWith<$Res>
     bool isLoading,
     bool isError,
     bool datafetched,
-    List<BottomNavigationBarItem> btmNavitems,
-    List<Widget> screens,
+    MainFailure? failure,
   });
+
+  @override
+  $MainFailureCopyWith<$Res>? get failure;
 }
 
 /// @nodoc
@@ -655,8 +434,7 @@ class __$$UserdataStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isError = null,
     Object? datafetched = null,
-    Object? btmNavitems = null,
-    Object? screens = null,
+    Object? failure = freezed,
   }) {
     return _then(
       _$UserdataStateImpl(
@@ -676,14 +454,10 @@ class __$$UserdataStateImplCopyWithImpl<$Res>
             ? _value.datafetched
             : datafetched // ignore: cast_nullable_to_non_nullable
                   as bool,
-        btmNavitems: null == btmNavitems
-            ? _value._btmNavitems
-            : btmNavitems // ignore: cast_nullable_to_non_nullable
-                  as List<BottomNavigationBarItem>,
-        screens: null == screens
-            ? _value._screens
-            : screens // ignore: cast_nullable_to_non_nullable
-                  as List<Widget>,
+        failure: freezed == failure
+            ? _value.failure
+            : failure // ignore: cast_nullable_to_non_nullable
+                  as MainFailure?,
       ),
     );
   }
@@ -699,10 +473,8 @@ class _$UserdataStateImpl
     required this.isLoading,
     required this.isError,
     required this.datafetched,
-    required final List<BottomNavigationBarItem> btmNavitems,
-    required final List<Widget> screens,
-  }) : _btmNavitems = btmNavitems,
-       _screens = screens;
+    this.failure,
+  });
 
   @override
   final UserDataModel? userModel;
@@ -712,25 +484,12 @@ class _$UserdataStateImpl
   final bool isError;
   @override
   final bool datafetched;
-  final List<BottomNavigationBarItem> _btmNavitems;
   @override
-  List<BottomNavigationBarItem> get btmNavitems {
-    if (_btmNavitems is EqualUnmodifiableListView) return _btmNavitems;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_btmNavitems);
-  }
-
-  final List<Widget> _screens;
-  @override
-  List<Widget> get screens {
-    if (_screens is EqualUnmodifiableListView) return _screens;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_screens);
-  }
+  final MainFailure? failure;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserdataState(userModel: $userModel, isLoading: $isLoading, isError: $isError, datafetched: $datafetched, btmNavitems: $btmNavitems, screens: $screens)';
+    return 'UserdataState(userModel: $userModel, isLoading: $isLoading, isError: $isError, datafetched: $datafetched, failure: $failure)';
   }
 
   @override
@@ -742,8 +501,7 @@ class _$UserdataStateImpl
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
       ..add(DiagnosticsProperty('datafetched', datafetched))
-      ..add(DiagnosticsProperty('btmNavitems', btmNavitems))
-      ..add(DiagnosticsProperty('screens', screens));
+      ..add(DiagnosticsProperty('failure', failure));
   }
 
   @override
@@ -758,11 +516,7 @@ class _$UserdataStateImpl
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.datafetched, datafetched) ||
                 other.datafetched == datafetched) &&
-            const DeepCollectionEquality().equals(
-              other._btmNavitems,
-              _btmNavitems,
-            ) &&
-            const DeepCollectionEquality().equals(other._screens, _screens));
+            (identical(other.failure, failure) || other.failure == failure));
   }
 
   @override
@@ -772,8 +526,7 @@ class _$UserdataStateImpl
     isLoading,
     isError,
     datafetched,
-    const DeepCollectionEquality().hash(_btmNavitems),
-    const DeepCollectionEquality().hash(_screens),
+    failure,
   );
 
   /// Create a copy of UserdataState
@@ -791,8 +544,7 @@ abstract class _UserdataState implements UserdataState {
     required final bool isLoading,
     required final bool isError,
     required final bool datafetched,
-    required final List<BottomNavigationBarItem> btmNavitems,
-    required final List<Widget> screens,
+    final MainFailure? failure,
   }) = _$UserdataStateImpl;
 
   @override
@@ -804,9 +556,7 @@ abstract class _UserdataState implements UserdataState {
   @override
   bool get datafetched;
   @override
-  List<BottomNavigationBarItem> get btmNavitems;
-  @override
-  List<Widget> get screens;
+  MainFailure? get failure;
 
   /// Create a copy of UserdataState
   /// with the given fields replaced by the non-null parameter values.

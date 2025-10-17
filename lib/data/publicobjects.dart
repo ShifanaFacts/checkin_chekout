@@ -12,4 +12,5 @@ class PublicObjects {
   String? name;
   String? usertype;
   String? customerid;
+  String? deviceId;
 }

@@ -51,22 +51,15 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
       print("FCM Token: $token");
       await StorageManager.saveToken('ftoken', token ?? "");
 
-      BlocProvider.of<UserdataBloc>(
-        context,
-      ).add(PostUserFCMToken(logingId: _userid, token: token ?? ""));
-
       FirebaseMessagingService.setForegroundNotification();
     }
   }
 
   // Handle logout action
   void _logout() async {
-    BlocProvider.of<LoginBloc>(context).add(
-      PerformUserLogout(
-        context: context,
-        logingId: PublicObjects.instance.loginid ?? '',
-      ),
-    );
+    BlocProvider.of<LoginBloc>(
+      context,
+    ).add(PerformUserLogout(context: context));
   }
 
   @override

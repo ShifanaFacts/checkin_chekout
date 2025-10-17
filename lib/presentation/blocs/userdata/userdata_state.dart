@@ -7,8 +7,7 @@ class UserdataState with _$UserdataState {
     required bool isLoading,
     required bool isError,
     required bool datafetched,
-    required List<BottomNavigationBarItem> btmNavitems,
-    required List<Widget> screens,
+    MainFailure? failure,
   }) = _UserdataState;
 
   factory UserdataState.initial() => const UserdataState(
@@ -16,7 +15,6 @@ class UserdataState with _$UserdataState {
     isLoading: false,
     isError: false,
     datafetched: false,
-    btmNavitems: [],
-    screens: [],
+    failure: null,
   );
 }

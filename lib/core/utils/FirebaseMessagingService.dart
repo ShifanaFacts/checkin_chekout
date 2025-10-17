@@ -30,9 +30,9 @@ class FirebaseMessagingService {
       // Save the new token in secure storage
       await StorageManager.saveToken('ftoken', newToken);
 
-      BlocProvider.of<UserdataBloc>(navigatorKey.currentContext!).add(
-          PostUserFCMToken(
-              logingId: PublicObjects.instance.loginid!, token: newToken));
+      // BlocProvider.of<UserdataBloc>(navigatorKey.currentContext!).add(
+      //     PostUserFCMToken(
+      //         logingId: PublicObjects.instance.loginid!, token: newToken));
       // Optionally, send the new token to your server for notification management
     });
   }

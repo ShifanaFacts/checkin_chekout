@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+<!-- Required to access location when app is in use -->
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Your location is required to check in and out accurately.</string>
+
+<!-- Optional: required if background location access needed -->
+<key>NSLocationAlwaysUsageDescription</key>
+<string>Your location is required even when the app is in the background.</string>
+
+<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+<string>Your location is required for accurate check-in/out tracking.</string>
+<key>NSFaceIDUsageDescription</key>
+<string>We use Face ID for secure login.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

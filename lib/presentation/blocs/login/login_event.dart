@@ -8,7 +8,6 @@ class LoginEvent with _$LoginEvent {
     required String password,
   }) = PerformLogin;
 
-  const factory LoginEvent.performUserLogout(
-      {required BuildContext context,
-      required String logingId}) = PerformUserLogout;
+  const factory LoginEvent.performUserLogout({required BuildContext context}) =
+      PerformUserLogout;
 }

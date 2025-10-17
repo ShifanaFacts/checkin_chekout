@@ -7,6 +7,7 @@ class LoginState with _$LoginState {
     required bool isLoading,
     required bool isError,
     required bool loginSucceeded,
+    required bool deviceValidation,
   }) = _LoginState;
 
   factory LoginState.initial() => const LoginState(
@@ -14,5 +15,6 @@ class LoginState with _$LoginState {
     isLoading: false,
     isError: false,
     loginSucceeded: false,
+    deviceValidation: true,
   );
 }

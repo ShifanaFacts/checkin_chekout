@@ -21,20 +21,19 @@ mixin _$LoginEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(String logingId, String password) performLogin,
-    required TResult Function(BuildContext context, String logingId)
-    performUserLogout,
+    required TResult Function(BuildContext context) performUserLogout,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(String logingId, String password)? performLogin,
-    TResult? Function(BuildContext context, String logingId)? performUserLogout,
+    TResult? Function(BuildContext context)? performUserLogout,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(String logingId, String password)? performLogin,
-    TResult Function(BuildContext context, String logingId)? performUserLogout,
+    TResult Function(BuildContext context)? performUserLogout,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -125,8 +124,7 @@ class _$InitializeImpl implements Initialize {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(String logingId, String password) performLogin,
-    required TResult Function(BuildContext context, String logingId)
-    performUserLogout,
+    required TResult Function(BuildContext context) performUserLogout,
   }) {
     return initialize();
   }
@@ -136,7 +134,7 @@ class _$InitializeImpl implements Initialize {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(String logingId, String password)? performLogin,
-    TResult? Function(BuildContext context, String logingId)? performUserLogout,
+    TResult? Function(BuildContext context)? performUserLogout,
   }) {
     return initialize?.call();
   }
@@ -146,7 +144,7 @@ class _$InitializeImpl implements Initialize {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(String logingId, String password)? performLogin,
-    TResult Function(BuildContext context, String logingId)? performUserLogout,
+    TResult Function(BuildContext context)? performUserLogout,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -275,8 +273,7 @@ class _$PerformLoginImpl implements PerformLogin {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(String logingId, String password) performLogin,
-    required TResult Function(BuildContext context, String logingId)
-    performUserLogout,
+    required TResult Function(BuildContext context) performUserLogout,
   }) {
     return performLogin(logingId, password);
   }
@@ -286,7 +283,7 @@ class _$PerformLoginImpl implements PerformLogin {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(String logingId, String password)? performLogin,
-    TResult? Function(BuildContext context, String logingId)? performUserLogout,
+    TResult? Function(BuildContext context)? performUserLogout,
   }) {
     return performLogin?.call(logingId, password);
   }
@@ -296,7 +293,7 @@ class _$PerformLoginImpl implements PerformLogin {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(String logingId, String password)? performLogin,
-    TResult Function(BuildContext context, String logingId)? performUserLogout,
+    TResult Function(BuildContext context)? performUserLogout,
     required TResult orElse(),
   }) {
     if (performLogin != null) {
@@ -363,7 +360,7 @@ abstract class _$$PerformUserLogoutImplCopyWith<$Res> {
     $Res Function(_$PerformUserLogoutImpl) then,
   ) = __$$PerformUserLogoutImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({BuildContext context, String logingId});
+  $Res call({BuildContext context});
 }
 
 /// @nodoc
@@ -379,17 +376,13 @@ class __$$PerformUserLogoutImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? context = null, Object? logingId = null}) {
+  $Res call({Object? context = null}) {
     return _then(
       _$PerformUserLogoutImpl(
         context: null == context
             ? _value.context
             : context // ignore: cast_nullable_to_non_nullable
                   as BuildContext,
-        logingId: null == logingId
-            ? _value.logingId
-            : logingId // ignore: cast_nullable_to_non_nullable
-                  as String,
       ),
     );
   }
@@ -398,19 +391,14 @@ class __$$PerformUserLogoutImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$PerformUserLogoutImpl implements PerformUserLogout {
-  const _$PerformUserLogoutImpl({
-    required this.context,
-    required this.logingId,
-  });
+  const _$PerformUserLogoutImpl({required this.context});
 
   @override
   final BuildContext context;
-  @override
-  final String logingId;
 
   @override
   String toString() {
-    return 'LoginEvent.performUserLogout(context: $context, logingId: $logingId)';
+    return 'LoginEvent.performUserLogout(context: $context)';
   }
 
   @override
@@ -418,13 +406,11 @@ class _$PerformUserLogoutImpl implements PerformUserLogout {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PerformUserLogoutImpl &&
-            (identical(other.context, context) || other.context == context) &&
-            (identical(other.logingId, logingId) ||
-                other.logingId == logingId));
+            (identical(other.context, context) || other.context == context));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, context, logingId);
+  int get hashCode => Object.hash(runtimeType, context);
 
   /// Create a copy of LoginEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -442,10 +428,9 @@ class _$PerformUserLogoutImpl implements PerformUserLogout {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(String logingId, String password) performLogin,
-    required TResult Function(BuildContext context, String logingId)
-    performUserLogout,
+    required TResult Function(BuildContext context) performUserLogout,
   }) {
-    return performUserLogout(context, logingId);
+    return performUserLogout(context);
   }
 
   @override
@@ -453,9 +438,9 @@ class _$PerformUserLogoutImpl implements PerformUserLogout {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(String logingId, String password)? performLogin,
-    TResult? Function(BuildContext context, String logingId)? performUserLogout,
+    TResult? Function(BuildContext context)? performUserLogout,
   }) {
-    return performUserLogout?.call(context, logingId);
+    return performUserLogout?.call(context);
   }
 
   @override
@@ -463,11 +448,11 @@ class _$PerformUserLogoutImpl implements PerformUserLogout {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(String logingId, String password)? performLogin,
-    TResult Function(BuildContext context, String logingId)? performUserLogout,
+    TResult Function(BuildContext context)? performUserLogout,
     required TResult orElse(),
   }) {
     if (performUserLogout != null) {
-      return performUserLogout(context, logingId);
+      return performUserLogout(context);
     }
     return orElse();
   }
@@ -508,13 +493,10 @@ class _$PerformUserLogoutImpl implements PerformUserLogout {
 }
 
 abstract class PerformUserLogout implements LoginEvent {
-  const factory PerformUserLogout({
-    required final BuildContext context,
-    required final String logingId,
-  }) = _$PerformUserLogoutImpl;
+  const factory PerformUserLogout({required final BuildContext context}) =
+      _$PerformUserLogoutImpl;
 
   BuildContext get context;
-  String get logingId;
 
   /// Create a copy of LoginEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -529,6 +511,7 @@ mixin _$LoginState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get loginSucceeded => throw _privateConstructorUsedError;
+  bool get deviceValidation => throw _privateConstructorUsedError;
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
@@ -549,6 +532,7 @@ abstract class $LoginStateCopyWith<$Res> {
     bool isLoading,
     bool isError,
     bool loginSucceeded,
+    bool deviceValidation,
   });
 }
 
@@ -571,6 +555,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
     Object? isLoading = null,
     Object? isError = null,
     Object? loginSucceeded = null,
+    Object? deviceValidation = null,
   }) {
     return _then(
       _value.copyWith(
@@ -589,6 +574,10 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
             loginSucceeded: null == loginSucceeded
                 ? _value.loginSucceeded
                 : loginSucceeded // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            deviceValidation: null == deviceValidation
+                ? _value.deviceValidation
+                : deviceValidation // ignore: cast_nullable_to_non_nullable
                       as bool,
           )
           as $Val,
@@ -610,6 +599,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
     bool isLoading,
     bool isError,
     bool loginSucceeded,
+    bool deviceValidation,
   });
 }
 
@@ -631,6 +621,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isError = null,
     Object? loginSucceeded = null,
+    Object? deviceValidation = null,
   }) {
     return _then(
       _$LoginStateImpl(
@@ -650,6 +641,10 @@ class __$$LoginStateImplCopyWithImpl<$Res>
             ? _value.loginSucceeded
             : loginSucceeded // ignore: cast_nullable_to_non_nullable
                   as bool,
+        deviceValidation: null == deviceValidation
+            ? _value.deviceValidation
+            : deviceValidation // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -663,6 +658,7 @@ class _$LoginStateImpl implements _LoginState {
     required this.isLoading,
     required this.isError,
     required this.loginSucceeded,
+    required this.deviceValidation,
   });
 
   @override
@@ -673,10 +669,12 @@ class _$LoginStateImpl implements _LoginState {
   final bool isError;
   @override
   final bool loginSucceeded;
+  @override
+  final bool deviceValidation;
 
   @override
   String toString() {
-    return 'LoginState(loginModel: $loginModel, isLoading: $isLoading, isError: $isError, loginSucceeded: $loginSucceeded)';
+    return 'LoginState(loginModel: $loginModel, isLoading: $isLoading, isError: $isError, loginSucceeded: $loginSucceeded, deviceValidation: $deviceValidation)';
   }
 
   @override
@@ -690,12 +688,20 @@ class _$LoginStateImpl implements _LoginState {
                 other.isLoading == isLoading) &&
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.loginSucceeded, loginSucceeded) ||
-                other.loginSucceeded == loginSucceeded));
+                other.loginSucceeded == loginSucceeded) &&
+            (identical(other.deviceValidation, deviceValidation) ||
+                other.deviceValidation == deviceValidation));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, loginModel, isLoading, isError, loginSucceeded);
+  int get hashCode => Object.hash(
+    runtimeType,
+    loginModel,
+    isLoading,
+    isError,
+    loginSucceeded,
+    deviceValidation,
+  );
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.
@@ -712,6 +718,7 @@ abstract class _LoginState implements LoginState {
     required final bool isLoading,
     required final bool isError,
     required final bool loginSucceeded,
+    required final bool deviceValidation,
   }) = _$LoginStateImpl;
 
   @override
@@ -722,6 +729,8 @@ abstract class _LoginState implements LoginState {
   bool get isError;
   @override
   bool get loginSucceeded;
+  @override
+  bool get deviceValidation;
 
   /// Create a copy of LoginState
   /// with the given fields replaced by the non-null parameter values.

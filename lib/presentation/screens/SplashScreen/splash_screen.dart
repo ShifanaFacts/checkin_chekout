@@ -53,9 +53,7 @@ class _SplashScreenState extends State<SplashScreen>
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
-    String? isDeviceValidated = prefs.getString('DeviceValidated') ?? "";
-    log('${isDeviceValidated}isDeviceValidated');
-    if (isLoggedIn && isDeviceValidated.isNotEmpty) {
+    if (isLoggedIn) {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }

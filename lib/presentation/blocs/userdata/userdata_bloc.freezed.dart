@@ -302,6 +302,7 @@ abstract class GetUserData implements UserdataEvent {
 /// @nodoc
 mixin _$UserdataState {
   UserDataModel? get userModel => throw _privateConstructorUsedError;
+  DropdownModel? get dropdownModel => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get datafetched => throw _privateConstructorUsedError;
@@ -323,6 +324,7 @@ abstract class $UserdataStateCopyWith<$Res> {
   @useResult
   $Res call({
     UserDataModel? userModel,
+    DropdownModel? dropdownModel,
     bool isLoading,
     bool isError,
     bool datafetched,
@@ -348,6 +350,7 @@ class _$UserdataStateCopyWithImpl<$Res, $Val extends UserdataState>
   @override
   $Res call({
     Object? userModel = freezed,
+    Object? dropdownModel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? datafetched = null,
@@ -359,6 +362,10 @@ class _$UserdataStateCopyWithImpl<$Res, $Val extends UserdataState>
                 ? _value.userModel
                 : userModel // ignore: cast_nullable_to_non_nullable
                       as UserDataModel?,
+            dropdownModel: freezed == dropdownModel
+                ? _value.dropdownModel
+                : dropdownModel // ignore: cast_nullable_to_non_nullable
+                      as DropdownModel?,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -406,6 +413,7 @@ abstract class _$$UserdataStateImplCopyWith<$Res>
   @useResult
   $Res call({
     UserDataModel? userModel,
+    DropdownModel? dropdownModel,
     bool isLoading,
     bool isError,
     bool datafetched,
@@ -431,6 +439,7 @@ class __$$UserdataStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userModel = freezed,
+    Object? dropdownModel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? datafetched = null,
@@ -442,6 +451,10 @@ class __$$UserdataStateImplCopyWithImpl<$Res>
             ? _value.userModel
             : userModel // ignore: cast_nullable_to_non_nullable
                   as UserDataModel?,
+        dropdownModel: freezed == dropdownModel
+            ? _value.dropdownModel
+            : dropdownModel // ignore: cast_nullable_to_non_nullable
+                  as DropdownModel?,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -470,6 +483,7 @@ class _$UserdataStateImpl
     implements _UserdataState {
   const _$UserdataStateImpl({
     this.userModel,
+    this.dropdownModel,
     required this.isLoading,
     required this.isError,
     required this.datafetched,
@@ -478,6 +492,8 @@ class _$UserdataStateImpl
 
   @override
   final UserDataModel? userModel;
+  @override
+  final DropdownModel? dropdownModel;
   @override
   final bool isLoading;
   @override
@@ -489,7 +505,7 @@ class _$UserdataStateImpl
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'UserdataState(userModel: $userModel, isLoading: $isLoading, isError: $isError, datafetched: $datafetched, failure: $failure)';
+    return 'UserdataState(userModel: $userModel, dropdownModel: $dropdownModel, isLoading: $isLoading, isError: $isError, datafetched: $datafetched, failure: $failure)';
   }
 
   @override
@@ -498,6 +514,7 @@ class _$UserdataStateImpl
     properties
       ..add(DiagnosticsProperty('type', 'UserdataState'))
       ..add(DiagnosticsProperty('userModel', userModel))
+      ..add(DiagnosticsProperty('dropdownModel', dropdownModel))
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('isError', isError))
       ..add(DiagnosticsProperty('datafetched', datafetched))
@@ -511,6 +528,8 @@ class _$UserdataStateImpl
             other is _$UserdataStateImpl &&
             (identical(other.userModel, userModel) ||
                 other.userModel == userModel) &&
+            (identical(other.dropdownModel, dropdownModel) ||
+                other.dropdownModel == dropdownModel) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isError, isError) || other.isError == isError) &&
@@ -523,6 +542,7 @@ class _$UserdataStateImpl
   int get hashCode => Object.hash(
     runtimeType,
     userModel,
+    dropdownModel,
     isLoading,
     isError,
     datafetched,
@@ -541,6 +561,7 @@ class _$UserdataStateImpl
 abstract class _UserdataState implements UserdataState {
   const factory _UserdataState({
     final UserDataModel? userModel,
+    final DropdownModel? dropdownModel,
     required final bool isLoading,
     required final bool isError,
     required final bool datafetched,
@@ -549,6 +570,8 @@ abstract class _UserdataState implements UserdataState {
 
   @override
   UserDataModel? get userModel;
+  @override
+  DropdownModel? get dropdownModel;
   @override
   bool get isLoading;
   @override

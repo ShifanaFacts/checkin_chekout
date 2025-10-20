@@ -4,6 +4,7 @@ part of 'userdata_bloc.dart';
 class UserdataState with _$UserdataState {
   const factory UserdataState({
     UserDataModel? userModel,
+    DropdownModel? dropdownModel,
     required bool isLoading,
     required bool isError,
     required bool datafetched,

@@ -9,8 +9,10 @@ class PublicObjects {
 
   String? loginid;
   String? roleid;
-  String? name;
+  String? userId;
   String? usertype;
   String? customerid;
-  String? deviceId;
+  String? userDetailsFeedback;
+  String? loginFeedback;
+  String? checkinFeedback;
 }

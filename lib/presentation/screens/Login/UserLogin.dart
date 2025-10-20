@@ -11,7 +11,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:animate_do/animate_do.dart';
 
 class UserLogin extends StatefulWidget {
-  const UserLogin({Key? key}) : super(key: key);
+  const UserLogin({super.key});
 
   @override
   _UserLoginState createState() => _UserLoginState();
@@ -24,8 +24,10 @@ class _UserLoginState extends State<UserLogin> {
   final _employeeIdController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  String? loginFeedback;
+  String _loginFeedback = '';
   bool _canUseBiometrics = false;
+  bool _isBiometricLoading = false;
+  bool _isNfcLoading = false;
 
   @override
   void initState() {
@@ -40,47 +42,49 @@ class _UserLoginState extends State<UserLogin> {
 
   Future<void> _getDeviceId() async {
     try {
+      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      String deviceId;
+
       if (Platform.isAndroid) {
-        final androidInfo = await _deviceInfo.androidInfo;
-        setState(() {
-          _deviceId = androidInfo.id ?? 'Unknown';
-        });
+        final androidInfo = await deviceInfo.androidInfo;
+        deviceId = androidInfo.id ?? '';
       } else if (Platform.isIOS) {
-        final iosInfo = await _deviceInfo.iosInfo;
-        setState(() {
-          _deviceId = iosInfo.identifierForVendor ?? 'Unknown';
-        });
+        final iosInfo = await deviceInfo.iosInfo;
+        deviceId = iosInfo.identifierForVendor ?? '';
       } else {
-        setState(() {
-          _deviceId = 'Unsupported platform';
-        });
+        deviceId = 'Unsupported platform';
       }
-      PublicObjects.instance.deviceId = _deviceId;
-    } catch (e) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error fetching device ID: $e')));
-      setState(() {
-        _deviceId = 'Error fetching ID';
-      });
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('DeviceId', deviceId);
+
+      setState(() => _deviceId = deviceId);
+    } catch (e, stackTrace) {
+      log('Error fetching device ID: $e', stackTrace: stackTrace);
+      setState(() => _deviceId = 'Error fetching ID');
+      _showSnackBar('Error fetching device ID: $e');
     }
   }
 
   Future<void> _checkBiometricSupport() async {
     try {
-      final canAuthenticate = await _localAuth.canCheckBiometrics;
-      setState(() {
-        _canUseBiometrics = canAuthenticate;
-      });
-    } catch (e) {
-      setState(() {
-        _canUseBiometrics = false;
-      });
+      final canAuthenticate =
+          await _localAuth.canCheckBiometrics &&
+          await _localAuth.isDeviceSupported();
+      setState(() => _canUseBiometrics = canAuthenticate);
+    } catch (e, stackTrace) {
+      log('Error checking biometric support: $e', stackTrace: stackTrace);
+      setState(() => _canUseBiometrics = false);
     }
   }
 
   Future<void> _performBiometricLogin() async {
+    if (!_canUseBiometrics) {
+      _showSnackBar('Biometric authentication not supported');
+      return;
+    }
+
+    setState(() => _isBiometricLoading = true);
     try {
       final didAuthenticate = await _localAuth.authenticate(
         localizedReason: 'Authenticate to log in',
@@ -89,6 +93,7 @@ class _UserLoginState extends State<UserLogin> {
           stickyAuth: true,
         ),
       );
+
       if (didAuthenticate) {
         final prefs = await SharedPreferences.getInstance();
         final savedEmployeeId = prefs.getString('employeeId') ?? '';
@@ -97,42 +102,54 @@ class _UserLoginState extends State<UserLogin> {
             context,
           ).add(PerformLogin(logingId: savedEmployeeId, password: ''));
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No saved credentials for biometric login'),
-            ),
-          );
+          _showSnackBar('No saved credentials for biometric login');
         }
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Biometric authentication failed: $e')),
-      );
+    } catch (e, stackTrace) {
+      log('Biometric authentication failed: $e', stackTrace: stackTrace);
+      _showSnackBar('Biometric authentication failed: $e');
+    } finally {
+      setState(() => _isBiometricLoading = false);
     }
   }
 
   Future<void> _performNfcLogin() async {
-    // Placeholder for NFC login logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('NFC login not implemented yet')),
-    );
-    // Implement NFC logic here based on specific hardware and requirements
-    // Example: Use a package like `nfc_manager` for NFC tag reading
+    setState(() => _isNfcLoading = true);
+    try {
+      // Placeholder for NFC login logic
+      _showSnackBar('NFC login not implemented yet');
+      // Implement NFC logic using a package like `nfc_manager`
+    } catch (e, stackTrace) {
+      log('NFC login failed: $e', stackTrace: stackTrace);
+      _showSnackBar('NFC login failed: $e');
+    } finally {
+      setState(() => _isNfcLoading = false);
+    }
   }
 
   void _performLogin() {
     final employeeId = _employeeIdController.text.trim();
     final password = _passwordController.text.trim();
     if (employeeId.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).clearSnackBars();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
+      _showSnackBar('Please fill in all fields');
       return;
     }
+    setState(() => _loginFeedback = '');
     BlocProvider.of<LoginBloc>(
       context,
     ).add(PerformLogin(logingId: employeeId, password: password));
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+    );
   }
 
   @override
@@ -148,21 +165,26 @@ class _UserLoginState extends State<UserLogin> {
       listeners: [
         BlocListener<LoginBloc, LoginState>(
           listener: (context, state) {
-            if (state.isError) {
-              setState(() {
-                loginFeedback = 'Login failed. Please try again.';
-              });
-            } else if (state.loginSucceeded) {
+            setState(() {
+              _loginFeedback = state.isError
+                  ? 'Login failed. Please try again.'
+                  : '';
+            });
+            if (state.loginSucceeded) {
               BlocProvider.of<UserdataBloc>(context).add(GetUserData());
             }
           },
         ),
         BlocListener<UserdataBloc, UserdataState>(
-          listener: (context, state) async {
-            final prefs = await SharedPreferences.getInstance();
-            final _isDeviceValidated = prefs.getString('DeviceValidated');
-            if (_isDeviceValidated == _deviceId) {
+          listener: (context, state) {
+            if (state.isError) {
+              setState(() {
+                _loginFeedback =
+                    PublicObjects.instance.userDetailsFeedback ?? "";
+              });
+            } else if (state.datafetched) {
               Navigator.pushReplacementNamed(context, '/home');
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Row(
@@ -185,15 +207,6 @@ class _UserLoginState extends State<UserLogin> {
                   ),
                 ),
               );
-            } else if (state.isError) {
-              setState(() {
-                loginFeedback = 'Failed to fetch user data. Please try again.';
-              });
-            } else if (_isDeviceValidated != _deviceId) {
-              setState(() {
-                loginFeedback =
-                    'Device not recognized. Please log in using a registered device.  ';
-              });
             }
           },
         ),
@@ -218,14 +231,14 @@ class _UserLoginState extends State<UserLogin> {
                 child: const CircleAvatar(
                   radius: 20,
                   backgroundColor: Colors.blueAccent,
-                  child: Icon(Icons.person_pin, size: 10, color: Colors.white),
+                  child: Icon(Icons.person_pin, size: 30, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
               FadeInDown(
                 delay: const Duration(milliseconds: 100),
                 child: Text(
-                  'Welcome ',
+                  'Welcome',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -293,9 +306,9 @@ class _UserLoginState extends State<UserLogin> {
                         color: Colors.blueAccent,
                       ),
                       onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
+                        setState(
+                          () => _isPasswordVisible = !_isPasswordVisible,
+                        );
                       },
                     ),
                   ),
@@ -343,22 +356,32 @@ class _UserLoginState extends State<UserLogin> {
                   children: [
                     if (_canUseBiometrics)
                       IconButton(
-                        icon: const Icon(
-                          Icons.fingerprint,
-                          size: 40,
-                          color: Colors.blueAccent,
-                        ),
-                        onPressed: _performBiometricLogin,
+                        icon: _isBiometricLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.blueAccent,
+                              )
+                            : const Icon(
+                                Icons.fingerprint,
+                                size: 40,
+                                color: Colors.blueAccent,
+                              ),
+                        onPressed: _isBiometricLoading
+                            ? null
+                            : _performBiometricLogin,
                         tooltip: 'Login with Fingerprint',
                       ),
                     const SizedBox(width: 16),
                     IconButton(
-                      icon: const Icon(
-                        Icons.nfc,
-                        size: 40,
-                        color: Colors.blueAccent,
-                      ),
-                      onPressed: _performNfcLogin,
+                      icon: _isNfcLoading
+                          ? const CircularProgressIndicator(
+                              color: Colors.blueAccent,
+                            )
+                          : const Icon(
+                              Icons.nfc,
+                              size: 40,
+                              color: Colors.blueAccent,
+                            ),
+                      onPressed: _isNfcLoading ? null : _performNfcLogin,
                       tooltip: 'Login with NFC',
                     ),
                   ],
@@ -368,12 +391,7 @@ class _UserLoginState extends State<UserLogin> {
               FadeInDown(
                 delay: const Duration(milliseconds: 700),
                 child: TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Forgot Password pressed')),
-                    );
-                  },
+                  onPressed: () => _showSnackBar('Forgot Password pressed'),
                   child: Text(
                     'Forgot Password?',
                     style: TextStyle(
@@ -383,11 +401,11 @@ class _UserLoginState extends State<UserLogin> {
                   ),
                 ),
               ),
-              if (loginFeedback != "")
+              if (_loginFeedback.isNotEmpty)
                 FadeInDown(
                   delay: const Duration(milliseconds: 800),
                   child: Text(
-                    loginFeedback ?? "",
+                    _loginFeedback,
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.redAccent,

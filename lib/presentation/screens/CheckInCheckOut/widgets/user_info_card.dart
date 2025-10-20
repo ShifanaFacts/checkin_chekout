@@ -1,19 +1,31 @@
+import 'dart:developer';
+
+import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UserInfoCard extends StatelessWidget {
-  const UserInfoCard({super.key});
+  final double latitude;
+  final double longitude;
+  const UserInfoCard({
+    super.key,
+    required this.latitude,
+    required this.longitude,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserdataBloc, UserdataState>(
+    log('$latitude $longitude');
+    return BlocBuilder<LoggedUserHandleBloc, LoggedUserHandleState>(
       builder: (context, state) {
         // Only dispatch GetUserData if data is not fetched and not loading
-        if (!state.datafetched && !state.isLoading) {
+        if (!state.dataFetched || state.loggedUserModel == null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.read<UserdataBloc>().add(const GetUserData());
+            context.read<LoggedUserHandleBloc>().add(
+              GetLoggedUserDetails(lat: latitude, long: longitude),
+            );
           });
         }
 
@@ -70,7 +82,7 @@ class UserInfoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, UserdataState state) {
+  Widget _buildContent(BuildContext context, LoggedUserHandleState state) {
     if (state.isLoading) {
       return const Center(
         child: CircularProgressIndicator(
@@ -93,7 +105,7 @@ class UserInfoCard extends StatelessWidget {
       );
     }
 
-    if (!state.datafetched || state.userModel == null) {
+    if (!state.dataFetched || state.loggedUserModel == null) {
       return Center(
         child: Text(
           'No user data available',
@@ -106,48 +118,44 @@ class UserInfoCard extends StatelessWidget {
       );
     }
 
-    final user = state.userModel!;
+    final user = state.loggedUserModel!;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildAvatar(user),
-        const SizedBox(width: 20),
+        // _buildAvatar(user),
+        // const SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.username ?? '',
+                user.Emp_Name ?? '',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w700,
-                  fontSize: 20,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                user.userdesig ?? '',
+                user.Department ?? '',
                 style: GoogleFonts.poppins(
-                  color: Colors.white70,
+                  color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                user.userdept ?? '',
-                style: GoogleFonts.poppins(color: Colors.white60, fontSize: 13),
+                user.Designation ?? '',
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 12),
-              _buildInfoRow(
-                icon: Icons.badge,
-                text: 'Employee ID: ${user.employeeId ?? ''}',
-              ),
-              const SizedBox(height: 8),
-              _buildInfoRow(
-                icon: Icons.business,
-                text: 'Department: ${user.department ?? ''}',
-              ),
+              _buildInfoRow(icon: Icons.badge, text: '${user.Division ?? ''}'),
             ],
           ),
         ),
@@ -155,41 +163,43 @@ class UserInfoCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar(dynamic user) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          colors: [Colors.white, Colors.blue.shade200],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: CircleAvatar(
-        radius: 36,
-        backgroundColor: Colors.transparent,
-        child: ClipOval(
-          child: user.profileImage != null
-              ? Image.network(
-                  user.profileImage!,
-                  width: 72,
-                  height: 72,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.person, color: Colors.white, size: 40),
-                )
-              : const Icon(Icons.person, color: Colors.white, size: 40),
-        ),
-      ),
-    );
-  }
+  // Widget _buildAvatar(dynamic user) {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       shape: BoxShape.circle,
+  //       gradient: LinearGradient(
+  //         colors: [Colors.white, Colors.blue.shade200],
+  //         begin: Alignment.topLeft,
+  //         end: Alignment.bottomRight,
+  //       ),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.black.withOpacity(0.2),
+  //           blurRadius: 12,
+  //           offset: const Offset(0, 4),
+  //         ),
+  //       ],
+  //     ),
+  //     child: CircleAvatar(
+  //       radius: 36,
+  //       backgroundColor: Colors.transparent,
+  //       child: ClipOval(
+  //         child:
+  //             // user.profileImage != null
+  //             //     ? Image.network(
+  //             //         user.profileImage!,
+  //             //         width: 72,
+  //             //         height: 72,
+  //             //         fit: BoxFit.cover,
+  //             //         errorBuilder: (context, error, stackTrace) =>
+  //             //             const Icon(Icons.person, color: Colors.white, size: 40),
+  //             //       )
+  //             // :
+  //             const Icon(Icons.person, color: Colors.white, size: 40),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildInfoRow({required IconData icon, required String text}) {
     return Container(
@@ -206,9 +216,9 @@ class UserInfoCard extends StatelessWidget {
             child: Text(
               text,
               style: GoogleFonts.poppins(
-                color: Colors.white70,
+                color: Colors.white,
                 fontSize: 13,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),

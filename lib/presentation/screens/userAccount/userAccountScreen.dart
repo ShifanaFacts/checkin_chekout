@@ -78,10 +78,6 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           });
         }
 
-        // Handle data fetched state
-        if (state.datafetched) {
-          _username = PublicObjects.instance.name ?? 'Unknown';
-        }
         // Build the UI
         return Scaffold(
           // appBar: AppBar(

@@ -9,10 +9,22 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:checkin_checkout/core/repository/checkin_checkout_repo.dart'
+    as _i446;
+import 'package:checkin_checkout/core/repository/loggedUserHandleRepo.dart'
+    as _i921;
 import 'package:checkin_checkout/core/repository/loginRepo.dart' as _i694;
 import 'package:checkin_checkout/core/repository/userrepo.dart' as _i103;
+import 'package:checkin_checkout/core/services/checkin_checkout_service.dart'
+    as _i1070;
+import 'package:checkin_checkout/core/services/logged_user_service.dart'
+    as _i630;
 import 'package:checkin_checkout/core/services/login_service.dart' as _i726;
 import 'package:checkin_checkout/core/services/user_service.dart' as _i869;
+import 'package:checkin_checkout/presentation/blocs/checkin_checkout/checkin_checkout_bloc.dart'
+    as _i606;
+import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart'
+    as _i994;
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart'
     as _i311;
 import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart'
@@ -27,11 +39,23 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.lazySingleton<_i921.Loggeduserhandlerepo>(
+      () => _i630.LoggedUserService(),
+    );
     gh.lazySingleton<_i694.LoginRepo>(() => _i726.LoginService());
+    gh.factory<_i994.LoggedUserHandleBloc>(
+      () => _i994.LoggedUserHandleBloc(gh<_i921.Loggeduserhandlerepo>()),
+    );
+    gh.lazySingleton<_i446.CheckinCheckoutRepo>(
+      () => _i1070.CheckinCheckoutService(),
+    );
     gh.lazySingleton<_i103.UserDetailRepo>(() => _i869.UserDetailService());
     gh.factory<_i311.LoginBloc>(() => _i311.LoginBloc(gh<_i694.LoginRepo>()));
     gh.factory<_i927.UserdataBloc>(
       () => _i927.UserdataBloc(gh<_i103.UserDetailRepo>()),
+    );
+    gh.factory<_i606.CheckinCheckoutBloc>(
+      () => _i606.CheckinCheckoutBloc(gh<_i446.CheckinCheckoutRepo>()),
     );
     return this;
   }

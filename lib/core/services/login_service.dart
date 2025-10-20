@@ -47,7 +47,6 @@ class LoginService implements LoginRepo {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isLoggedIn', true);
         prefs.setString('token', result.access_token ?? "");
-
         return Right(result);
       } else {
         return const Left(MainFailure.serverFailure());
@@ -105,7 +104,13 @@ class LoginService implements LoginRepo {
       // 🔹 Case 1: Unauthorized (expired/invalid token)
       if (e is DioException && e.response?.statusCode == 401) {
         log('Unauthorized - token expired or invalid');
+        await prefs.remove('isLoggedIn');
+        await prefs.remove('token');
 
+        // prefs.clear();
+        await StorageManager.deleteToken('ftoken');
+
+        Navigator.pushReplacementNamed(context, '/login');
         return const Left(MainFailure.authFailure());
       }
       return const Left(MainFailure.clientFailure());

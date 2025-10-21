@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 import 'package:checkin_checkout/core/repository/loggedUserHandleRepo.dart';
+import 'package:checkin_checkout/data/models/dashboard_model/dashboard_model.dart';
 import 'package:checkin_checkout/data/models/dropDown_model/dropdown_model.dart';
 import 'package:checkin_checkout/data/models/logged_user_data_mode.dart/loggedUser_data_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
+import 'dart:developer';
 
 part 'logged_user_handle_event.dart';
 part 'logged_user_handle_state.dart';
@@ -17,9 +19,10 @@ class LoggedUserHandleBloc
 
   LoggedUserHandleBloc(this._loggedUserDetailsService)
     : super(LoggedUserHandleState.initial()) {
-    // 🔹 Get logged user details
+    log('Initializing LoggedUserHandleBloc');
+
     on<GetLoggedUserDetails>((event, emit) async {
-      emit(state.copyWith(isLoading: true, isError: false, failure: null));
+      emit(state.copyWith(isUserLoading: true, isError: false, failure: null));
 
       final result = await _loggedUserDetailsService.getLoggedUserDetails(
         event.lat,
@@ -29,7 +32,7 @@ class LoggedUserHandleBloc
       result.fold(
         (MainFailure failure) => emit(
           state.copyWith(
-            isLoading: false,
+            isUserLoading: false,
             isError: true,
             dataFetched: false,
             failure: failure,
@@ -38,62 +41,78 @@ class LoggedUserHandleBloc
         (LoggedUserModel userDataModel) => emit(
           state.copyWith(
             loggedUserModel: userDataModel,
-            isLoading: false,
+            isUserLoading: false,
             isError: false,
             dataFetched: true,
           ),
         ),
       );
     });
-    // ---------------------------------------------------------------------------------------------
-    // 🔹 Get dropdown data (single)
+
     on<GetDropDownData>((event, emit) async {
-      emit(state.copyWith(isLoading: true, isError: false, failure: null));
+      emit(
+        state.copyWith(isDropdownLoading: true, isError: false, failure: null),
+      );
 
       final result = await _loggedUserDetailsService.getDropDownData(
         event.strDocType,
         event.description,
+        event.lat,
+        event.long,
       );
 
       result.fold(
         (MainFailure failure) => emit(
           state.copyWith(
-            isLoading: false,
+            isDropdownLoading: false,
             isError: true,
             dataFetched: false,
             failure: failure,
           ),
         ),
-        (DropdownModel dropdownModel) => emit(
-          state.copyWith(
-            dropdownModel: dropdownModel,
-            isLoading: false,
-            isError: false,
-            dataFetched: true,
-          ),
-        ),
+        (DropdownModel newDropdownModel) {
+          // Merge new dropdown data with existing data
+          final currentDropdowns =
+              state.dropdownModel?.dropdownsByDescription ?? {};
+          if (newDropdownModel.dropdownsByDescription != null) {
+            currentDropdowns.addAll(newDropdownModel.dropdownsByDescription!);
+          }
+          log(
+            'Merged dropdownsByDescription: ${currentDropdowns.keys.toList()}',
+          );
+
+          emit(
+            state.copyWith(
+              dropdownModel: DropdownModel(
+                dropdownsByDescription: currentDropdowns,
+              ),
+              isDropdownLoading: false,
+              isError: false,
+              dataFetched: true,
+            ),
+          );
+        },
       );
     });
-    // ------------------------------------------------------------------------------------
-    // 🔹 Get all dropdown data
-    on<GetAllDropdownData>((event, emit) async {
-      emit(state.copyWith(isLoading: true, isError: false, failure: null));
 
-      final result = await _loggedUserDetailsService.getAllDropdownData();
-
+    on<GetDashboardList>((event, emit) async {
+      emit(
+        state.copyWith(isDashboardLoading: true, isError: false, failure: null),
+      );
+      final result = await _loggedUserDetailsService.getDashboardList();
       result.fold(
         (MainFailure failure) => emit(
           state.copyWith(
-            isLoading: false,
+            isDashboardLoading: false,
             isError: true,
             dataFetched: false,
             failure: failure,
           ),
         ),
-        (DropdownModel dropdownModel) => emit(
+        (DashboardModel dashboardModel) => emit(
           state.copyWith(
-            dropdownModel: dropdownModel,
-            isLoading: false,
+            dashboardModel: dashboardModel,
+            isDashboardLoading: false,
             isError: false,
             dataFetched: true,
           ),

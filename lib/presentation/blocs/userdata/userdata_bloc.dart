@@ -5,7 +5,6 @@ import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 import 'package:checkin_checkout/core/repository/userrepo.dart';
 import 'package:checkin_checkout/data/models/dropDown_model/dropdown_model.dart';
 import 'package:checkin_checkout/data/models/user_data_model/user_data_model.dart';
-import 'package:checkin_checkout/presentation/screens/userAccount/userAccountScreen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

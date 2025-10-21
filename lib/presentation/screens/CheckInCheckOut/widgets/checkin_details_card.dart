@@ -1,37 +1,45 @@
 import 'dart:developer';
-
-import 'package:checkin_checkout/presentation/blocs/checkin_checkout/checkin_checkout_bloc.dart';
+import 'package:checkin_checkout/data/models/checkin_checkout_model/checkin_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CheckinDetailsCard extends StatelessWidget {
-  const CheckinDetailsCard({super.key});
+  final CheckinVieModel? checkinmodel;
+  final bool isLoading;
+  final bool isError;
+  final bool dataFetched;
+
+  const CheckinDetailsCard({
+    super.key,
+    this.checkinmodel,
+    required this.isLoading,
+    required this.isError,
+    required this.dataFetched,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CheckinCheckoutBloc, CheckinCheckoutState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (state.dataFetched && state.checkinmodel != null) {
-          final data = state.checkinmodel!;
-          if (data != "") {
-            log('Check-in data: $data');
-          }
-          return _buildCard(
-            project: data.JOBMST_DESC ?? "N/A",
-            department: data.DEPT_DESC ?? "N/A",
-            costCode: data.COST_DESC ?? "N/A",
-            activity: data.ACT_DOCNO ?? "N/A",
-            checkInTime: data.checkintime ?? "N/A",
-          );
-        } else if (state.isError) {
-          return const Center(child: Text("Failed to load check-in details"));
-        }
-        // Fallback for initial/unknown state
-        return const Center(child: Text("No check-in data available"));
-      },
-    );
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (isError) {
+      return const Center(child: Text("Failed to load check-in details"));
+    } else if (dataFetched && checkinmodel != null) {
+      final data = checkinmodel!;
+      if (data.JOBMST_DESC != null ||
+          data.DEPT_DESC != null ||
+          data.COST_DESC != null ||
+          data.ACT_DOCNO != null ||
+          data.checkintime != null) {
+        log('Check-in data: $data');
+      }
+      return _buildCard(
+        project: data.JOBMST_DESC ?? "",
+        department: data.DEPT_DESC ?? "",
+        costCode: data.COST_DESC ?? "",
+        activity: data.ACT_DOCNO ?? "",
+        checkInTime: data.checkintime ?? "",
+      );
+    }
+    return const Center(child: Text("No check-in data available"));
   }
 
   Widget _buildCard({
@@ -138,7 +146,7 @@ class CheckinDetailsCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          value.isEmpty ? "N/A" : value,
+          value.isEmpty ? "" : value,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

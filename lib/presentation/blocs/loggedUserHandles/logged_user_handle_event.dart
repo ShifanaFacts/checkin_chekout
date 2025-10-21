@@ -10,6 +10,9 @@ class LoggedUserHandleEvent with _$LoggedUserHandleEvent {
   const factory LoggedUserHandleEvent.getDropDownData({
     String? strDocType,
     String? description,
+    double? lat,
+    double? long,
   }) = GetDropDownData;
   const factory LoggedUserHandleEvent.getAllDropdownData() = GetAllDropdownData;
+  const factory LoggedUserHandleEvent.getDashboardList() = GetDashboardList;
 }

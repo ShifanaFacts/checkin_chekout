@@ -14,6 +14,7 @@ abstract class Loggeduserhandlerepo {
   Future<Either<MainFailure, DropdownModel>> getDropDownData([
     String? strdoctype,
     String? description,
+    double? lat,
+    double? long,
   ]);
-  Future<Either<MainFailure, DropdownModel>> getAllDropdownData();
 }

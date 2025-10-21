@@ -23,7 +23,10 @@ class DropdownItem {
   @JsonKey(name: 'code')
   String? code;
 
-  DropdownItem({this.description, this.code});
+  @JsonKey(name: 'COSTCODE')
+  String? childList;
+
+  DropdownItem({this.description, this.code, this.childList});
 
   factory DropdownItem.fromJson(Map<String, dynamic> json) =>
       _$DropdownItemFromJson(json);

@@ -3,20 +3,26 @@ part of 'logged_user_handle_bloc.dart';
 @freezed
 class LoggedUserHandleState with _$LoggedUserHandleState {
   const factory LoggedUserHandleState({
-    LoggedUserModel? loggedUserModel,
-    DropdownModel? dropdownModel,
-    required bool isLoading,
+    required bool isUserLoading,
+    required bool isDashboardLoading,
+    required bool isDropdownLoading,
     required bool isError,
     required bool dataFetched,
     MainFailure? failure,
+    LoggedUserModel? loggedUserModel,
+    DashboardModel? dashboardModel,
+    DropdownModel? dropdownModel,
   }) = _LoggedUserHandleState;
 
   factory LoggedUserHandleState.initial() => const LoggedUserHandleState(
-    loggedUserModel: null,
-    dropdownModel: null,
-    isLoading: false,
+    isUserLoading: false,
+    isDashboardLoading: false,
+    isDropdownLoading: false,
     isError: false,
     dataFetched: false,
     failure: null,
+    loggedUserModel: null,
+    dashboardModel: null,
+    dropdownModel: null,
   );
 }

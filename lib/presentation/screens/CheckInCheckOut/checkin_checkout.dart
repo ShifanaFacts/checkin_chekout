@@ -1,19 +1,20 @@
 import 'package:checkin_checkout/data/publicobjects.dart';
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
-import 'package:checkin_checkout/presentation/screens/CheckInCheckOut/widgets/locationLoadingAnimation.dart';
+import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:math';
-
 import 'widgets/user_info_card.dart';
 import 'widgets/time_display.dart';
 import 'widgets/dropdown_section.dart';
 import 'widgets/checkin_details_card.dart';
+import 'dart:developer';
 
 enum LocationStatus { insideRadius, outsideRadius, inaccessible }
 
@@ -48,34 +49,13 @@ class CheckinCheckoutState extends State<CheckinCheckout>
   bool _isInitialCheck = true;
   StreamSubscription<Position>? _positionStreamSubscription;
 
-  // Dropdown selections (dummy placeholders)
-  String? selectedProject;
-  String? selectedDepartment;
-  String? selectedCostCode;
-  String? selectedActivity;
-
   bool get canCheckIn => locationStatus == LocationStatus.insideRadius;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _startTimeUpdate();
-    _checkLocationPermission(); // Modified to check permission first
-  }
-
-  void _startTimeUpdate() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (!mounted) {
-        timer.cancel();
-        return;
-      }
-      setState(() {
-        currentTime = DateFormat(
-          'hh:mm:ss a',
-        ).format(DateTime.now().toUtc().add(const Duration(hours: 4)));
-      });
-    });
+    _checkLocationPermission();
   }
 
   @override
@@ -86,7 +66,7 @@ class CheckinCheckoutState extends State<CheckinCheckout>
   }
 
   String _formatAddress(Placemark placemark) {
-    return "${placemark.name}, ${placemark.locality}, ${placemark.country}";
+    return "${placemark.name ?? ''}, ${placemark.locality ?? ''}, ${placemark.country ?? ''}";
   }
 
   double _calculateDistance(LatLng start, LatLng end) {
@@ -113,7 +93,6 @@ class CheckinCheckoutState extends State<CheckinCheckout>
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       setState(() {
@@ -123,7 +102,6 @@ class CheckinCheckoutState extends State<CheckinCheckout>
       return;
     }
 
-    // Check location permission
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -144,8 +122,10 @@ class CheckinCheckoutState extends State<CheckinCheckout>
       return;
     }
 
-    // If permissions are granted, proceed to check location
-    await _checkLocation();
+    if (_isInitialCheck) {
+      await _checkLocation();
+      _isInitialCheck = false;
+    }
   }
 
   Future<void> _checkLocation() async {
@@ -183,6 +163,12 @@ class CheckinCheckoutState extends State<CheckinCheckout>
       }
 
       setState(() {});
+      context.read<LoggedUserHandleBloc>().add(
+        GetLoggedUserDetails(
+          lat: currentLocation!.latitude,
+          long: currentLocation!.longitude,
+        ),
+      );
     } catch (e) {
       setState(() {
         locationStatus = LocationStatus.inaccessible;
@@ -193,84 +179,100 @@ class CheckinCheckoutState extends State<CheckinCheckout>
 
   @override
   Widget build(BuildContext context) {
-    print(
-      "${PublicObjects.instance.checkinFeedback}mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-    );
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            UserInfoCard(
-              latitude: currentLocation?.latitude ?? 0.0,
-              longitude: currentLocation?.longitude ?? 0.0,
-            ),
-            const SizedBox(height: 10),
-            TimeDisplay(currentDate: currentDate, currentTime: currentTime),
-            const SizedBox(height: 10),
-            if (PublicObjects.instance.checkinFeedback == 'checkin')
-              Column(
+      body: BlocBuilder<UserCheckinCheckoutBloc, UserCheckinCheckoutState>(
+        builder: (context, state) {
+          state.failure?.maybeWhen(
+            authFailure: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              await prefs.setBool('isLoggedIn', false);
+              if (context.mounted) {
+                Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil('/login', (route) => false);
+              }
+            },
+            orElse: () {},
+          );
+
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.isError) {
+            return const Center(child: Text("Something went wrong"));
+          } else {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
                 children: [
-                  CheckinDetailsCard(),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      PublicObjects.instance.checkinFeedback = 'checkout';
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("✅ Check-out successful!"),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                      setState(() {
-                        isCheckedIn = false;
-                        currentStatus = "Checked-Out";
-                        selectedProject = null;
-                        selectedDepartment = null;
-                        selectedCostCode = null;
-                        selectedActivity = null;
-                        checkInTime = null;
-                      });
-                      _positionStreamSubscription?.cancel();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      minimumSize: const Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text(
-                      "Check-Out",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ),
-                ],
-              )
-            else
-              Column(
-                children: [
-                  DropdownSection(
+                  const SizedBox(height: 50),
+                  UserInfoCard(
                     latitude: currentLocation?.latitude ?? 0.0,
                     longitude: currentLocation?.longitude ?? 0.0,
                   ),
+                  const SizedBox(height: 10),
+                  const TimeDisplay(),
+                  const SizedBox(height: 10),
+                  if (state.checkedIn && state.checkinmodel != null)
+                    Column(
+                      children: [
+                        CheckinDetailsCard(
+                          checkinmodel: state.checkinmodel,
+                          isLoading: state.isLoading,
+                          isError: state.isError,
+                          dataFetched: state.dataFetched,
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<UserCheckinCheckoutBloc>().add(
+                              GetCheckOutData(
+                                lat: currentLocation?.latitude ?? 0.0,
+                                long: currentLocation?.longitude ?? 0.0,
+
+                                checkinTime: DateFormat(
+                                  'yyyy-MM-dd HH:mm:ss',
+                                ).format(DateTime.now()),
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("✅ Check-out successful!"),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            "Check-Out",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        if (locationStatus == LocationStatus.inaccessible)
+                          _buildInaccessibleCard()
+                        else
+                          DropdownSection(
+                            latitude: currentLocation?.latitude ?? 0.0,
+                            longitude: currentLocation?.longitude ?? 0.0,
+                          ),
+                      ],
+                    ),
                 ],
               ),
-
-            // if (!isCheckedIn)
-            //   Builder(
-            //     builder: (_) {
-            //       if (locationStatus == LocationStatus.inaccessible) {
-            //         return _buildInaccessibleCard();
-            //       } else {
-            //         return
-            //       }
-            //     },
-            //   )
-            // else
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
@@ -300,7 +302,6 @@ class CheckinCheckoutState extends State<CheckinCheckout>
             ElevatedButton(
               onPressed: () async {
                 await Geolocator.openLocationSettings();
-                // Re-check permissions after user returns from settings
                 await _checkLocationPermission();
               },
               style: ElevatedButton.styleFrom(

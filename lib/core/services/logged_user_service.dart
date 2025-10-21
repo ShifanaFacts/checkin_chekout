@@ -37,8 +37,8 @@ class LoggedUserService implements Loggeduserhandlerepo {
         "key": "PWA.EMP_Data_OnLoad",
         "data": {
           "info": {
-            "geolat": "",
-            "geolong": "",
+            "geolat": lat.toString(),
+            "geolong": long.toString(),
             "strXmlHeader": {"EMP_DATA": ""},
           },
         },
@@ -49,6 +49,10 @@ class LoggedUserService implements Loggeduserhandlerepo {
         url,
         data: jsonEncode(loginRequest),
         options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
+      );
+
+      log(
+        'getLoggedUserDetails response: status=${response.statusCode}, data=${response.data}',
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -73,6 +77,7 @@ class LoggedUserService implements Loggeduserhandlerepo {
 
         return Right(loggeduserData);
       } else {
+        log('Server error: status=${response.statusCode}');
         return const Left(MainFailure.serverFailure());
       }
     } on DioException catch (e) {
@@ -88,7 +93,6 @@ class LoggedUserService implements Loggeduserhandlerepo {
     }
   }
 
-  // --------------------------------------------------------------------------------
   @override
   Future<Either<MainFailure, DashboardModel>> getDashboardList() async {
     try {
@@ -140,9 +144,13 @@ class LoggedUserService implements Loggeduserhandlerepo {
           log('Invalid response format');
           return const Left(MainFailure.serverFailure());
         }
+        log(
+          'Dashboard data: ${dashboardModel.jsonResult?.map((e) => e.loadOnClick).toList()}',
+        );
 
         return Right(dashboardModel);
       } else {
+        log('Server error: status=${response.statusCode}');
         return const Left(MainFailure.serverFailure());
       }
     } on DioException catch (e) {
@@ -158,26 +166,28 @@ class LoggedUserService implements Loggeduserhandlerepo {
     }
   }
 
-  // --------------------------------------------------------------------------------------------
   @override
   Future<Either<MainFailure, DropdownModel>> getDropDownData([
     String? strdoctype,
     String? description,
+    double? lat,
+    double? long,
   ]) async {
     try {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
-
       final loginRequest = {
         "job_id": "2786",
         "key": "PWA.GetCommonList",
         "data": {
           "info": {
-            "geolat": "",
-            "geolong": "",
+            "geolat": lat,
+            "geolong": long,
             "strXmlHeader": {"EMP_DATA": ""},
             "strdoctype": strdoctype ?? "Dept",
+            "strcommontype": "manual",
+            "FilterCondition": description,
           },
         },
         "result_type": "single",
@@ -191,24 +201,19 @@ class LoggedUserService implements Loggeduserhandlerepo {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data == null) {
-          log('Empty response data');
+          log('Empty response data for strDocType: $strdoctype');
           return const Left(MainFailure.serverFailure());
         }
 
         final dynamic data = response.data;
-        DropdownModel dropdownModel;
+        List<DropdownItem> items;
 
         if (data is List) {
-          final items = data
+          items = data
               .map(
                 (item) => DropdownItem.fromJson(item as Map<String, dynamic>),
               )
               .toList();
-          dropdownModel = DropdownModel(
-            dropdownsByDescription: {
-              description ?? (strdoctype ?? 'Dept'): items,
-            },
-          );
         } else if (data is Map<String, dynamic>) {
           if (data['jsonResult'] is String) {
             try {
@@ -218,7 +223,7 @@ class LoggedUserService implements Loggeduserhandlerepo {
               return const Left(MainFailure.serverFailure());
             }
           }
-          final items =
+          items =
               (data['jsonResult'] as List<dynamic>?)
                   ?.map(
                     (item) =>
@@ -226,71 +231,38 @@ class LoggedUserService implements Loggeduserhandlerepo {
                   )
                   .toList() ??
               [];
-          dropdownModel = DropdownModel(
-            dropdownsByDescription: {
-              description ?? (strdoctype ?? 'Dept'): items,
-            },
-          );
         } else {
-          log('Invalid response format');
+          log('Invalid response format for strDocType: $strdoctype');
           return const Left(MainFailure.serverFailure());
         }
 
-        return Right(dropdownModel);
+        log(
+          'Fetched ${items.length} items for strDocType: $strdoctype, description: $description',
+        );
+        return Right(
+          DropdownModel(dropdownsByDescription: {strdoctype ?? 'Dept': items}),
+        );
       } else {
+        log(
+          'Server error: status=${response.statusCode} for strDocType: $strdoctype',
+        );
         return const Left(MainFailure.serverFailure());
       }
     } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
-        log('Unauthorized: Token expired or invalid');
+        log(
+          'Unauthorized: Token expired or invalid for strDocType: $strdoctype',
+        );
         return const Left(MainFailure.authFailure());
       }
-      log('Dio error: ${e.message}');
+      log('Dio error: ${e.message} for strDocType: $strdoctype');
       return const Left(MainFailure.clientFailure());
     } catch (e, stackTrace) {
-      log('Unexpected error: $e', stackTrace: stackTrace);
+      log(
+        'Unexpected error: $e for strDocType: $strdoctype',
+        stackTrace: stackTrace,
+      );
       return const Left(MainFailure.clientFailure());
     }
-  }
-
-  @override
-  Future<Either<MainFailure, DropdownModel>> getAllDropdownData() async {
-    final dashboardResult = await getDashboardList();
-    return dashboardResult.fold((failure) => Left(failure), (
-      dashboardModel,
-    ) async {
-      final Map<String, List<DropdownItem>> dropdownsByDescription = {};
-      if (dashboardModel.jsonResult != null) {
-        for (final item in dashboardModel.jsonResult!) {
-          if (item.key != null && item.description != null) {
-            final dropdownResult = await getDropDownData(
-              item.key,
-              item.description,
-            );
-            dropdownResult.fold(
-              (failure) =>
-                  log('Failed to fetch dropdown for ${item.key}: $failure'),
-              (dropdownModel) {
-                if (dropdownModel.dropdownsByDescription != null &&
-                    dropdownModel.dropdownsByDescription!.containsKey(
-                      item.description,
-                    )) {
-                  dropdownsByDescription[item.description!] = dropdownModel
-                      .dropdownsByDescription![item.description!]!
-                      .toSet()
-                      .toList(); // Remove duplicates
-                } else {
-                  dropdownsByDescription[item.description!] = [];
-                }
-              },
-            );
-          }
-        }
-      }
-
-      return Right(
-        DropdownModel(dropdownsByDescription: dropdownsByDescription),
-      );
-    });
   }
 }

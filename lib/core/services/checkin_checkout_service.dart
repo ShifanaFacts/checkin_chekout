@@ -24,7 +24,6 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
-      log("${prefs.getString('DeviceId')}");
 
       if (accessToken == null) {
         log('No access token found');
@@ -72,6 +71,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
           systemTime: checkinTime,
           deviceId: prefs.getString('DeviceId') ?? '',
           accessToken: accessToken,
+          lat: lat,
+          long: long,
           url: url,
         );
 
@@ -104,6 +105,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
     required String systemTime,
     required String deviceId,
     required String accessToken,
+    required double long,
+    required double lat,
     required String url,
   }) async {
     try {
@@ -112,6 +115,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
         "key": "PWA.GetTechnicianCheckInDetails",
         "data": {
           "info": {
+            "geolat": lat,
+            "geolong": long,
             "strheader": dropDownSelectionObject,
             "system_time": systemTime,
             "deviceID": deviceId,
@@ -163,23 +168,26 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
   }
 
   // ---------------------------------------------------------------------------
-  Future<Either<MainFailure, CheckinModel>> getCheckout({
-    required Map<String, String> dropDownSelectionObject,
-    required String systemTime,
-    required String deviceId,
-    required String accessToken,
-    required String url,
-  }) async {
+  @override
+  Future<Either<MainFailure, CheckinVieModel>> getCheckOutData(
+    double lat,
+    double long,
+    String checkinTime,
+  ) async {
     try {
+      final String url = await ApiEndPoints.getOpenSectionUrl();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('token');
       final request = {
         "job_id": "2786",
-        "key":
-            "PWA.SaveTechnicianCheckOutDetails", // Updated to a checkout-specific key
+        "key": "PWA.SaveTechnicianCheckOutDetails",
         "data": {
           "info": {
-            "strheader": dropDownSelectionObject,
-            "system_time": systemTime,
-            "deviceID": deviceId,
+            "geolat": lat,
+            "geolong": long,
+            "system_time": checkinTime,
+            "deviceID": prefs.getString('DeviceId'),
+            "strheader": {},
           },
         },
         "result_type": "single",
@@ -193,14 +201,14 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final dynamic data = response.data;
-        CheckinModel checkinDataModel;
+        CheckinVieModel checkinDataModel;
 
         if (data is List && data.isNotEmpty) {
-          checkinDataModel = CheckinModel.fromJson(
+          checkinDataModel = CheckinVieModel.fromJson(
             data.first as Map<String, dynamic>,
           );
         } else if (data is Map<String, dynamic>) {
-          checkinDataModel = CheckinModel.fromJson(data);
+          checkinDataModel = CheckinVieModel.fromJson(data);
         } else {
           log('Invalid response format for technician checkout');
           return const Left(MainFailure.serverFailure());
@@ -225,11 +233,5 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
       log('Unexpected error: $e', stackTrace: stackTrace);
       return const Left(MainFailure.clientFailure());
     }
-  }
-
-  @override
-  Future<Either<MainFailure, CheckinVieModel>> getCheckOutData() {
-    // TODO: implement getCheckOutData
-    throw UnimplementedError();
   }
 }

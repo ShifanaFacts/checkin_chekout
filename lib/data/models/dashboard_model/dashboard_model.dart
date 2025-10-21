@@ -40,7 +40,10 @@ class DashboardItem {
   @JsonKey(name: 'Description')
   String? description;
 
-  DashboardItem({this.key, this.description});
+  @JsonKey(name: 'LoadOnClick')
+  int? loadOnClick;
+
+  DashboardItem({this.key, this.description, this.loadOnClick});
 
   factory DashboardItem.fromJson(Map<String, dynamic> json) =>
       _$DashboardItemFromJson(json);

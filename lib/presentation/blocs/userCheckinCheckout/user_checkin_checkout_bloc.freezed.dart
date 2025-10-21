@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'checkin_checkout_bloc.dart';
+part of 'user_checkin_checkout_bloc.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -16,10 +16,10 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$CheckinCheckoutEvent {
+mixin _$UserCheckinCheckoutEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialize,
+    required TResult Function() started,
     required TResult Function(
       double lat,
       double long,
@@ -27,11 +27,12 @@ mixin _$CheckinCheckoutEvent {
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function() getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getCheckOutData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initialize,
+    TResult? Function()? started,
     TResult? Function(
       double lat,
       double long,
@@ -39,11 +40,12 @@ mixin _$CheckinCheckoutEvent {
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function()? getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialize,
+    TResult Function()? started,
     TResult Function(
       double lat,
       double long,
@@ -51,24 +53,25 @@ mixin _$CheckinCheckoutEvent {
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function()? getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initialize value) initialize,
+    required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initialize value)? initialize,
+    TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initialize value)? initialize,
+    TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
     required TResult orElse(),
@@ -76,65 +79,65 @@ mixin _$CheckinCheckoutEvent {
 }
 
 /// @nodoc
-abstract class $CheckinCheckoutEventCopyWith<$Res> {
-  factory $CheckinCheckoutEventCopyWith(
-    CheckinCheckoutEvent value,
-    $Res Function(CheckinCheckoutEvent) then,
-  ) = _$CheckinCheckoutEventCopyWithImpl<$Res, CheckinCheckoutEvent>;
+abstract class $UserCheckinCheckoutEventCopyWith<$Res> {
+  factory $UserCheckinCheckoutEventCopyWith(
+    UserCheckinCheckoutEvent value,
+    $Res Function(UserCheckinCheckoutEvent) then,
+  ) = _$UserCheckinCheckoutEventCopyWithImpl<$Res, UserCheckinCheckoutEvent>;
 }
 
 /// @nodoc
-class _$CheckinCheckoutEventCopyWithImpl<
+class _$UserCheckinCheckoutEventCopyWithImpl<
   $Res,
-  $Val extends CheckinCheckoutEvent
+  $Val extends UserCheckinCheckoutEvent
 >
-    implements $CheckinCheckoutEventCopyWith<$Res> {
-  _$CheckinCheckoutEventCopyWithImpl(this._value, this._then);
+    implements $UserCheckinCheckoutEventCopyWith<$Res> {
+  _$UserCheckinCheckoutEventCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
-abstract class _$$InitializeImplCopyWith<$Res> {
-  factory _$$InitializeImplCopyWith(
-    _$InitializeImpl value,
-    $Res Function(_$InitializeImpl) then,
-  ) = __$$InitializeImplCopyWithImpl<$Res>;
+abstract class _$$StartedImplCopyWith<$Res> {
+  factory _$$StartedImplCopyWith(
+    _$StartedImpl value,
+    $Res Function(_$StartedImpl) then,
+  ) = __$$StartedImplCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class __$$InitializeImplCopyWithImpl<$Res>
-    extends _$CheckinCheckoutEventCopyWithImpl<$Res, _$InitializeImpl>
-    implements _$$InitializeImplCopyWith<$Res> {
-  __$$InitializeImplCopyWithImpl(
-    _$InitializeImpl _value,
-    $Res Function(_$InitializeImpl) _then,
+class __$$StartedImplCopyWithImpl<$Res>
+    extends _$UserCheckinCheckoutEventCopyWithImpl<$Res, _$StartedImpl>
+    implements _$$StartedImplCopyWith<$Res> {
+  __$$StartedImplCopyWithImpl(
+    _$StartedImpl _value,
+    $Res Function(_$StartedImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
 
-class _$InitializeImpl implements Initialize {
-  const _$InitializeImpl();
+class _$StartedImpl implements _Started {
+  const _$StartedImpl();
 
   @override
   String toString() {
-    return 'CheckinCheckoutEvent.initialize()';
+    return 'UserCheckinCheckoutEvent.started()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitializeImpl);
+        (other.runtimeType == runtimeType && other is _$StartedImpl);
   }
 
   @override
@@ -143,7 +146,7 @@ class _$InitializeImpl implements Initialize {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialize,
+    required TResult Function() started,
     required TResult Function(
       double lat,
       double long,
@@ -151,15 +154,16 @@ class _$InitializeImpl implements Initialize {
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function() getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getCheckOutData,
   }) {
-    return initialize();
+    return started();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initialize,
+    TResult? Function()? started,
     TResult? Function(
       double lat,
       double long,
@@ -167,15 +171,16 @@ class _$InitializeImpl implements Initialize {
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function()? getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
   }) {
-    return initialize?.call();
+    return started?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialize,
+    TResult Function()? started,
     TResult Function(
       double lat,
       double long,
@@ -183,11 +188,12 @@ class _$InitializeImpl implements Initialize {
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function()? getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
     required TResult orElse(),
   }) {
-    if (initialize != null) {
-      return initialize();
+    if (started != null) {
+      return started();
     }
     return orElse();
   }
@@ -195,40 +201,40 @@ class _$InitializeImpl implements Initialize {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initialize value) initialize,
+    required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
   }) {
-    return initialize(this);
+    return started(this);
   }
 
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initialize value)? initialize,
+    TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
   }) {
-    return initialize?.call(this);
+    return started?.call(this);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initialize value)? initialize,
+    TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
     required TResult orElse(),
   }) {
-    if (initialize != null) {
-      return initialize(this);
+    if (started != null) {
+      return started(this);
     }
     return orElse();
   }
 }
 
-abstract class Initialize implements CheckinCheckoutEvent {
-  const factory Initialize() = _$InitializeImpl;
+abstract class _Started implements UserCheckinCheckoutEvent {
+  const factory _Started() = _$StartedImpl;
 }
 
 /// @nodoc
@@ -248,14 +254,14 @@ abstract class _$$GetCheckinDataImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$GetCheckinDataImplCopyWithImpl<$Res>
-    extends _$CheckinCheckoutEventCopyWithImpl<$Res, _$GetCheckinDataImpl>
+    extends _$UserCheckinCheckoutEventCopyWithImpl<$Res, _$GetCheckinDataImpl>
     implements _$$GetCheckinDataImplCopyWith<$Res> {
   __$$GetCheckinDataImplCopyWithImpl(
     _$GetCheckinDataImpl _value,
     $Res Function(_$GetCheckinDataImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -316,7 +322,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
 
   @override
   String toString() {
-    return 'CheckinCheckoutEvent.getCheckinData(lat: $lat, long: $long, dropDownSelectionObject: $dropDownSelectionObject, checkinTime: $checkinTime)';
+    return 'UserCheckinCheckoutEvent.getCheckinData(lat: $lat, long: $long, dropDownSelectionObject: $dropDownSelectionObject, checkinTime: $checkinTime)';
   }
 
   @override
@@ -343,7 +349,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     checkinTime,
   );
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -357,7 +363,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialize,
+    required TResult Function() started,
     required TResult Function(
       double lat,
       double long,
@@ -365,7 +371,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function() getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getCheckOutData,
   }) {
     return getCheckinData(lat, long, dropDownSelectionObject, checkinTime);
   }
@@ -373,7 +380,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initialize,
+    TResult? Function()? started,
     TResult? Function(
       double lat,
       double long,
@@ -381,7 +388,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function()? getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
   }) {
     return getCheckinData?.call(
       lat,
@@ -394,7 +402,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialize,
+    TResult Function()? started,
     TResult Function(
       double lat,
       double long,
@@ -402,7 +410,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function()? getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
     required TResult orElse(),
   }) {
     if (getCheckinData != null) {
@@ -414,7 +423,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initialize value) initialize,
+    required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
   }) {
@@ -424,7 +433,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initialize value)? initialize,
+    TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
   }) {
@@ -434,7 +443,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initialize value)? initialize,
+    TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
     required TResult orElse(),
@@ -446,7 +455,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   }
 }
 
-abstract class GetCheckinData implements CheckinCheckoutEvent {
+abstract class GetCheckinData implements UserCheckinCheckoutEvent {
   const factory GetCheckinData({
     required final double lat,
     required final double long,
@@ -459,7 +468,7 @@ abstract class GetCheckinData implements CheckinCheckoutEvent {
   Map<String, String> get dropDownSelectionObject;
   String get checkinTime;
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$GetCheckinDataImplCopyWith<_$GetCheckinDataImpl> get copyWith =>
@@ -472,44 +481,97 @@ abstract class _$$GetCheckOutDataImplCopyWith<$Res> {
     _$GetCheckOutDataImpl value,
     $Res Function(_$GetCheckOutDataImpl) then,
   ) = __$$GetCheckOutDataImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double lat, double long, String checkinTime});
 }
 
 /// @nodoc
 class __$$GetCheckOutDataImplCopyWithImpl<$Res>
-    extends _$CheckinCheckoutEventCopyWithImpl<$Res, _$GetCheckOutDataImpl>
+    extends _$UserCheckinCheckoutEventCopyWithImpl<$Res, _$GetCheckOutDataImpl>
     implements _$$GetCheckOutDataImplCopyWith<$Res> {
   __$$GetCheckOutDataImplCopyWithImpl(
     _$GetCheckOutDataImpl _value,
     $Res Function(_$GetCheckOutDataImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CheckinCheckoutEvent
+  /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lat = null,
+    Object? long = null,
+    Object? checkinTime = null,
+  }) {
+    return _then(
+      _$GetCheckOutDataImpl(
+        lat: null == lat
+            ? _value.lat
+            : lat // ignore: cast_nullable_to_non_nullable
+                  as double,
+        long: null == long
+            ? _value.long
+            : long // ignore: cast_nullable_to_non_nullable
+                  as double,
+        checkinTime: null == checkinTime
+            ? _value.checkinTime
+            : checkinTime // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
 }
 
 /// @nodoc
 
 class _$GetCheckOutDataImpl implements GetCheckOutData {
-  const _$GetCheckOutDataImpl();
+  const _$GetCheckOutDataImpl({
+    required this.lat,
+    required this.long,
+    required this.checkinTime,
+  });
+
+  @override
+  final double lat;
+  @override
+  final double long;
+  @override
+  final String checkinTime;
 
   @override
   String toString() {
-    return 'CheckinCheckoutEvent.getCheckOutData()';
+    return 'UserCheckinCheckoutEvent.getCheckOutData(lat: $lat, long: $long, checkinTime: $checkinTime)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$GetCheckOutDataImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$GetCheckOutDataImpl &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.long, long) || other.long == long) &&
+            (identical(other.checkinTime, checkinTime) ||
+                other.checkinTime == checkinTime));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, lat, long, checkinTime);
+
+  /// Create a copy of UserCheckinCheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCheckOutDataImplCopyWith<_$GetCheckOutDataImpl> get copyWith =>
+      __$$GetCheckOutDataImplCopyWithImpl<_$GetCheckOutDataImpl>(
+        this,
+        _$identity,
+      );
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function() initialize,
+    required TResult Function() started,
     required TResult Function(
       double lat,
       double long,
@@ -517,15 +579,16 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function() getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getCheckOutData,
   }) {
-    return getCheckOutData();
+    return getCheckOutData(lat, long, checkinTime);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initialize,
+    TResult? Function()? started,
     TResult? Function(
       double lat,
       double long,
@@ -533,15 +596,16 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function()? getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
   }) {
-    return getCheckOutData?.call();
+    return getCheckOutData?.call(lat, long, checkinTime);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initialize,
+    TResult Function()? started,
     TResult Function(
       double lat,
       double long,
@@ -549,11 +613,12 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function()? getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
     required TResult orElse(),
   }) {
     if (getCheckOutData != null) {
-      return getCheckOutData();
+      return getCheckOutData(lat, long, checkinTime);
     }
     return orElse();
   }
@@ -561,7 +626,7 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initialize value) initialize,
+    required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
   }) {
@@ -571,7 +636,7 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initialize value)? initialize,
+    TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
   }) {
@@ -581,7 +646,7 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initialize value)? initialize,
+    TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
     required TResult orElse(),
@@ -593,32 +658,47 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   }
 }
 
-abstract class GetCheckOutData implements CheckinCheckoutEvent {
-  const factory GetCheckOutData() = _$GetCheckOutDataImpl;
+abstract class GetCheckOutData implements UserCheckinCheckoutEvent {
+  const factory GetCheckOutData({
+    required final double lat,
+    required final double long,
+    required final String checkinTime,
+  }) = _$GetCheckOutDataImpl;
+
+  double get lat;
+  double get long;
+  String get checkinTime;
+
+  /// Create a copy of UserCheckinCheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetCheckOutDataImplCopyWith<_$GetCheckOutDataImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-mixin _$CheckinCheckoutState {
+mixin _$UserCheckinCheckoutState {
   CheckinVieModel? get checkinmodel => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get dataFetched => throw _privateConstructorUsedError;
   bool get dataSubmitted => throw _privateConstructorUsedError;
+  bool get checkedIn => throw _privateConstructorUsedError;
   MainFailure? get failure => throw _privateConstructorUsedError;
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CheckinCheckoutStateCopyWith<CheckinCheckoutState> get copyWith =>
+  $UserCheckinCheckoutStateCopyWith<UserCheckinCheckoutState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CheckinCheckoutStateCopyWith<$Res> {
-  factory $CheckinCheckoutStateCopyWith(
-    CheckinCheckoutState value,
-    $Res Function(CheckinCheckoutState) then,
-  ) = _$CheckinCheckoutStateCopyWithImpl<$Res, CheckinCheckoutState>;
+abstract class $UserCheckinCheckoutStateCopyWith<$Res> {
+  factory $UserCheckinCheckoutStateCopyWith(
+    UserCheckinCheckoutState value,
+    $Res Function(UserCheckinCheckoutState) then,
+  ) = _$UserCheckinCheckoutStateCopyWithImpl<$Res, UserCheckinCheckoutState>;
   @useResult
   $Res call({
     CheckinVieModel? checkinmodel,
@@ -626,6 +706,7 @@ abstract class $CheckinCheckoutStateCopyWith<$Res> {
     bool isError,
     bool dataFetched,
     bool dataSubmitted,
+    bool checkedIn,
     MainFailure? failure,
   });
 
@@ -633,19 +714,19 @@ abstract class $CheckinCheckoutStateCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$CheckinCheckoutStateCopyWithImpl<
+class _$UserCheckinCheckoutStateCopyWithImpl<
   $Res,
-  $Val extends CheckinCheckoutState
+  $Val extends UserCheckinCheckoutState
 >
-    implements $CheckinCheckoutStateCopyWith<$Res> {
-  _$CheckinCheckoutStateCopyWithImpl(this._value, this._then);
+    implements $UserCheckinCheckoutStateCopyWith<$Res> {
+  _$UserCheckinCheckoutStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -655,6 +736,7 @@ class _$CheckinCheckoutStateCopyWithImpl<
     Object? isError = null,
     Object? dataFetched = null,
     Object? dataSubmitted = null,
+    Object? checkedIn = null,
     Object? failure = freezed,
   }) {
     return _then(
@@ -679,6 +761,10 @@ class _$CheckinCheckoutStateCopyWithImpl<
                 ? _value.dataSubmitted
                 : dataSubmitted // ignore: cast_nullable_to_non_nullable
                       as bool,
+            checkedIn: null == checkedIn
+                ? _value.checkedIn
+                : checkedIn // ignore: cast_nullable_to_non_nullable
+                      as bool,
             failure: freezed == failure
                 ? _value.failure
                 : failure // ignore: cast_nullable_to_non_nullable
@@ -688,7 +774,7 @@ class _$CheckinCheckoutStateCopyWithImpl<
     );
   }
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -704,12 +790,12 @@ class _$CheckinCheckoutStateCopyWithImpl<
 }
 
 /// @nodoc
-abstract class _$$CheckinCheckoutStateImplCopyWith<$Res>
-    implements $CheckinCheckoutStateCopyWith<$Res> {
-  factory _$$CheckinCheckoutStateImplCopyWith(
-    _$CheckinCheckoutStateImpl value,
-    $Res Function(_$CheckinCheckoutStateImpl) then,
-  ) = __$$CheckinCheckoutStateImplCopyWithImpl<$Res>;
+abstract class _$$UserCheckinCheckoutStateImplCopyWith<$Res>
+    implements $UserCheckinCheckoutStateCopyWith<$Res> {
+  factory _$$UserCheckinCheckoutStateImplCopyWith(
+    _$UserCheckinCheckoutStateImpl value,
+    $Res Function(_$UserCheckinCheckoutStateImpl) then,
+  ) = __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({
@@ -718,6 +804,7 @@ abstract class _$$CheckinCheckoutStateImplCopyWith<$Res>
     bool isError,
     bool dataFetched,
     bool dataSubmitted,
+    bool checkedIn,
     MainFailure? failure,
   });
 
@@ -726,15 +813,19 @@ abstract class _$$CheckinCheckoutStateImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$CheckinCheckoutStateImplCopyWithImpl<$Res>
-    extends _$CheckinCheckoutStateCopyWithImpl<$Res, _$CheckinCheckoutStateImpl>
-    implements _$$CheckinCheckoutStateImplCopyWith<$Res> {
-  __$$CheckinCheckoutStateImplCopyWithImpl(
-    _$CheckinCheckoutStateImpl _value,
-    $Res Function(_$CheckinCheckoutStateImpl) _then,
+class __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>
+    extends
+        _$UserCheckinCheckoutStateCopyWithImpl<
+          $Res,
+          _$UserCheckinCheckoutStateImpl
+        >
+    implements _$$UserCheckinCheckoutStateImplCopyWith<$Res> {
+  __$$UserCheckinCheckoutStateImplCopyWithImpl(
+    _$UserCheckinCheckoutStateImpl _value,
+    $Res Function(_$UserCheckinCheckoutStateImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -744,10 +835,11 @@ class __$$CheckinCheckoutStateImplCopyWithImpl<$Res>
     Object? isError = null,
     Object? dataFetched = null,
     Object? dataSubmitted = null,
+    Object? checkedIn = null,
     Object? failure = freezed,
   }) {
     return _then(
-      _$CheckinCheckoutStateImpl(
+      _$UserCheckinCheckoutStateImpl(
         checkinmodel: freezed == checkinmodel
             ? _value.checkinmodel
             : checkinmodel // ignore: cast_nullable_to_non_nullable
@@ -768,6 +860,10 @@ class __$$CheckinCheckoutStateImplCopyWithImpl<$Res>
             ? _value.dataSubmitted
             : dataSubmitted // ignore: cast_nullable_to_non_nullable
                   as bool,
+        checkedIn: null == checkedIn
+            ? _value.checkedIn
+            : checkedIn // ignore: cast_nullable_to_non_nullable
+                  as bool,
         failure: freezed == failure
             ? _value.failure
             : failure // ignore: cast_nullable_to_non_nullable
@@ -779,13 +875,14 @@ class __$$CheckinCheckoutStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CheckinCheckoutStateImpl implements _CheckinCheckoutState {
-  const _$CheckinCheckoutStateImpl({
+class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
+  const _$UserCheckinCheckoutStateImpl({
     this.checkinmodel,
     required this.isLoading,
     required this.isError,
     required this.dataFetched,
     required this.dataSubmitted,
+    required this.checkedIn,
     this.failure,
   });
 
@@ -800,18 +897,20 @@ class _$CheckinCheckoutStateImpl implements _CheckinCheckoutState {
   @override
   final bool dataSubmitted;
   @override
+  final bool checkedIn;
+  @override
   final MainFailure? failure;
 
   @override
   String toString() {
-    return 'CheckinCheckoutState(checkinmodel: $checkinmodel, isLoading: $isLoading, isError: $isError, dataFetched: $dataFetched, dataSubmitted: $dataSubmitted, failure: $failure)';
+    return 'UserCheckinCheckoutState(checkinmodel: $checkinmodel, isLoading: $isLoading, isError: $isError, dataFetched: $dataFetched, dataSubmitted: $dataSubmitted, checkedIn: $checkedIn, failure: $failure)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CheckinCheckoutStateImpl &&
+            other is _$UserCheckinCheckoutStateImpl &&
             (identical(other.checkinmodel, checkinmodel) ||
                 other.checkinmodel == checkinmodel) &&
             (identical(other.isLoading, isLoading) ||
@@ -821,6 +920,8 @@ class _$CheckinCheckoutStateImpl implements _CheckinCheckoutState {
                 other.dataFetched == dataFetched) &&
             (identical(other.dataSubmitted, dataSubmitted) ||
                 other.dataSubmitted == dataSubmitted) &&
+            (identical(other.checkedIn, checkedIn) ||
+                other.checkedIn == checkedIn) &&
             (identical(other.failure, failure) || other.failure == failure));
   }
 
@@ -832,31 +933,32 @@ class _$CheckinCheckoutStateImpl implements _CheckinCheckoutState {
     isError,
     dataFetched,
     dataSubmitted,
+    checkedIn,
     failure,
   );
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CheckinCheckoutStateImplCopyWith<_$CheckinCheckoutStateImpl>
+  _$$UserCheckinCheckoutStateImplCopyWith<_$UserCheckinCheckoutStateImpl>
   get copyWith =>
-      __$$CheckinCheckoutStateImplCopyWithImpl<_$CheckinCheckoutStateImpl>(
-        this,
-        _$identity,
-      );
+      __$$UserCheckinCheckoutStateImplCopyWithImpl<
+        _$UserCheckinCheckoutStateImpl
+      >(this, _$identity);
 }
 
-abstract class _CheckinCheckoutState implements CheckinCheckoutState {
-  const factory _CheckinCheckoutState({
+abstract class _UserCheckinCheckoutState implements UserCheckinCheckoutState {
+  const factory _UserCheckinCheckoutState({
     final CheckinVieModel? checkinmodel,
     required final bool isLoading,
     required final bool isError,
     required final bool dataFetched,
     required final bool dataSubmitted,
+    required final bool checkedIn,
     final MainFailure? failure,
-  }) = _$CheckinCheckoutStateImpl;
+  }) = _$UserCheckinCheckoutStateImpl;
 
   @override
   CheckinVieModel? get checkinmodel;
@@ -869,12 +971,14 @@ abstract class _CheckinCheckoutState implements CheckinCheckoutState {
   @override
   bool get dataSubmitted;
   @override
+  bool get checkedIn;
+  @override
   MainFailure? get failure;
 
-  /// Create a copy of CheckinCheckoutState
+  /// Create a copy of UserCheckinCheckoutState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CheckinCheckoutStateImplCopyWith<_$CheckinCheckoutStateImpl>
+  _$$UserCheckinCheckoutStateImplCopyWith<_$UserCheckinCheckoutStateImpl>
   get copyWith => throw _privateConstructorUsedError;
 }

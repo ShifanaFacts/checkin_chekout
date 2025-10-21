@@ -1,14 +1,16 @@
 import 'dart:developer';
 
-import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:checkin_checkout/data/models/logged_user_data_mode.dart/loggedUser_data_model.dart';
+import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class UserInfoCard extends StatelessWidget {
+class UserInfoCard extends StatefulWidget {
   final double latitude;
   final double longitude;
+
   const UserInfoCard({
     super.key,
     required this.latitude,
@@ -16,20 +18,42 @@ class UserInfoCard extends StatelessWidget {
   });
 
   @override
+  _UserInfoCardState createState() => _UserInfoCardState();
+}
+
+class _UserInfoCardState extends State<UserInfoCard> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final state = context.read<LoggedUserHandleBloc>().state;
+      if (!state.dataFetched || state.loggedUserModel == null) {
+        context.read<LoggedUserHandleBloc>().add(
+          GetLoggedUserDetails(lat: widget.latitude, long: widget.longitude),
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    log('$latitude $longitude');
     return BlocBuilder<LoggedUserHandleBloc, LoggedUserHandleState>(
       builder: (context, state) {
-        // Only dispatch GetUserData if data is not fetched and not loading
-        if (!state.dataFetched || state.loggedUserModel == null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.read<LoggedUserHandleBloc>().add(
-              GetLoggedUserDetails(lat: latitude, long: longitude),
-            );
-          });
-        }
-
+        state.failure?.maybeWhen(
+          authFailure: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+            await prefs.setBool('isLoggedIn', false);
+            if (context.mounted) {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/login', (route) => false);
+            }
+          },
+          orElse: () {},
+        );
         return AnimatedContainer(
+          key: const ValueKey('userInfoCard'),
           duration: const Duration(milliseconds: 400),
           curve: Curves.easeInOut,
           margin: const EdgeInsets.symmetric(vertical: 8),
@@ -41,7 +65,6 @@ class UserInfoCard extends StatelessWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   colors: [
                     const Color.fromARGB(255, 48, 130, 202),
@@ -50,30 +73,15 @@ class UserInfoCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blue.withOpacity(0.2),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: _buildContent(context, state),
-                  ),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1.5,
                 ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: _buildContent(context, state),
               ),
             ),
           ),
@@ -83,7 +91,9 @@ class UserInfoCard extends StatelessWidget {
   }
 
   Widget _buildContent(BuildContext context, LoggedUserHandleState state) {
-    if (state.isLoading) {
+    const String unknown = 'Unknown';
+
+    if (state.isUserLoading) {
       return const Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -94,13 +104,31 @@ class UserInfoCard extends StatelessWidget {
 
     if (state.isError) {
       return Center(
-        child: Text(
-          'Failed to load user data',
-          style: GoogleFonts.poppins(
-            color: Colors.redAccent.shade100,
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Failed to load user data:  }',
+              style: GoogleFonts.poppins(
+                color: Colors.redAccent.shade100,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                context.read<LoggedUserHandleBloc>().add(
+                  GetLoggedUserDetails(
+                    lat: widget.latitude,
+                    long: widget.longitude,
+                  ),
+                );
+              },
+              child: Text('Retry', style: GoogleFonts.poppins(fontSize: 14)),
+            ),
+          ],
         ),
       );
     }
@@ -122,14 +150,12 @@ class UserInfoCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // _buildAvatar(user),
-        // const SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.Emp_Name ?? '',
+                user.Emp_Name ?? unknown,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -138,7 +164,7 @@ class UserInfoCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                user.Department ?? '',
+                user.Department ?? unknown,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 14,
@@ -147,7 +173,7 @@ class UserInfoCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                user.Designation ?? '',
+                user.Designation ?? unknown,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 13,
@@ -155,51 +181,13 @@ class UserInfoCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              _buildInfoRow(icon: Icons.badge, text: '${user.Division ?? ''}'),
+              _buildInfoRow(icon: Icons.badge, text: user.Division ?? unknown),
             ],
           ),
         ),
       ],
     );
   }
-
-  // Widget _buildAvatar(dynamic user) {
-  //   return Container(
-  //     decoration: BoxDecoration(
-  //       shape: BoxShape.circle,
-  //       gradient: LinearGradient(
-  //         colors: [Colors.white, Colors.blue.shade200],
-  //         begin: Alignment.topLeft,
-  //         end: Alignment.bottomRight,
-  //       ),
-  //       boxShadow: [
-  //         BoxShadow(
-  //           color: Colors.black.withOpacity(0.2),
-  //           blurRadius: 12,
-  //           offset: const Offset(0, 4),
-  //         ),
-  //       ],
-  //     ),
-  //     child: CircleAvatar(
-  //       radius: 36,
-  //       backgroundColor: Colors.transparent,
-  //       child: ClipOval(
-  //         child:
-  //             // user.profileImage != null
-  //             //     ? Image.network(
-  //             //         user.profileImage!,
-  //             //         width: 72,
-  //             //         height: 72,
-  //             //         fit: BoxFit.cover,
-  //             //         errorBuilder: (context, error, stackTrace) =>
-  //             //             const Icon(Icons.person, color: Colors.white, size: 40),
-  //             //       )
-  //             // :
-  //             const Icon(Icons.person, color: Colors.white, size: 40),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Widget _buildInfoRow({required IconData icon, required String text}) {
     return Container(

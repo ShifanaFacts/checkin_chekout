@@ -21,23 +21,43 @@ mixin _$LoggedUserHandleEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(String? strDocType, String? description)
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
     getDropDownData,
     required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(String? strDocType, String? description)? getDropDownData,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(String? strDocType, String? description)? getDropDownData,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -46,6 +66,7 @@ mixin _$LoggedUserHandleEvent {
     required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -53,6 +74,7 @@ mixin _$LoggedUserHandleEvent {
     TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -60,6 +82,7 @@ mixin _$LoggedUserHandleEvent {
     TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -134,9 +157,15 @@ class _$InitializeImpl implements Initialize {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(String? strDocType, String? description)
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
     getDropDownData,
     required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
   }) {
     return initialize();
   }
@@ -146,8 +175,15 @@ class _$InitializeImpl implements Initialize {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(String? strDocType, String? description)? getDropDownData,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
   }) {
     return initialize?.call();
   }
@@ -157,8 +193,15 @@ class _$InitializeImpl implements Initialize {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(String? strDocType, String? description)? getDropDownData,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -174,6 +217,7 @@ class _$InitializeImpl implements Initialize {
     required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
   }) {
     return initialize(this);
   }
@@ -185,6 +229,7 @@ class _$InitializeImpl implements Initialize {
     TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
   }) {
     return initialize?.call(this);
   }
@@ -196,6 +241,7 @@ class _$InitializeImpl implements Initialize {
     TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -293,9 +339,15 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(String? strDocType, String? description)
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
     getDropDownData,
     required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
   }) {
     return getLoggedUserDetails(lat, long);
   }
@@ -305,8 +357,15 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(String? strDocType, String? description)? getDropDownData,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
   }) {
     return getLoggedUserDetails?.call(lat, long);
   }
@@ -316,8 +375,15 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(String? strDocType, String? description)? getDropDownData,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
     required TResult orElse(),
   }) {
     if (getLoggedUserDetails != null) {
@@ -333,6 +399,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
   }) {
     return getLoggedUserDetails(this);
   }
@@ -344,6 +411,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
   }) {
     return getLoggedUserDetails?.call(this);
   }
@@ -355,6 +423,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
     required TResult orElse(),
   }) {
     if (getLoggedUserDetails != null) {
@@ -387,7 +456,12 @@ abstract class _$$GetDropDownDataImplCopyWith<$Res> {
     $Res Function(_$GetDropDownDataImpl) then,
   ) = __$$GetDropDownDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String? strDocType, String? description});
+  $Res call({
+    String? strDocType,
+    String? description,
+    double? lat,
+    double? long,
+  });
 }
 
 /// @nodoc
@@ -403,7 +477,12 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? strDocType = freezed, Object? description = freezed}) {
+  $Res call({
+    Object? strDocType = freezed,
+    Object? description = freezed,
+    Object? lat = freezed,
+    Object? long = freezed,
+  }) {
     return _then(
       _$GetDropDownDataImpl(
         strDocType: freezed == strDocType
@@ -414,6 +493,14 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
             ? _value.description
             : description // ignore: cast_nullable_to_non_nullable
                   as String?,
+        lat: freezed == lat
+            ? _value.lat
+            : lat // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        long: freezed == long
+            ? _value.long
+            : long // ignore: cast_nullable_to_non_nullable
+                  as double?,
       ),
     );
   }
@@ -422,16 +509,25 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetDropDownDataImpl implements GetDropDownData {
-  const _$GetDropDownDataImpl({this.strDocType, this.description});
+  const _$GetDropDownDataImpl({
+    this.strDocType,
+    this.description,
+    this.lat,
+    this.long,
+  });
 
   @override
   final String? strDocType;
   @override
   final String? description;
+  @override
+  final double? lat;
+  @override
+  final double? long;
 
   @override
   String toString() {
-    return 'LoggedUserHandleEvent.getDropDownData(strDocType: $strDocType, description: $description)';
+    return 'LoggedUserHandleEvent.getDropDownData(strDocType: $strDocType, description: $description, lat: $lat, long: $long)';
   }
 
   @override
@@ -442,11 +538,14 @@ class _$GetDropDownDataImpl implements GetDropDownData {
             (identical(other.strDocType, strDocType) ||
                 other.strDocType == strDocType) &&
             (identical(other.description, description) ||
-                other.description == description));
+                other.description == description) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.long, long) || other.long == long));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, strDocType, description);
+  int get hashCode =>
+      Object.hash(runtimeType, strDocType, description, lat, long);
 
   /// Create a copy of LoggedUserHandleEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -464,11 +563,17 @@ class _$GetDropDownDataImpl implements GetDropDownData {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(String? strDocType, String? description)
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
     getDropDownData,
     required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
   }) {
-    return getDropDownData(strDocType, description);
+    return getDropDownData(strDocType, description, lat, long);
   }
 
   @override
@@ -476,10 +581,17 @@ class _$GetDropDownDataImpl implements GetDropDownData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(String? strDocType, String? description)? getDropDownData,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
   }) {
-    return getDropDownData?.call(strDocType, description);
+    return getDropDownData?.call(strDocType, description, lat, long);
   }
 
   @override
@@ -487,12 +599,19 @@ class _$GetDropDownDataImpl implements GetDropDownData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(String? strDocType, String? description)? getDropDownData,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
     required TResult orElse(),
   }) {
     if (getDropDownData != null) {
-      return getDropDownData(strDocType, description);
+      return getDropDownData(strDocType, description, lat, long);
     }
     return orElse();
   }
@@ -504,6 +623,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
   }) {
     return getDropDownData(this);
   }
@@ -515,6 +635,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
   }) {
     return getDropDownData?.call(this);
   }
@@ -526,6 +647,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
     required TResult orElse(),
   }) {
     if (getDropDownData != null) {
@@ -539,10 +661,14 @@ abstract class GetDropDownData implements LoggedUserHandleEvent {
   const factory GetDropDownData({
     final String? strDocType,
     final String? description,
+    final double? lat,
+    final double? long,
   }) = _$GetDropDownDataImpl;
 
   String? get strDocType;
   String? get description;
+  double? get lat;
+  double? get long;
 
   /// Create a copy of LoggedUserHandleEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -596,9 +722,15 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
     required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(String? strDocType, String? description)
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
     getDropDownData,
     required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
   }) {
     return getAllDropdownData();
   }
@@ -608,8 +740,15 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
     TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(String? strDocType, String? description)? getDropDownData,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
   }) {
     return getAllDropdownData?.call();
   }
@@ -619,8 +758,15 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
     TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(String? strDocType, String? description)? getDropDownData,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
     TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
     required TResult orElse(),
   }) {
     if (getAllDropdownData != null) {
@@ -636,6 +782,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
   }) {
     return getAllDropdownData(this);
   }
@@ -647,6 +794,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
   }) {
     return getAllDropdownData?.call(this);
   }
@@ -658,6 +806,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
     required TResult orElse(),
   }) {
     if (getAllDropdownData != null) {
@@ -672,13 +821,159 @@ abstract class GetAllDropdownData implements LoggedUserHandleEvent {
 }
 
 /// @nodoc
+abstract class _$$GetDashboardListImplCopyWith<$Res> {
+  factory _$$GetDashboardListImplCopyWith(
+    _$GetDashboardListImpl value,
+    $Res Function(_$GetDashboardListImpl) then,
+  ) = __$$GetDashboardListImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$GetDashboardListImplCopyWithImpl<$Res>
+    extends _$LoggedUserHandleEventCopyWithImpl<$Res, _$GetDashboardListImpl>
+    implements _$$GetDashboardListImplCopyWith<$Res> {
+  __$$GetDashboardListImplCopyWithImpl(
+    _$GetDashboardListImpl _value,
+    $Res Function(_$GetDashboardListImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of LoggedUserHandleEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$GetDashboardListImpl implements GetDashboardList {
+  const _$GetDashboardListImpl();
+
+  @override
+  String toString() {
+    return 'LoggedUserHandleEvent.getDashboardList()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$GetDashboardListImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialize,
+    required TResult Function(double lat, double long) getLoggedUserDetails,
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
+    getDropDownData,
+    required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
+  }) {
+    return getDashboardList();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialize,
+    TResult? Function(double lat, double long)? getLoggedUserDetails,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
+    TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
+  }) {
+    return getDashboardList?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialize,
+    TResult Function(double lat, double long)? getLoggedUserDetails,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
+    TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
+    required TResult orElse(),
+  }) {
+    if (getDashboardList != null) {
+      return getDashboardList();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Initialize value) initialize,
+    required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
+    required TResult Function(GetDropDownData value) getDropDownData,
+    required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
+  }) {
+    return getDashboardList(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Initialize value)? initialize,
+    TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
+    TResult? Function(GetDropDownData value)? getDropDownData,
+    TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
+  }) {
+    return getDashboardList?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Initialize value)? initialize,
+    TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
+    TResult Function(GetDropDownData value)? getDropDownData,
+    TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
+    required TResult orElse(),
+  }) {
+    if (getDashboardList != null) {
+      return getDashboardList(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetDashboardList implements LoggedUserHandleEvent {
+  const factory GetDashboardList() = _$GetDashboardListImpl;
+}
+
+/// @nodoc
 mixin _$LoggedUserHandleState {
-  LoggedUserModel? get loggedUserModel => throw _privateConstructorUsedError;
-  DropdownModel? get dropdownModel => throw _privateConstructorUsedError;
-  bool get isLoading => throw _privateConstructorUsedError;
+  bool get isUserLoading => throw _privateConstructorUsedError;
+  bool get isDashboardLoading => throw _privateConstructorUsedError;
+  bool get isDropdownLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get dataFetched => throw _privateConstructorUsedError;
   MainFailure? get failure => throw _privateConstructorUsedError;
+  LoggedUserModel? get loggedUserModel => throw _privateConstructorUsedError;
+  DashboardModel? get dashboardModel => throw _privateConstructorUsedError;
+  DropdownModel? get dropdownModel => throw _privateConstructorUsedError;
 
   /// Create a copy of LoggedUserHandleState
   /// with the given fields replaced by the non-null parameter values.
@@ -695,12 +990,15 @@ abstract class $LoggedUserHandleStateCopyWith<$Res> {
   ) = _$LoggedUserHandleStateCopyWithImpl<$Res, LoggedUserHandleState>;
   @useResult
   $Res call({
-    LoggedUserModel? loggedUserModel,
-    DropdownModel? dropdownModel,
-    bool isLoading,
+    bool isUserLoading,
+    bool isDashboardLoading,
+    bool isDropdownLoading,
     bool isError,
     bool dataFetched,
     MainFailure? failure,
+    LoggedUserModel? loggedUserModel,
+    DashboardModel? dashboardModel,
+    DropdownModel? dropdownModel,
   });
 
   $MainFailureCopyWith<$Res>? get failure;
@@ -724,26 +1022,29 @@ class _$LoggedUserHandleStateCopyWithImpl<
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loggedUserModel = freezed,
-    Object? dropdownModel = freezed,
-    Object? isLoading = null,
+    Object? isUserLoading = null,
+    Object? isDashboardLoading = null,
+    Object? isDropdownLoading = null,
     Object? isError = null,
     Object? dataFetched = null,
     Object? failure = freezed,
+    Object? loggedUserModel = freezed,
+    Object? dashboardModel = freezed,
+    Object? dropdownModel = freezed,
   }) {
     return _then(
       _value.copyWith(
-            loggedUserModel: freezed == loggedUserModel
-                ? _value.loggedUserModel
-                : loggedUserModel // ignore: cast_nullable_to_non_nullable
-                      as LoggedUserModel?,
-            dropdownModel: freezed == dropdownModel
-                ? _value.dropdownModel
-                : dropdownModel // ignore: cast_nullable_to_non_nullable
-                      as DropdownModel?,
-            isLoading: null == isLoading
-                ? _value.isLoading
-                : isLoading // ignore: cast_nullable_to_non_nullable
+            isUserLoading: null == isUserLoading
+                ? _value.isUserLoading
+                : isUserLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isDashboardLoading: null == isDashboardLoading
+                ? _value.isDashboardLoading
+                : isDashboardLoading // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            isDropdownLoading: null == isDropdownLoading
+                ? _value.isDropdownLoading
+                : isDropdownLoading // ignore: cast_nullable_to_non_nullable
                       as bool,
             isError: null == isError
                 ? _value.isError
@@ -757,6 +1058,18 @@ class _$LoggedUserHandleStateCopyWithImpl<
                 ? _value.failure
                 : failure // ignore: cast_nullable_to_non_nullable
                       as MainFailure?,
+            loggedUserModel: freezed == loggedUserModel
+                ? _value.loggedUserModel
+                : loggedUserModel // ignore: cast_nullable_to_non_nullable
+                      as LoggedUserModel?,
+            dashboardModel: freezed == dashboardModel
+                ? _value.dashboardModel
+                : dashboardModel // ignore: cast_nullable_to_non_nullable
+                      as DashboardModel?,
+            dropdownModel: freezed == dropdownModel
+                ? _value.dropdownModel
+                : dropdownModel // ignore: cast_nullable_to_non_nullable
+                      as DropdownModel?,
           )
           as $Val,
     );
@@ -787,12 +1100,15 @@ abstract class _$$LoggedUserHandleStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    LoggedUserModel? loggedUserModel,
-    DropdownModel? dropdownModel,
-    bool isLoading,
+    bool isUserLoading,
+    bool isDashboardLoading,
+    bool isDropdownLoading,
     bool isError,
     bool dataFetched,
     MainFailure? failure,
+    LoggedUserModel? loggedUserModel,
+    DashboardModel? dashboardModel,
+    DropdownModel? dropdownModel,
   });
 
   @override
@@ -814,26 +1130,29 @@ class __$$LoggedUserHandleStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loggedUserModel = freezed,
-    Object? dropdownModel = freezed,
-    Object? isLoading = null,
+    Object? isUserLoading = null,
+    Object? isDashboardLoading = null,
+    Object? isDropdownLoading = null,
     Object? isError = null,
     Object? dataFetched = null,
     Object? failure = freezed,
+    Object? loggedUserModel = freezed,
+    Object? dashboardModel = freezed,
+    Object? dropdownModel = freezed,
   }) {
     return _then(
       _$LoggedUserHandleStateImpl(
-        loggedUserModel: freezed == loggedUserModel
-            ? _value.loggedUserModel
-            : loggedUserModel // ignore: cast_nullable_to_non_nullable
-                  as LoggedUserModel?,
-        dropdownModel: freezed == dropdownModel
-            ? _value.dropdownModel
-            : dropdownModel // ignore: cast_nullable_to_non_nullable
-                  as DropdownModel?,
-        isLoading: null == isLoading
-            ? _value.isLoading
-            : isLoading // ignore: cast_nullable_to_non_nullable
+        isUserLoading: null == isUserLoading
+            ? _value.isUserLoading
+            : isUserLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isDashboardLoading: null == isDashboardLoading
+            ? _value.isDashboardLoading
+            : isDashboardLoading // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        isDropdownLoading: null == isDropdownLoading
+            ? _value.isDropdownLoading
+            : isDropdownLoading // ignore: cast_nullable_to_non_nullable
                   as bool,
         isError: null == isError
             ? _value.isError
@@ -847,6 +1166,18 @@ class __$$LoggedUserHandleStateImplCopyWithImpl<$Res>
             ? _value.failure
             : failure // ignore: cast_nullable_to_non_nullable
                   as MainFailure?,
+        loggedUserModel: freezed == loggedUserModel
+            ? _value.loggedUserModel
+            : loggedUserModel // ignore: cast_nullable_to_non_nullable
+                  as LoggedUserModel?,
+        dashboardModel: freezed == dashboardModel
+            ? _value.dashboardModel
+            : dashboardModel // ignore: cast_nullable_to_non_nullable
+                  as DashboardModel?,
+        dropdownModel: freezed == dropdownModel
+            ? _value.dropdownModel
+            : dropdownModel // ignore: cast_nullable_to_non_nullable
+                  as DropdownModel?,
       ),
     );
   }
@@ -856,30 +1187,39 @@ class __$$LoggedUserHandleStateImplCopyWithImpl<$Res>
 
 class _$LoggedUserHandleStateImpl implements _LoggedUserHandleState {
   const _$LoggedUserHandleStateImpl({
-    this.loggedUserModel,
-    this.dropdownModel,
-    required this.isLoading,
+    required this.isUserLoading,
+    required this.isDashboardLoading,
+    required this.isDropdownLoading,
     required this.isError,
     required this.dataFetched,
     this.failure,
+    this.loggedUserModel,
+    this.dashboardModel,
+    this.dropdownModel,
   });
 
   @override
-  final LoggedUserModel? loggedUserModel;
+  final bool isUserLoading;
   @override
-  final DropdownModel? dropdownModel;
+  final bool isDashboardLoading;
   @override
-  final bool isLoading;
+  final bool isDropdownLoading;
   @override
   final bool isError;
   @override
   final bool dataFetched;
   @override
   final MainFailure? failure;
+  @override
+  final LoggedUserModel? loggedUserModel;
+  @override
+  final DashboardModel? dashboardModel;
+  @override
+  final DropdownModel? dropdownModel;
 
   @override
   String toString() {
-    return 'LoggedUserHandleState(loggedUserModel: $loggedUserModel, dropdownModel: $dropdownModel, isLoading: $isLoading, isError: $isError, dataFetched: $dataFetched, failure: $failure)';
+    return 'LoggedUserHandleState(isUserLoading: $isUserLoading, isDashboardLoading: $isDashboardLoading, isDropdownLoading: $isDropdownLoading, isError: $isError, dataFetched: $dataFetched, failure: $failure, loggedUserModel: $loggedUserModel, dashboardModel: $dashboardModel, dropdownModel: $dropdownModel)';
   }
 
   @override
@@ -887,27 +1227,36 @@ class _$LoggedUserHandleStateImpl implements _LoggedUserHandleState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoggedUserHandleStateImpl &&
-            (identical(other.loggedUserModel, loggedUserModel) ||
-                other.loggedUserModel == loggedUserModel) &&
-            (identical(other.dropdownModel, dropdownModel) ||
-                other.dropdownModel == dropdownModel) &&
-            (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading) &&
+            (identical(other.isUserLoading, isUserLoading) ||
+                other.isUserLoading == isUserLoading) &&
+            (identical(other.isDashboardLoading, isDashboardLoading) ||
+                other.isDashboardLoading == isDashboardLoading) &&
+            (identical(other.isDropdownLoading, isDropdownLoading) ||
+                other.isDropdownLoading == isDropdownLoading) &&
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.dataFetched, dataFetched) ||
                 other.dataFetched == dataFetched) &&
-            (identical(other.failure, failure) || other.failure == failure));
+            (identical(other.failure, failure) || other.failure == failure) &&
+            (identical(other.loggedUserModel, loggedUserModel) ||
+                other.loggedUserModel == loggedUserModel) &&
+            (identical(other.dashboardModel, dashboardModel) ||
+                other.dashboardModel == dashboardModel) &&
+            (identical(other.dropdownModel, dropdownModel) ||
+                other.dropdownModel == dropdownModel));
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    loggedUserModel,
-    dropdownModel,
-    isLoading,
+    isUserLoading,
+    isDashboardLoading,
+    isDropdownLoading,
     isError,
     dataFetched,
     failure,
+    loggedUserModel,
+    dashboardModel,
+    dropdownModel,
   );
 
   /// Create a copy of LoggedUserHandleState
@@ -925,26 +1274,35 @@ class _$LoggedUserHandleStateImpl implements _LoggedUserHandleState {
 
 abstract class _LoggedUserHandleState implements LoggedUserHandleState {
   const factory _LoggedUserHandleState({
-    final LoggedUserModel? loggedUserModel,
-    final DropdownModel? dropdownModel,
-    required final bool isLoading,
+    required final bool isUserLoading,
+    required final bool isDashboardLoading,
+    required final bool isDropdownLoading,
     required final bool isError,
     required final bool dataFetched,
     final MainFailure? failure,
+    final LoggedUserModel? loggedUserModel,
+    final DashboardModel? dashboardModel,
+    final DropdownModel? dropdownModel,
   }) = _$LoggedUserHandleStateImpl;
 
   @override
-  LoggedUserModel? get loggedUserModel;
+  bool get isUserLoading;
   @override
-  DropdownModel? get dropdownModel;
+  bool get isDashboardLoading;
   @override
-  bool get isLoading;
+  bool get isDropdownLoading;
   @override
   bool get isError;
   @override
   bool get dataFetched;
   @override
   MainFailure? get failure;
+  @override
+  LoggedUserModel? get loggedUserModel;
+  @override
+  DashboardModel? get dashboardModel;
+  @override
+  DropdownModel? get dropdownModel;
 
   /// Create a copy of LoggedUserHandleState
   /// with the given fields replaced by the non-null parameter values.

@@ -9,7 +9,7 @@ part of 'checkin_model.dart';
 CheckinModel _$CheckinModelFromJson(Map<String, dynamic> json) => CheckinModel(
   checkintime: json['checkintime'] as String?,
   checkintimedesc: json['checkintimedesc'] as String?,
-  status: json['status'] as String?,
+  status: json['status'] as bool?,
   empdocno: json['empdocno'] as String?,
 );
 

@@ -159,6 +159,14 @@ class _DropdownSectionState extends State<DropdownSection> {
         } else if (state.dataFetched && state.dashboardModel != null) {
           final dashboardItems = state.dashboardModel!.jsonResult ?? [];
 
+          final validDropdowns = dashboardItems
+              .where((item) => item.key != null)
+              .toList();
+          // Check if all dropdowns have selections
+          final allSelected =
+              selectedValues.length == validDropdowns.length &&
+              selectedValues.values.every((value) => value != null);
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -206,8 +214,8 @@ class _DropdownSectionState extends State<DropdownSection> {
                               ),
                               items: dropitems.map((item) {
                                 return DropdownMenuItem<String>(
-                                  value: item.code,
-                                  child: Text(item.description ?? ""),
+                                  value: item.code ?? "No Data",
+                                  child: Text(item.description ?? "No Data"),
                                 );
                               }).toList(),
                               onChanged: dropitems.isNotEmpty
@@ -311,11 +319,7 @@ class _DropdownSectionState extends State<DropdownSection> {
                 }).toList(),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed:
-                      selectedValues.isNotEmpty &&
-                          selectedValues.values.every((value) => value != null)
-                      ? handleCheckIn
-                      : null,
+                  onPressed: allSelected ? handleCheckIn : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                     minimumSize: const Size(double.infinity, 50),

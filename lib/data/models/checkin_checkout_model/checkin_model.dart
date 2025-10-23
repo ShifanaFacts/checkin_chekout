@@ -6,7 +6,7 @@ part 'checkin_model.g.dart';
 class CheckinModel {
   String? checkintime;
   String? checkintimedesc;
-  String? status;
+  bool? status;
   String? empdocno;
 
   CheckinModel({

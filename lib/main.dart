@@ -5,7 +5,6 @@ import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_use
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 
-import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart';
 import 'package:checkin_checkout/presentation/screens/Home/home.dart';
 import 'package:checkin_checkout/presentation/screens/Location/location_enable.dart';
 import 'package:checkin_checkout/presentation/screens/Login/UserLogin.dart';
@@ -42,8 +41,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (ctx) => getIt<LoginBloc>()),
-        BlocProvider(create: (ctx) => getIt<UserdataBloc>()),
-        BlocProvider(create: (ctx) => getIt<UserdataBloc>()),
         BlocProvider(create: (ctx) => getIt<LoggedUserHandleBloc>()),
         BlocProvider(create: (ctx) => getIt<UserCheckinCheckoutBloc>()),
       ],

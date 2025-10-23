@@ -10,6 +10,7 @@ abstract class CheckinCheckoutRepo {
     Map<String, String> dropDownSelectionObject,
     String checkinTime,
   );
+
   Future<Either<MainFailure, CheckinVieModel>> getCheckOutData(
     double lat,
     double long,

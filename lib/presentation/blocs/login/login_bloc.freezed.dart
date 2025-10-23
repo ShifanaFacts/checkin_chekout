@@ -507,7 +507,7 @@ abstract class PerformUserLogout implements LoginEvent {
 
 /// @nodoc
 mixin _$LoginState {
-  LoginModel? get loginModel => throw _privateConstructorUsedError;
+  UserDataModel? get userDataModel => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get loginSucceeded => throw _privateConstructorUsedError;
@@ -528,7 +528,7 @@ abstract class $LoginStateCopyWith<$Res> {
   ) = _$LoginStateCopyWithImpl<$Res, LoginState>;
   @useResult
   $Res call({
-    LoginModel? loginModel,
+    UserDataModel? userDataModel,
     bool isLoading,
     bool isError,
     bool loginSucceeded,
@@ -551,7 +551,7 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loginModel = freezed,
+    Object? userDataModel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? loginSucceeded = null,
@@ -559,10 +559,10 @@ class _$LoginStateCopyWithImpl<$Res, $Val extends LoginState>
   }) {
     return _then(
       _value.copyWith(
-            loginModel: freezed == loginModel
-                ? _value.loginModel
-                : loginModel // ignore: cast_nullable_to_non_nullable
-                      as LoginModel?,
+            userDataModel: freezed == userDataModel
+                ? _value.userDataModel
+                : userDataModel // ignore: cast_nullable_to_non_nullable
+                      as UserDataModel?,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -595,7 +595,7 @@ abstract class _$$LoginStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    LoginModel? loginModel,
+    UserDataModel? userDataModel,
     bool isLoading,
     bool isError,
     bool loginSucceeded,
@@ -617,7 +617,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? loginModel = freezed,
+    Object? userDataModel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? loginSucceeded = null,
@@ -625,10 +625,10 @@ class __$$LoginStateImplCopyWithImpl<$Res>
   }) {
     return _then(
       _$LoginStateImpl(
-        loginModel: freezed == loginModel
-            ? _value.loginModel
-            : loginModel // ignore: cast_nullable_to_non_nullable
-                  as LoginModel?,
+        userDataModel: freezed == userDataModel
+            ? _value.userDataModel
+            : userDataModel // ignore: cast_nullable_to_non_nullable
+                  as UserDataModel?,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -654,7 +654,7 @@ class __$$LoginStateImplCopyWithImpl<$Res>
 
 class _$LoginStateImpl implements _LoginState {
   const _$LoginStateImpl({
-    this.loginModel,
+    required this.userDataModel,
     required this.isLoading,
     required this.isError,
     required this.loginSucceeded,
@@ -662,7 +662,7 @@ class _$LoginStateImpl implements _LoginState {
   });
 
   @override
-  final LoginModel? loginModel;
+  final UserDataModel? userDataModel;
   @override
   final bool isLoading;
   @override
@@ -674,7 +674,7 @@ class _$LoginStateImpl implements _LoginState {
 
   @override
   String toString() {
-    return 'LoginState(loginModel: $loginModel, isLoading: $isLoading, isError: $isError, loginSucceeded: $loginSucceeded, deviceValidation: $deviceValidation)';
+    return 'LoginState(userDataModel: $userDataModel, isLoading: $isLoading, isError: $isError, loginSucceeded: $loginSucceeded, deviceValidation: $deviceValidation)';
   }
 
   @override
@@ -682,8 +682,8 @@ class _$LoginStateImpl implements _LoginState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginStateImpl &&
-            (identical(other.loginModel, loginModel) ||
-                other.loginModel == loginModel) &&
+            (identical(other.userDataModel, userDataModel) ||
+                other.userDataModel == userDataModel) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isError, isError) || other.isError == isError) &&
@@ -696,7 +696,7 @@ class _$LoginStateImpl implements _LoginState {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    loginModel,
+    userDataModel,
     isLoading,
     isError,
     loginSucceeded,
@@ -714,7 +714,7 @@ class _$LoginStateImpl implements _LoginState {
 
 abstract class _LoginState implements LoginState {
   const factory _LoginState({
-    final LoginModel? loginModel,
+    required final UserDataModel? userDataModel,
     required final bool isLoading,
     required final bool isError,
     required final bool loginSucceeded,
@@ -722,7 +722,7 @@ abstract class _LoginState implements LoginState {
   }) = _$LoginStateImpl;
 
   @override
-  LoginModel? get loginModel;
+  UserDataModel? get userDataModel;
   @override
   bool get isLoading;
   @override

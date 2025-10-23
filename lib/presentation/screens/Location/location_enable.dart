@@ -25,7 +25,7 @@ class LocationScreen extends StatelessWidget {
     }
 
     // Navigate to home after location is enabled
-    Navigator.pushReplacementNamed(context, '/home');
+    // Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override

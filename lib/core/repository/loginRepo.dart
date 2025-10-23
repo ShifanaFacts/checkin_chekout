@@ -11,4 +11,5 @@ abstract class LoginRepo {
   );
 
   Future<Either<MainFailure, bool>> performLogout(BuildContext context);
+  Future<Either<MainFailure, UserDataModel>> getUserDetails();
 }

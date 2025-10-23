@@ -14,21 +14,17 @@ import 'package:checkin_checkout/core/repository/checkin_checkout_repo.dart'
 import 'package:checkin_checkout/core/repository/loggedUserHandleRepo.dart'
     as _i921;
 import 'package:checkin_checkout/core/repository/loginRepo.dart' as _i694;
-import 'package:checkin_checkout/core/repository/userrepo.dart' as _i103;
 import 'package:checkin_checkout/core/services/checkin_checkout_service.dart'
     as _i1070;
 import 'package:checkin_checkout/core/services/logged_user_service.dart'
     as _i630;
 import 'package:checkin_checkout/core/services/login_service.dart' as _i726;
-import 'package:checkin_checkout/core/services/user_service.dart' as _i869;
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart'
     as _i994;
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart'
     as _i311;
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart'
     as _i50;
-import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart'
-    as _i927;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -49,14 +45,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i446.CheckinCheckoutRepo>(
       () => _i1070.CheckinCheckoutService(),
     );
-    gh.lazySingleton<_i103.UserDetailRepo>(() => _i869.UserDetailService());
     gh.factory<_i50.UserCheckinCheckoutBloc>(
       () => _i50.UserCheckinCheckoutBloc(gh<_i446.CheckinCheckoutRepo>()),
     );
     gh.factory<_i311.LoginBloc>(() => _i311.LoginBloc(gh<_i694.LoginRepo>()));
-    gh.factory<_i927.UserdataBloc>(
-      () => _i927.UserdataBloc(gh<_i103.UserDetailRepo>()),
-    );
     return this;
   }
 }

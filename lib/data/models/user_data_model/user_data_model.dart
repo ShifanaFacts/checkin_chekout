@@ -11,6 +11,8 @@ class UserDataModel {
   String? username;
   String? DID;
   String? profileImage;
+  bool? status;
+  String? description;
 
   UserDataModel({
     required this.userdesig,
@@ -20,6 +22,8 @@ class UserDataModel {
     required this.username,
     required this.DID,
     required this.profileImage,
+    required this.status,
+    required this.description,
   });
 
   factory UserDataModel.fromJson(Map<String, dynamic> json) {

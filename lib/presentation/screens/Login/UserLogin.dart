@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io' show Platform;
+
 import 'package:checkin_checkout/data/publicobjects.dart';
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart';
-import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +14,7 @@ class UserLogin extends StatefulWidget {
   const UserLogin({super.key});
 
   @override
-  _UserLoginState createState() => _UserLoginState();
+  State<UserLogin> createState() => _UserLoginState();
 }
 
 class _UserLoginState extends State<UserLogin> {
@@ -24,10 +24,10 @@ class _UserLoginState extends State<UserLogin> {
   final _employeeIdController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
-  String _loginFeedback = '';
   bool _canUseBiometrics = false;
   bool _isBiometricLoading = false;
   bool _isNfcLoading = false;
+  String loginFeedback = "";
 
   @override
   void initState() {
@@ -42,14 +42,12 @@ class _UserLoginState extends State<UserLogin> {
 
   Future<void> _getDeviceId() async {
     try {
-      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       String deviceId;
-
       if (Platform.isAndroid) {
-        final androidInfo = await deviceInfo.androidInfo;
+        final androidInfo = await _deviceInfo.androidInfo;
         deviceId = androidInfo.id ?? '';
       } else if (Platform.isIOS) {
-        final iosInfo = await deviceInfo.iosInfo;
+        final iosInfo = await _deviceInfo.iosInfo;
         deviceId = iosInfo.identifierForVendor ?? '';
       } else {
         deviceId = 'Unsupported platform';
@@ -59,55 +57,54 @@ class _UserLoginState extends State<UserLogin> {
       await prefs.setString('DeviceId', deviceId);
 
       setState(() => _deviceId = deviceId);
-    } catch (e, stackTrace) {
-      log('Error fetching device ID: $e', stackTrace: stackTrace);
-      setState(() => _deviceId = 'Error fetching ID');
-      _showSnackBar('Error fetching device ID: $e');
+    } catch (e, s) {
+      log('Device ID error: $e', stackTrace: s);
+      setState(() => _deviceId = 'Error');
+      _showSnackBar('Failed to get device ID');
     }
   }
 
   Future<void> _checkBiometricSupport() async {
     try {
-      final canAuthenticate =
-          await _localAuth.canCheckBiometrics &&
-          await _localAuth.isDeviceSupported();
-      setState(() => _canUseBiometrics = canAuthenticate);
-    } catch (e, stackTrace) {
-      log('Error checking biometric support: $e', stackTrace: stackTrace);
+      final canCheck = await _localAuth.canCheckBiometrics;
+      final supported = await _localAuth.isDeviceSupported();
+      setState(() => _canUseBiometrics = canCheck && supported);
+    } catch (e, s) {
+      log('Biometric check error: $e', stackTrace: s);
       setState(() => _canUseBiometrics = false);
     }
   }
 
   Future<void> _performBiometricLogin() async {
     if (!_canUseBiometrics) {
-      _showSnackBar('Biometric authentication not supported');
+      _showSnackBar('Biometric not supported');
       return;
     }
 
     setState(() => _isBiometricLoading = true);
     try {
-      final didAuthenticate = await _localAuth.authenticate(
-        localizedReason: 'Authenticate to log in',
+      final authenticated = await _localAuth.authenticate(
+        localizedReason: 'Log in with biometrics',
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,
         ),
       );
 
-      if (didAuthenticate) {
+      if (authenticated) {
         final prefs = await SharedPreferences.getInstance();
-        final savedEmployeeId = prefs.getString('employeeId') ?? '';
-        if (savedEmployeeId.isNotEmpty) {
-          BlocProvider.of<LoginBloc>(
-            context,
-          ).add(PerformLogin(logingId: savedEmployeeId, password: ''));
+        final savedId = prefs.getString('employeeId') ?? '';
+        if (savedId.isNotEmpty) {
+          context.read<LoginBloc>().add(
+            PerformLogin(logingId: savedId, password: ''),
+          );
         } else {
-          _showSnackBar('No saved credentials for biometric login');
+          _showSnackBar('No saved ID for biometric login');
         }
       }
-    } catch (e, stackTrace) {
-      log('Biometric authentication failed: $e', stackTrace: stackTrace);
-      _showSnackBar('Biometric authentication failed: $e');
+    } catch (e, s) {
+      log('Biometric failed: $e', stackTrace: s);
+      _showSnackBar('Biometric login failed');
     } finally {
       setState(() => _isBiometricLoading = false);
     }
@@ -115,41 +112,36 @@ class _UserLoginState extends State<UserLogin> {
 
   Future<void> _performNfcLogin() async {
     setState(() => _isNfcLoading = true);
-    try {
-      // Placeholder for NFC login logic
-      _showSnackBar('NFC login not implemented yet');
-      // Implement NFC logic using a package like `nfc_manager`
-    } catch (e, stackTrace) {
-      log('NFC login failed: $e', stackTrace: stackTrace);
-      _showSnackBar('NFC login failed: $e');
-    } finally {
-      setState(() => _isNfcLoading = false);
-    }
+    await Future.delayed(const Duration(seconds: 1)); // Simulate NFC
+    _showSnackBar('NFC login not implemented');
+    setState(() => _isNfcLoading = false);
   }
 
-  void _performLogin() {
-    final employeeId = _employeeIdController.text.trim();
-    final password = _passwordController.text.trim();
-    if (employeeId.isEmpty || password.isEmpty) {
-      _showSnackBar('Please fill in all fields');
+  void _performManualLogin() {
+    final id = _employeeIdController.text.trim();
+    final pwd = _passwordController.text.trim();
+
+    if (id.isEmpty || pwd.isEmpty) {
+      _showSnackBar('Please fill all fields');
       return;
     }
-    setState(() => _loginFeedback = '');
-    BlocProvider.of<LoginBloc>(
-      context,
-    ).add(PerformLogin(logingId: employeeId, password: password));
+
+    context.read<LoginBloc>().add(PerformLogin(logingId: id, password: pwd));
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
-    );
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          behavior: SnackBarBehavior.floating,
+          margin: const EdgeInsets.all(16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      );
   }
 
   @override
@@ -161,56 +153,55 @@ class _UserLoginState extends State<UserLogin> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<LoginBloc, LoginState>(
-          listener: (context, state) {
-            setState(() {
-              _loginFeedback = state.isError
-                  ? 'Login failed. Please try again.'
-                  : '';
-            });
-            if (state.loginSucceeded) {
-              BlocProvider.of<UserdataBloc>(context).add(GetUserData());
-            }
-          },
-        ),
-        BlocListener<UserdataBloc, UserdataState>(
-          listener: (context, state) {
-            if (state.isError) {
-              setState(() {
-                _loginFeedback =
-                    PublicObjects.instance.userDetailsFeedback ?? "";
-              });
-            } else if (state.datafetched) {
-              Navigator.pushReplacementNamed(context, '/home');
+    return BlocListener<LoginBloc, LoginState>(
+      listener: (context, state) async {
+        // Handle navigation & feedback
+        if (state.isError) {
+          setState(() {
+            loginFeedback = 'Login failed. Please try again.';
+          });
+        } else if (state.loginSucceeded &&
+            state.userDataModel?.status == false) {
+          setState(() {
+            loginFeedback = state.userDataModel?.description ?? "";
+          });
 
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Row(
-                    children: [
-                      const Icon(Icons.check_circle, color: Colors.white),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Successfully logged in',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
+          log(
+            '${state.userDataModel!.description}state.userDataModel!.description ',
+          );
+        } else if (state.loginSucceeded &&
+            state.userDataModel!.username != "") {
+          log('${state.userDataModel!.DID}state.userDataModel!.DID....... ');
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setBool('isLoggedIn', true);
+          // Navigate to home
+          Navigator.pushReplacementNamed(context, '/home');
+
+          // Success toast
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Welcome, ${state.userDataModel!.username ?? 'User'}!',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  backgroundColor: Colors.green,
-                  behavior: SnackBarBehavior.floating,
-                  margin: const EdgeInsets.all(16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+                ],
+              ),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              margin: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          );
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -223,18 +214,20 @@ class _UserLoginState extends State<UserLogin> {
           ],
         ),
         body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Logo
               FadeInDown(
                 child: const CircleAvatar(
-                  radius: 20,
+                  radius: 30,
                   backgroundColor: Colors.blueAccent,
-                  child: Icon(Icons.person_pin, size: 30, color: Colors.white),
+                  child: Icon(Icons.person_pin, size: 36, color: Colors.white),
                 ),
               ),
               const SizedBox(height: 20),
+
+              // Title
               FadeInDown(
                 delay: const Duration(milliseconds: 100),
                 child: Text(
@@ -247,25 +240,24 @@ class _UserLoginState extends State<UserLogin> {
                 ),
               ),
               const SizedBox(height: 8),
+
               FadeInDown(
                 delay: const Duration(milliseconds: 200),
                 child: Text(
                   'Log in to your employee account',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
               ),
               const SizedBox(height: 30),
+
+              // Employee ID Field
               FadeInDown(
                 delay: const Duration(milliseconds: 300),
                 child: TextField(
                   controller: _employeeIdController,
                   decoration: InputDecoration(
                     labelText: 'Employee ID',
-                    hintText: 'Enter your employee ID',
+                    hintText: 'Enter your ID',
                     filled: true,
                     fillColor: Colors.grey[100],
                     border: OutlineInputBorder(
@@ -280,6 +272,8 @@ class _UserLoginState extends State<UserLogin> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Password Field
               FadeInDown(
                 delay: const Duration(milliseconds: 400),
                 child: TextField(
@@ -287,7 +281,7 @@ class _UserLoginState extends State<UserLogin> {
                   obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    hintText: 'Enter your password',
+                    hintText: 'Enter password',
                     filled: true,
                     fillColor: Colors.grey[100],
                     border: OutlineInputBorder(
@@ -305,16 +299,16 @@ class _UserLoginState extends State<UserLogin> {
                             : Icons.visibility_off,
                         color: Colors.blueAccent,
                       ),
-                      onPressed: () {
-                        setState(
-                          () => _isPasswordVisible = !_isPasswordVisible,
-                        );
-                      },
+                      onPressed: () => setState(
+                        () => _isPasswordVisible = !_isPasswordVisible,
+                      ),
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
+
+              // Login Button
               FadeInDown(
                 delay: const Duration(milliseconds: 500),
                 child: BlocBuilder<LoginBloc, LoginState>(
@@ -322,7 +316,7 @@ class _UserLoginState extends State<UserLogin> {
                     return SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: state.isLoading ? null : _performLogin,
+                        onPressed: state.isLoading ? null : _performManualLogin,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           backgroundColor: Colors.blueAccent,
@@ -332,8 +326,13 @@ class _UserLoginState extends State<UserLogin> {
                           elevation: 3,
                         ),
                         child: state.isLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Text(
                                 'Login',
@@ -349,6 +348,8 @@ class _UserLoginState extends State<UserLogin> {
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Biometric & NFC
               FadeInDown(
                 delay: const Duration(milliseconds: 600),
                 child: Row(
@@ -357,8 +358,13 @@ class _UserLoginState extends State<UserLogin> {
                     if (_canUseBiometrics)
                       IconButton(
                         icon: _isBiometricLoading
-                            ? const CircularProgressIndicator(
-                                color: Colors.blueAccent,
+                            ? const SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.blueAccent,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : const Icon(
                                 Icons.fingerprint,
@@ -368,13 +374,18 @@ class _UserLoginState extends State<UserLogin> {
                         onPressed: _isBiometricLoading
                             ? null
                             : _performBiometricLogin,
-                        tooltip: 'Login with Fingerprint',
+                        tooltip: 'Biometric Login',
                       ),
                     const SizedBox(width: 16),
                     IconButton(
                       icon: _isNfcLoading
-                          ? const CircularProgressIndicator(
-                              color: Colors.blueAccent,
+                          ? const SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.blueAccent,
+                                strokeWidth: 2,
+                              ),
                             )
                           : const Icon(
                               Icons.nfc,
@@ -382,16 +393,19 @@ class _UserLoginState extends State<UserLogin> {
                               color: Colors.blueAccent,
                             ),
                       onPressed: _isNfcLoading ? null : _performNfcLogin,
-                      tooltip: 'Login with NFC',
+                      tooltip: 'NFC Login',
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: 16),
+
+              // Forgot Password
               FadeInDown(
                 delay: const Duration(milliseconds: 700),
                 child: TextButton(
-                  onPressed: () => _showSnackBar('Forgot Password pressed'),
+                  onPressed: () =>
+                      _showSnackBar('Forgot password? Contact admin.'),
                   child: Text(
                     'Forgot Password?',
                     style: TextStyle(
@@ -401,19 +415,21 @@ class _UserLoginState extends State<UserLogin> {
                   ),
                 ),
               ),
-              if (_loginFeedback.isNotEmpty)
-                FadeInDown(
-                  delay: const Duration(milliseconds: 800),
+              FadeInUp(
+                delay: const Duration(milliseconds: 100),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 12),
                   child: Text(
-                    _loginFeedback,
+                    loginFeedback,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.redAccent,
                       fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ),
+              ),
             ],
           ),
         ),

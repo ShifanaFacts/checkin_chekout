@@ -1,7 +1,6 @@
 import 'package:checkin_checkout/core/di/injectable.dart';
 import 'package:checkin_checkout/core/utils/storage_manager.dart';
 import 'package:checkin_checkout/data/publicobjects.dart';
-import 'package:checkin_checkout/presentation/blocs/userdata/userdata_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

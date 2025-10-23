@@ -16,7 +16,7 @@ class BaseUrlService {
     return prefs.getString(_key) ?? '';
   }
 
-  /// Check and redirect if base URL missing
+  // / Check and redirect if base URL missing
   static Future<void> ensureBaseUrl(BuildContext context) async {
     final url = await getBaseUrl();
     if (url.isEmpty) {

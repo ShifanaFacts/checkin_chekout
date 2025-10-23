@@ -37,7 +37,7 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
           "info": {
             "geolat": lat,
             "geolong": long,
-            "strheader": dropDownSelectionObject,
+            "strheader": {...dropDownSelectionObject, "doctype": 'SDT'},
             "system_time": checkinTime,
             "deviceID": prefs.getString('DeviceId'),
           },
@@ -63,17 +63,16 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
           log('Invalid response format');
           return const Left(MainFailure.serverFailure());
         }
-        PublicObjects.instance.checkinFeedback = userData.status;
 
         // If check-in is successful, call the next procedure
-        final technicianCheckinResult = await _getTechnicianCheckInDetails(
-          dropDownSelectionObject: dropDownSelectionObject,
+        final technicianCheckinResult = await getTechnicianCheckInDetails(
+          dropDownSelectionObject: {
+            ...dropDownSelectionObject,
+            "doctype": 'SDT',
+          },
           systemTime: checkinTime,
-          deviceId: prefs.getString('DeviceId') ?? '',
-          accessToken: accessToken,
           lat: lat,
           long: long,
-          url: url,
         );
 
         // Return the CheckinViewModel from _getTechnicianCheckInDetails
@@ -100,16 +99,17 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
     }
   }
 
-  Future<Either<MainFailure, CheckinVieModel>> _getTechnicianCheckInDetails({
+  @override
+  Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails({
     required Map<String, String> dropDownSelectionObject,
     required String systemTime,
-    required String deviceId,
-    required String accessToken,
     required double long,
     required double lat,
-    required String url,
   }) async {
     try {
+      final String url = await ApiEndPoints.getOpenSectionUrl();
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('token');
       final request = {
         "job_id": "2786",
         "key": "PWA.GetTechnicianCheckInDetails",
@@ -119,7 +119,7 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
             "geolong": long,
             "strheader": dropDownSelectionObject,
             "system_time": systemTime,
-            "deviceID": deviceId,
+            "deviceID": prefs.getString('DeviceId') ?? "",
           },
         },
         "result_type": "single",

@@ -151,131 +151,83 @@ class _UserSettingsState extends State<UserSettings> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginBloc, LoginState>(
-      listener: (context, state) {
-        if (state.isLoading) {
-          // Loading dialog is already shown
-        } else if (state.isError) {
-          Navigator.pop(context); // Dismiss loading dialog
-          setState(() {
-            _isLoggingOut = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Logout failed: '),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-        {
-          Navigator.pop(context); // Dismiss loading dialog
-          setState(() {
-            _isLoggingOut = false;
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                children: const [
-                  Icon(Icons.check_circle, color: Colors.white),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Successfully logged out!',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: Colors.green,
-              behavior: SnackBarBehavior.floating,
-              margin: const EdgeInsets.all(16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-          );
-          _loadUserLoginStatus(); // Refresh login status
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text('Settings'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Settings'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Add URL',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Add URL',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _urlController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter Base URL',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.link),
                 ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _urlController,
-                  decoration: const InputDecoration(
-                    labelText: 'Enter Base URL',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.link),
+                keyboardType: TextInputType.url,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _saveUrl,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  keyboardType: TextInputType.url,
                 ),
+                child: const Text(
+                  'Save URL',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              if (_savedUrl.isNotEmpty) ...[
                 const SizedBox(height: 16),
+                Text(
+                  'Saved URL: $_savedUrl',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ],
+              const SizedBox(height: 20),
+              if (_isUserLoggedIn == true)
                 ElevatedButton(
-                  onPressed: _saveUrl,
+                  onPressed: _isLoggingOut ? null : _showLogoutConfirmation,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'Save URL',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-                if (_savedUrl.isNotEmpty) ...[
-                  const SizedBox(height: 16),
-                  Text(
-                    'Saved URL: $_savedUrl',
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                ],
-                const SizedBox(height: 20),
-                if (_isUserLoggedIn == true)
-                  ElevatedButton(
-                    onPressed: _isLoggingOut ? null : _showLogoutConfirmation,
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 50),
-                      backgroundColor: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: _isLoggingOut
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : const Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.white),
+                  child: _isLoggingOut
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
                           ),
-                  ),
-              ],
-            ),
+                        )
+                      : const Text(
+                          'Logout',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                ),
+            ],
           ),
         ),
       ),

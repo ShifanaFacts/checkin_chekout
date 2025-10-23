@@ -40,17 +40,17 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _checkNavigation() async {
     final prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    await Future.delayed(const Duration(seconds: 2));
     final baseUrl = await BaseUrlService.getBaseUrl();
     if (baseUrl.isEmpty) {
-      Navigator.pushReplacementNamed(context, '/settings');
+      // Navigator.pushReplacementNamed(context, '/settings');
       return;
     }
-    if (!isLoggedIn) {
-      // Case 1: Not logged in
-      Navigator.pushReplacementNamed(context, '/login');
-      return;
-    }
+    // if (!isLoggedIn) {
+    //   // Case 1: Not logged in
+    //   Navigator.pushReplacementNamed(context, '/login');
+    //   return;
+    // }
+    log('$isLoggedIn isLoggedInisLoggedIn');
 
     LocationPermission permission = await Geolocator.checkPermission();
     if (isLoggedIn) {

@@ -6,14 +6,16 @@ part 'checkin_model.g.dart';
 class CheckinModel {
   String? checkintime;
   String? checkintimedesc;
-  bool? status;
+  bool status;
   String? empdocno;
+  String? description;
 
   CheckinModel({
     this.checkintime,
     this.checkintimedesc,
-    this.status,
+    required this.status,
     this.empdocno,
+    this.description,
   });
 
   factory CheckinModel.fromJson(Map<String, dynamic> json) {

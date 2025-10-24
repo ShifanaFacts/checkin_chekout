@@ -15,4 +15,5 @@ class LoggedUserHandleEvent with _$LoggedUserHandleEvent {
   }) = GetDropDownData;
   const factory LoggedUserHandleEvent.getAllDropdownData() = GetAllDropdownData;
   const factory LoggedUserHandleEvent.getDashboardList() = GetDashboardList;
+  const factory LoggedUserHandleEvent.clearDropdownData() = ClearDropdownData;
 }

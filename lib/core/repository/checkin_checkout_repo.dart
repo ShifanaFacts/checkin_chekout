@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 
 abstract class CheckinCheckoutRepo {
-  Future<Either<MainFailure, CheckinVieModel>> getCheckinData(
+  Future<Either<MainFailure, CheckinModel>> getCheckinData(
     double lat,
     double long,
     Map<String, String> dropDownSelectionObject,
@@ -15,5 +15,10 @@ abstract class CheckinCheckoutRepo {
     double lat,
     double long,
     String checkinTime,
+  );
+  Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails(
+    double lat,
+    double long,
+    String systemTime,
   );
 }

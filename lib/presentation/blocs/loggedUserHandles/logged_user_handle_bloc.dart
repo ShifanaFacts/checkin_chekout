@@ -119,5 +119,11 @@ class LoggedUserHandleBloc
         ),
       );
     });
+    // ---------
+    on<ClearDropdownData>((event, emit) {
+      emit(state.copyWith(dropdownModel: null));
+    });
+
+    // In the bloc's event handler
   }
 }

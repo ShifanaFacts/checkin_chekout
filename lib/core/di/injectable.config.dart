@@ -19,6 +19,8 @@ import 'package:checkin_checkout/core/services/checkin_checkout_service.dart'
 import 'package:checkin_checkout/core/services/logged_user_service.dart'
     as _i630;
 import 'package:checkin_checkout/core/services/login_service.dart' as _i726;
+import 'package:checkin_checkout/presentation/blocs/checkin_details/checkin_details_bloc.dart'
+    as _i38;
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart'
     as _i994;
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart'
@@ -47,6 +49,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i50.UserCheckinCheckoutBloc>(
       () => _i50.UserCheckinCheckoutBloc(gh<_i446.CheckinCheckoutRepo>()),
+    );
+    gh.factory<_i38.CheckinDetailsBloc>(
+      () => _i38.CheckinDetailsBloc(gh<_i446.CheckinCheckoutRepo>()),
     );
     gh.factory<_i311.LoginBloc>(() => _i311.LoginBloc(gh<_i694.LoginRepo>()));
     return this;

@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @LazySingleton(as: CheckinCheckoutRepo)
 class CheckinCheckoutService implements CheckinCheckoutRepo {
   @override
-  Future<Either<MainFailure, CheckinVieModel>> getCheckinData(
+  Future<Either<MainFailure, CheckinModel>> getCheckinData(
     double lat,
     double long,
     Map<String, String> dropDownSelectionObject,
@@ -23,6 +23,10 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
     try {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        "dropDownSelectionObject",
+        jsonEncode(dropDownSelectionObject),
+      );
       final accessToken = prefs.getString('token');
 
       if (accessToken == null) {
@@ -53,33 +57,21 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Handle both single object and list responses
         final dynamic data = response.data;
-        CheckinModel userData;
+        CheckinModel checkinModel;
 
         if (data is List && data.isNotEmpty) {
-          userData = CheckinModel.fromJson(data.first as Map<String, dynamic>);
+          checkinModel = CheckinModel.fromJson(
+            data.first as Map<String, dynamic>,
+          );
         } else if (data is Map<String, dynamic>) {
-          userData = CheckinModel.fromJson(data);
+          checkinModel = CheckinModel.fromJson(data);
         } else {
           log('Invalid response format');
           return const Left(MainFailure.serverFailure());
         }
 
-        // If check-in is successful, call the next procedure
-        final technicianCheckinResult = await getTechnicianCheckInDetails(
-          dropDownSelectionObject: {
-            ...dropDownSelectionObject,
-            "doctype": 'SDT',
-          },
-          systemTime: checkinTime,
-          lat: lat,
-          long: long,
-        );
-
         // Return the CheckinViewModel from _getTechnicianCheckInDetails
-        return technicianCheckinResult.fold(
-          (failure) => Left(failure),
-          (technicianData) => Right(technicianData),
-        );
+        return Right(checkinModel);
       } else {
         final description = response.data is Map
             ? response.data['description']?.toString() ?? 'Unknown error'
@@ -100,16 +92,24 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
   }
 
   @override
-  Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails({
-    required Map<String, String> dropDownSelectionObject,
-    required String systemTime,
-    required double long,
-    required double lat,
-  }) async {
+  Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails(
+    double long,
+    double lat,
+    String systemTime,
+  ) async {
     try {
-      final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final storedString = prefs.getString("dropDownSelectionObject");
+      Map<String, String>? dropDownSelectionObject;
+
+      if (storedString != null) {
+        final Map<String, dynamic> decoded = jsonDecode(storedString);
+        dropDownSelectionObject = decoded.map(
+          (key, value) => MapEntry(key, value.toString()),
+        );
+      }
       final accessToken = prefs.getString('token');
+      final String url = await ApiEndPoints.getOpenSectionUrl();
       final request = {
         "job_id": "2786",
         "key": "PWA.GetTechnicianCheckInDetails",
@@ -117,9 +117,10 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
           "info": {
             "geolat": lat,
             "geolong": long,
-            "strheader": dropDownSelectionObject,
+
+            "strheader": {...?dropDownSelectionObject, "doctype": 'SDT'},
             "system_time": systemTime,
-            "deviceID": prefs.getString('DeviceId') ?? "",
+            "deviceID": prefs.getString('DeviceId') ?? '',
           },
         },
         "result_type": "single",
@@ -178,6 +179,15 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
+      final storedString = prefs.getString("dropDownSelectionObject");
+      Map<String, String>? dropDownSelectionObject;
+
+      if (storedString != null) {
+        final Map<String, dynamic> decoded = jsonDecode(storedString);
+        dropDownSelectionObject = decoded.map(
+          (key, value) => MapEntry(key, value.toString()),
+        );
+      }
       final request = {
         "job_id": "2786",
         "key": "PWA.SaveTechnicianCheckOutDetails",
@@ -187,7 +197,7 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
             "geolong": long,
             "system_time": checkinTime,
             "deviceID": prefs.getString('DeviceId'),
-            "strheader": {},
+            "strheader": {...?dropDownSelectionObject, "doctype": 'SDT'},
           },
         },
         "result_type": "single",

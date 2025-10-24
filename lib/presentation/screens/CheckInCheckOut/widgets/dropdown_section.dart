@@ -8,6 +8,7 @@ import 'package:checkin_checkout/data/models/dropDown_model/dropdown_model.dart'
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
 
 class DropdownSection extends StatefulWidget {
   final double latitude;
@@ -31,11 +32,14 @@ class _DropdownSectionState extends State<DropdownSection> {
   bool get canCheckIn => !isCheckedIn;
   bool _hasFetchedDropdowns =
       false; // Flag to prevent multiple dropdown fetches
+  bool _isLocationEnabled = false; // Track location service status
+  bool _hasLocationPermission = false;
 
   @override
   void initState() {
     super.initState();
-
+    // Check location services and permissions on init
+    _checkLocationStatus();
     // Trigger dashboard data fetch and schedule dropdown data fetch
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final state = context.read<LoggedUserHandleBloc>().state;
@@ -83,6 +87,116 @@ class _DropdownSectionState extends State<DropdownSection> {
       _hasFetchedDropdowns = false; // Allow dropdowns to be refetched
     });
     context.read<LoggedUserHandleBloc>().add(const GetDashboardList());
+  }
+
+  // Show dialog to prompt enabling location services
+  Future<void> _showEnableLocationDialog() async {
+    if (!context.mounted) return;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Enable Location Services'),
+        content: const Text(
+          'Location services are disabled. Please enable them in your device settings to proceed with check-in.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await Geolocator.openLocationSettings();
+              // Re-check location status after returning from settings
+              await _checkLocationStatus();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Show dialog for permanently denied permissions
+  Future<void> _showPermissionDeniedDialog() async {
+    if (!context.mounted) return;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Location Permission Required'),
+        content: const Text(
+          'Location permissions are permanently denied. Please enable them in your app settings to proceed with check-in.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await Geolocator.openAppSettings();
+              // Re-check location status after returning from settings
+              await _checkLocationStatus();
+            },
+            child: const Text('Open Settings'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Check location services and permissions
+  Future<bool> _checkLocationStatus() async {
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        await _showEnableLocationDialog();
+        return false;
+      }
+
+      // Check location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  'Location permission denied. Please allow location access.',
+                ),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          }
+          return false;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        await _showPermissionDeniedDialog();
+        return false;
+      }
+
+      return serviceEnabled &&
+          (permission == LocationPermission.always ||
+              permission == LocationPermission.whileInUse);
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error checking location status: $e'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      return false;
+    }
   }
 
   @override
@@ -136,7 +250,7 @@ class _DropdownSectionState extends State<DropdownSection> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Error: ${state.failure?.toString() ?? "Unknown error"}',
+                  'Something Went Wrong',
                   style: const TextStyle(color: Colors.red, fontSize: 16),
                 ),
                 const SizedBox(height: 16),
@@ -183,7 +297,6 @@ class _DropdownSectionState extends State<DropdownSection> {
                   // Get dropdown items directly from state
                   final List<DropdownItem> dropitems =
                       state.dropdownModel?.dropdownsByDescription?[key] ?? [];
-
                   // Hide onload == 0 dropdowns until data is available
                   if (onload == 0 && dropitems.isEmpty) {
                     return const SizedBox.shrink();
@@ -290,27 +403,27 @@ class _DropdownSectionState extends State<DropdownSection> {
                                     }
                                   : null,
                             ),
-                            if (state.isDropdownLoading &&
-                                (state
-                                        .dropdownModel
-                                        ?.dropdownsByDescription?[key]
-                                        ?.isEmpty ??
-                                    true))
-                              const Positioned(
-                                right: 0,
-                                top: 0,
-                                bottom: 0,
-                                child: Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            // if (state.isDropdownLoading &&
+                            //     (state
+                            //             .dropdownModel
+                            //             ?.dropdownsByDescription?[key]
+                            //             ?.isEmpty ??
+                            //         true))
+                            //   const Positioned(
+                            //     right: 0,
+                            //     top: 0,
+                            //     bottom: 0,
+                            //     child: Padding(
+                            //       padding: EdgeInsets.all(8.0),
+                            //       child: SizedBox(
+                            //         width: 20,
+                            //         height: 20,
+                            //         child: CircularProgressIndicator(
+                            //           strokeWidth: 2,
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ),
                           ],
                         ),
                       ],
@@ -368,20 +481,25 @@ class _DropdownSectionState extends State<DropdownSection> {
   }
 
   void handleCheckIn() {
-    final formattedTime = DateFormat(
-      'yyyy-MM-dd HH:mm:ss',
-    ).format(DateTime.now());
-    final selectedData = selectedValues.map(
-      (key, value) => MapEntry(key, value ?? ''),
-    );
+    _checkLocationStatus().then((isLocationValid) {
+      if (isLocationValid) {
+        final formattedTime = DateFormat(
+          'yyyy-MM-dd HH:mm:ss',
+        ).format(DateTime.now());
+        final selectedData = selectedValues.map(
+          (key, value) => MapEntry(key, value ?? ''),
+        );
 
-    context.read<UserCheckinCheckoutBloc>().add(
-      GetCheckinData(
-        lat: widget.latitude,
-        long: widget.longitude,
-        dropDownSelectionObject: selectedData,
-        checkinTime: formattedTime,
-      ),
-    );
+        context.read<UserCheckinCheckoutBloc>().add(
+          GetCheckinData(
+            lat: widget.latitude,
+            long: widget.longitude,
+            dropDownSelectionObject: selectedData,
+            checkinTime: formattedTime,
+          ),
+        );
+        context.read<LoggedUserHandleBloc>().add(const ClearDropdownData());
+      }
+    });
   }
 }

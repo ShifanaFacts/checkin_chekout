@@ -9,8 +9,9 @@ part of 'checkin_model.dart';
 CheckinModel _$CheckinModelFromJson(Map<String, dynamic> json) => CheckinModel(
   checkintime: json['checkintime'] as String?,
   checkintimedesc: json['checkintimedesc'] as String?,
-  status: json['status'] as bool?,
+  status: json['status'] as bool,
   empdocno: json['empdocno'] as String?,
+  description: json['description'] as String?,
 );
 
 Map<String, dynamic> _$CheckinModelToJson(CheckinModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$CheckinModelToJson(CheckinModel instance) =>
       'checkintimedesc': instance.checkintimedesc,
       'status': instance.status,
       'empdocno': instance.empdocno,
+      'description': instance.description,
     };

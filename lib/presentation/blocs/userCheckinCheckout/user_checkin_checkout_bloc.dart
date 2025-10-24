@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 import 'package:checkin_checkout/core/repository/checkin_checkout_repo.dart';
 import 'package:checkin_checkout/core/repository/loggedUserHandleRepo.dart';
+import 'package:checkin_checkout/data/models/checkin_checkout_model/checkin_model.dart';
 import 'package:checkin_checkout/data/models/checkin_checkout_model/checkin_view_model.dart';
 import 'package:checkin_checkout/data/models/dashboard_model/dashboard_model.dart';
 import 'package:checkin_checkout/data/models/dropDown_model/dropdown_model.dart';
@@ -51,7 +52,7 @@ class UserCheckinCheckoutBloc
           dataFetched: false,
           checkedIn: false,
         ),
-        (CheckinVieModel userCheckinModel) => state.copyWith(
+        (CheckinModel userCheckinModel) => state.copyWith(
           checkinmodel: userCheckinModel,
           isLoading: false,
           isError: false,
@@ -63,7 +64,7 @@ class UserCheckinCheckoutBloc
 
       emit(newState);
     });
-    // ---------------------------------------------------------------------------------------
+    // ---------------------------------
     on<GetCheckOutData>((event, emit) async {
       emit(
         state.copyWith(

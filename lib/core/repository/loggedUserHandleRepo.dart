@@ -11,6 +11,7 @@ abstract class Loggeduserhandlerepo {
     double long,
   );
   Future<Either<MainFailure, DashboardModel>> getDashboardList();
+
   Future<Either<MainFailure, DropdownModel>> getDropDownData([
     String? strdoctype,
     String? description,

@@ -1,45 +1,71 @@
 import 'dart:developer';
 import 'package:checkin_checkout/data/models/checkin_checkout_model/checkin_view_model.dart';
+import 'package:checkin_checkout/presentation/blocs/checkin_details/checkin_details_bloc.dart';
+import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
-class CheckinDetailsCard extends StatelessWidget {
-  final CheckinVieModel? checkinmodel;
-  final bool isLoading;
-  final bool isError;
-  final bool dataFetched;
+class CheckinDetailsCard extends StatefulWidget {
+  final double latitude;
+  final double longitude;
 
   const CheckinDetailsCard({
     super.key,
-    this.checkinmodel,
-    required this.isLoading,
-    required this.isError,
-    required this.dataFetched,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
+  CheckinDetailsCardState createState() => CheckinDetailsCardState();
+}
+
+class CheckinDetailsCardState extends State<CheckinDetailsCard> {
+  @override
+  void initState() {
+    super.initState();
+    // if (widget.currentLocation != null) {
+    // context.read<CheckinDetailsBloc>().add(
+    //   GetCheckInDetails(
+    //     lat: widget.latitude,
+    //     long: widget.longitude,
+    //     checkinTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+    //   ),
+    // );
+    // }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (isError) {
-      return const Center(child: Text("Failed to load check-in details"));
-    } else if (dataFetched && checkinmodel != null) {
-      final data = checkinmodel!;
-      if (data.JOBMST_DESC != null ||
-          data.DEPT_DESC != null ||
-          data.COST_DESC != null ||
-          data.ACT_DOCNO != null ||
-          data.checkintime != null) {
-        log('Check-in data: $data');
-      }
-      return _buildCard(
-        project: data.JOBMST_DESC ?? "",
-        department: data.DEPT_DESC ?? "",
-        costCode: data.COST_DESC ?? "",
-        activity: data.ACT_DOCNO ?? "",
-        checkInTime: data.checkintime ?? "",
-      );
-    }
-    return const Center(child: Text("No check-in data available"));
+    return BlocBuilder<CheckinDetailsBloc, CheckinDetailsState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state.isError) {
+          return const Center(child: Text("Failed to load check-in details"));
+        }
+        if (state.dataFetched && state.checkinViewmodel != null) {
+          final data = state.checkinViewmodel!;
+          // Log only if there's meaningful data
+          if (data.JOBMST_DOCNO != null ||
+              data.DEPT_DESC != null ||
+              data.COST_DESC != null ||
+              data.ACT_DOCNO != null ||
+              data.checkintime != null) {
+            log('Check-in data: $data');
+          }
+          return _buildCard(
+            project: data.JOBMST_DOCNO ?? "N/A",
+            department: data.DEPT_DESC ?? "N/A",
+            costCode: data.COST_DESC ?? "N/A",
+            activity: data.ACT_DOCNO ?? "N/A",
+            checkInTime: data.checkintime ?? "N/A",
+          );
+        }
+        return const Center(child: Text("No check-in data available"));
+      },
+    );
   }
 
   Widget _buildCard({
@@ -99,7 +125,9 @@ class CheckinDetailsCard extends StatelessWidget {
               _buildTile(
                 icon: Icons.access_time,
                 title: 'Check-In Time',
-                value: checkInTime,
+                value: DateFormat(
+                  'HH:mm:ss dd-MM-yyyy',
+                ).format(DateTime.parse(checkInTime)),
                 color: Colors.purple,
               ),
             ],
@@ -146,7 +174,7 @@ class CheckinDetailsCard extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          value.isEmpty ? "" : value,
+          value,
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

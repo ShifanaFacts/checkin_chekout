@@ -129,7 +129,7 @@ class LoginService implements LoginRepo {
 
       final request = {
         "job_id": "2786",
-        "key": "PWA.GetUserDetails",
+        "key": "NATIVE.GetUserDetails",
         "data": {
           "info": '',
           "deviceData": {"deviceType": "mobile"},

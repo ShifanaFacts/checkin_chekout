@@ -1,4 +1,4 @@
-import 'package:checkin_checkout/data/publicobjects.dart';
+import 'package:checkin_checkout/presentation/blocs/checkin_details/checkin_details_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import 'widgets/user_info_card.dart';
 import 'widgets/time_display.dart';
 import 'widgets/dropdown_section.dart';
 import 'widgets/checkin_details_card.dart';
-import 'dart:developer';
 
 enum LocationStatus { insideRadius, outsideRadius, inaccessible }
 
@@ -27,35 +26,19 @@ class CheckinCheckout extends StatefulWidget {
 
 class CheckinCheckoutState extends State<CheckinCheckout>
     with WidgetsBindingObserver {
-  String currentTime = DateFormat(
-    'hh:mm:ss a',
-  ).format(DateTime.now().toUtc().add(const Duration(hours: 4)));
-  String currentDate = DateFormat(
-    'EEEE, MMMM d, yyyy',
-  ).format(DateTime.now().toUtc().add(const Duration(hours: 4)));
-
   bool isCheckedIn = false;
   String currentStatus = "Not Checked-In";
   String? checkInTime;
 
   LatLng? currentLocation;
-  final LatLng companyLocation = const LatLng(25.276987, 55.296249); // Dubai
-  final double radius = 10000; // 10km
-  LocationStatus? locationStatus;
-  double? distance;
   String? currentAddress;
-  String? companyAddress;
   String? errorMessage;
-  bool _isInitialCheck = true;
   StreamSubscription<Position>? _positionStreamSubscription;
-
-  bool get canCheckIn => locationStatus == LocationStatus.insideRadius;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _checkLocationPermission();
   }
 
   @override
@@ -65,123 +48,12 @@ class CheckinCheckoutState extends State<CheckinCheckout>
     super.dispose();
   }
 
-  String _formatAddress(Placemark placemark) {
-    return "${placemark.name ?? ''}, ${placemark.locality ?? ''}, ${placemark.country ?? ''}";
-  }
-
-  double _calculateDistance(LatLng start, LatLng end) {
-    const double earthRadius = 6371000; // meters
-    double dLat = _toRadians(end.latitude - start.latitude);
-    double dLon = _toRadians(end.longitude - start.longitude);
-    double a =
-        sin(dLat / 2) * sin(dLat / 2) +
-        cos(_toRadians(start.latitude)) *
-            cos(_toRadians(end.latitude)) *
-            sin(dLon / 2) *
-            sin(dLon / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return earthRadius * c;
-  }
-
-  double _toRadians(double degree) {
-    return degree * pi / 180;
-  }
-
-  Future<void> _checkLocationPermission() async {
-    if (isCheckedIn) return;
-
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      setState(() {
-        locationStatus = LocationStatus.inaccessible;
-        errorMessage = 'Location services are disabled.';
-      });
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        setState(() {
-          locationStatus = LocationStatus.inaccessible;
-          errorMessage = 'Location permission denied.';
-        });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      setState(() {
-        locationStatus = LocationStatus.inaccessible;
-        errorMessage = 'Location permission permanently denied.';
-      });
-      return;
-    }
-
-    if (_isInitialCheck) {
-      await _checkLocation();
-      _isInitialCheck = false;
-    }
-  }
-
-  Future<void> _checkLocation() async {
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      ).timeout(const Duration(seconds: 10));
-
-      currentLocation = LatLng(position.latitude, position.longitude);
-      distance = _calculateDistance(currentLocation!, companyLocation);
-
-      locationStatus = distance! <= radius
-          ? LocationStatus.insideRadius
-          : LocationStatus.outsideRadius;
-
-      try {
-        List<Placemark> currentPlacemarks = await placemarkFromCoordinates(
-          currentLocation!.latitude,
-          currentLocation!.longitude,
-        );
-        List<Placemark> companyPlacemarks = await placemarkFromCoordinates(
-          companyLocation.latitude,
-          companyLocation.longitude,
-        );
-
-        currentAddress = currentPlacemarks.isNotEmpty
-            ? _formatAddress(currentPlacemarks.first)
-            : 'Unknown location';
-        companyAddress = companyPlacemarks.isNotEmpty
-            ? _formatAddress(companyPlacemarks.first)
-            : 'Company location';
-      } catch (e) {
-        currentAddress = 'Unknown location';
-        companyAddress = 'Company location';
-      }
-
-      setState(() {});
-      context.read<LoggedUserHandleBloc>().add(
-        GetLoggedUserDetails(
-          lat: currentLocation!.latitude,
-          long: currentLocation!.longitude,
-        ),
-      );
-    } catch (e) {
-      setState(() {
-        locationStatus = LocationStatus.inaccessible;
-        errorMessage = e.toString();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<UserCheckinCheckoutBloc, UserCheckinCheckoutState>(
         builder: (context, state) {
+          // Handle auth failure
           state.failure?.maybeWhen(
             authFailure: () async {
               SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -196,127 +68,162 @@ class CheckinCheckoutState extends State<CheckinCheckout>
             orElse: () {},
           );
 
+          // Loading state
           if (state.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state.isError) {
-            return const Center(child: Text("Something went wrong"));
-          } else {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 50),
-                  UserInfoCard(
-                    latitude: currentLocation?.latitude ?? 0.0,
-                    longitude: currentLocation?.longitude ?? 0.0,
-                  ),
-                  const SizedBox(height: 10),
-                  const TimeDisplay(),
-                  const SizedBox(height: 10),
-                  if (state.checkedIn && state.checkinmodel != null)
-                    Column(
-                      children: [
-                        CheckinDetailsCard(
-                          checkinmodel: state.checkinmodel,
-                          isLoading: state.isLoading,
-                          isError: state.isError,
-                          dataFetched: state.dataFetched,
-                        ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: () {
-                            context.read<UserCheckinCheckoutBloc>().add(
-                              GetCheckOutData(
-                                lat: currentLocation?.latitude ?? 0.0,
-                                long: currentLocation?.longitude ?? 0.0,
+          }
 
-                                checkinTime: DateFormat(
-                                  'yyyy-MM-dd HH:mm:ss',
-                                ).format(DateTime.now()),
-                              ),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("✅ Check-out successful!"),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            minimumSize: const Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+          // Error state with retry option
+          if (state.isError) {
+            return Center(
+              child: Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        size: 48,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Something went wrong",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        "An error occurred while processing your request.",
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Retry check-in details
+                          context.read<CheckinDetailsBloc>().add(
+                            GetCheckInDetails(
+                              lat: currentLocation?.latitude ?? 0.0,
+                              long: currentLocation?.longitude ?? 0.0,
+                              checkinTime: DateFormat(
+                                'yyyy-MM-dd HH:mm:ss',
+                              ).format(DateTime.now()),
                             ),
-                          ),
-                          child: const Text(
-                            "Check-Out",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                      ],
-                    )
-                  else
-                    Column(
-                      children: [
-                        if (locationStatus == LocationStatus.inaccessible)
-                          _buildInaccessibleCard()
-                        else
-                          DropdownSection(
-                            latitude: currentLocation?.latitude ?? 0.0,
-                            longitude: currentLocation?.longitude ?? 0.0,
-                          ),
-                      ],
-                    ),
-                ],
+                        child: const Text(
+                          'Retry',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
           }
-        },
-      ),
-    );
-  }
+          // Check-in model status handling
 
-  Widget _buildInaccessibleCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const Icon(Icons.location_disabled, size: 48, color: Colors.red),
-            const SizedBox(height: 10),
-            const Text(
-              'Unable to access location',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              errorMessage ??
-                  'Please enable location services or grant permission.',
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                await Geolocator.openLocationSettings();
-                await _checkLocationPermission();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+          // Default UI
+          return SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 50),
+                UserInfoCard(
+                  latitude: currentLocation?.latitude ?? 0.0,
+                  longitude: currentLocation?.longitude ?? 0.0,
                 ),
-              ),
-              child: const Text(
-                'Open Location Settings',
-                style: TextStyle(color: Colors.white),
-              ),
+                const SizedBox(height: 10),
+                const TimeDisplay(),
+                const SizedBox(height: 10),
+                if (state.checkinmodel?.status == true)
+                  Column(
+                    children: [
+                      CheckinDetailsCard(
+                        latitude: currentLocation?.latitude ?? 0.0,
+                        longitude: currentLocation?.longitude ?? 0.0,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          context.read<UserCheckinCheckoutBloc>().add(
+                            GetCheckOutData(
+                              lat: currentLocation?.latitude ?? 0.0,
+                              long: currentLocation?.longitude ?? 0.0,
+                              checkinTime: DateFormat(
+                                'yyyy-MM-dd HH:mm:ss',
+                              ).format(DateTime.now()),
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("✅ Check-out successful!"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          minimumSize: const Size(double.infinity, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          "Check-Out",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      // Assumed user card or other widgets above
+                      if (state.checkinmodel != null &&
+                          state.checkinmodel!.description!.isNotEmpty &&
+                          state.checkinmodel!.status == false)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8.0,
+                          ),
+                          child: Text(
+                            state.checkinmodel!.description ??
+                                'Check-in failed',
+                            style: const TextStyle(
+                              color: Colors.redAccent,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      DropdownSection(
+                        latitude: currentLocation?.latitude ?? 0.0,
+                        longitude: currentLocation?.longitude ?? 0.0,
+                      ),
+                    ],
+                  ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

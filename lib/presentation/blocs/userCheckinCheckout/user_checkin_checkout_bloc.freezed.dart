@@ -678,7 +678,7 @@ abstract class GetCheckOutData implements UserCheckinCheckoutEvent {
 
 /// @nodoc
 mixin _$UserCheckinCheckoutState {
-  CheckinVieModel? get checkinmodel => throw _privateConstructorUsedError;
+  CheckinModel? get checkinmodel => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get dataFetched => throw _privateConstructorUsedError;
@@ -701,7 +701,7 @@ abstract class $UserCheckinCheckoutStateCopyWith<$Res> {
   ) = _$UserCheckinCheckoutStateCopyWithImpl<$Res, UserCheckinCheckoutState>;
   @useResult
   $Res call({
-    CheckinVieModel? checkinmodel,
+    CheckinModel? checkinmodel,
     bool isLoading,
     bool isError,
     bool dataFetched,
@@ -744,7 +744,7 @@ class _$UserCheckinCheckoutStateCopyWithImpl<
             checkinmodel: freezed == checkinmodel
                 ? _value.checkinmodel
                 : checkinmodel // ignore: cast_nullable_to_non_nullable
-                      as CheckinVieModel?,
+                      as CheckinModel?,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -799,7 +799,7 @@ abstract class _$$UserCheckinCheckoutStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    CheckinVieModel? checkinmodel,
+    CheckinModel? checkinmodel,
     bool isLoading,
     bool isError,
     bool dataFetched,
@@ -843,7 +843,7 @@ class __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>
         checkinmodel: freezed == checkinmodel
             ? _value.checkinmodel
             : checkinmodel // ignore: cast_nullable_to_non_nullable
-                  as CheckinVieModel?,
+                  as CheckinModel?,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -887,7 +887,7 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
   });
 
   @override
-  final CheckinVieModel? checkinmodel;
+  final CheckinModel? checkinmodel;
   @override
   final bool isLoading;
   @override
@@ -951,7 +951,7 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
 
 abstract class _UserCheckinCheckoutState implements UserCheckinCheckoutState {
   const factory _UserCheckinCheckoutState({
-    final CheckinVieModel? checkinmodel,
+    final CheckinModel? checkinmodel,
     required final bool isLoading,
     required final bool isError,
     required final bool dataFetched,
@@ -961,7 +961,7 @@ abstract class _UserCheckinCheckoutState implements UserCheckinCheckoutState {
   }) = _$UserCheckinCheckoutStateImpl;
 
   @override
-  CheckinVieModel? get checkinmodel;
+  CheckinModel? get checkinmodel;
   @override
   bool get isLoading;
   @override

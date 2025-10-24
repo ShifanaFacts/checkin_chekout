@@ -37,8 +37,8 @@ class LoggedUserService implements Loggeduserhandlerepo {
         "key": "PWA.EMP_Data_OnLoad",
         "data": {
           "info": {
-            "geolat": lat.toString(),
-            "geolong": long.toString(),
+            "geolat": lat,
+            "geolong": long,
             "strXmlHeader": {"EMP_DATA": ""},
           },
         },
@@ -49,10 +49,6 @@ class LoggedUserService implements Loggeduserhandlerepo {
         url,
         data: jsonEncode(loginRequest),
         options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
-      );
-
-      log(
-        'getLoggedUserDetails response: status=${response.statusCode}, data=${response.data}',
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

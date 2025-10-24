@@ -1,6 +1,7 @@
 import 'package:checkin_checkout/core/di/injectable.dart';
 import 'package:checkin_checkout/core/utils/FirebaseMessagingService.dart';
 import 'package:checkin_checkout/firebase_options.dart';
+import 'package:checkin_checkout/presentation/blocs/checkin_details/checkin_details_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (ctx) => getIt<LoginBloc>()),
         BlocProvider(create: (ctx) => getIt<LoggedUserHandleBloc>()),
+        BlocProvider(create: (ctx) => getIt<CheckinDetailsBloc>()),
         BlocProvider(create: (ctx) => getIt<UserCheckinCheckoutBloc>()),
       ],
       child: MaterialApp(

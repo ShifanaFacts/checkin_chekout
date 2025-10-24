@@ -27,7 +27,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final state = context.read<LoggedUserHandleBloc>().state;
-      if (!state.dataFetched || state.loggedUserModel == null) {
+      if (state.loggedUserModel == null) {
         context.read<LoggedUserHandleBloc>().add(
           GetLoggedUserDetails(lat: widget.latitude, long: widget.longitude),
         );
@@ -108,7 +108,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Failed to load user data:  }',
+              'Failed to load user data',
               style: GoogleFonts.poppins(
                 color: Colors.redAccent.shade100,
                 fontSize: 16,
@@ -155,7 +155,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                user.Emp_Name ?? unknown,
+                user.Emp_Name ?? "",
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w700,
                   fontSize: 16,
@@ -164,7 +164,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
               ),
               const SizedBox(height: 8),
               Text(
-                user.Department ?? unknown,
+                user.Department ?? "",
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 14,
@@ -173,7 +173,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
               ),
               const SizedBox(height: 8),
               Text(
-                user.Designation ?? unknown,
+                user.Designation ?? "",
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontSize: 13,
@@ -181,7 +181,7 @@ class _UserInfoCardState extends State<UserInfoCard> {
                 ),
               ),
               const SizedBox(height: 12),
-              _buildInfoRow(icon: Icons.badge, text: user.Division ?? unknown),
+              _buildInfoRow(icon: Icons.badge, text: user.Division ?? ""),
             ],
           ),
         ),

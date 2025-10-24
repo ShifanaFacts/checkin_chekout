@@ -30,6 +30,7 @@ mixin _$LoggedUserHandleEvent {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -44,6 +45,7 @@ mixin _$LoggedUserHandleEvent {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -58,6 +60,7 @@ mixin _$LoggedUserHandleEvent {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -67,6 +70,7 @@ mixin _$LoggedUserHandleEvent {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
@@ -75,6 +79,7 @@ mixin _$LoggedUserHandleEvent {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
@@ -83,6 +88,7 @@ mixin _$LoggedUserHandleEvent {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -166,6 +172,7 @@ class _$InitializeImpl implements Initialize {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) {
     return initialize();
   }
@@ -184,6 +191,7 @@ class _$InitializeImpl implements Initialize {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) {
     return initialize?.call();
   }
@@ -202,6 +210,7 @@ class _$InitializeImpl implements Initialize {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -218,6 +227,7 @@ class _$InitializeImpl implements Initialize {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) {
     return initialize(this);
   }
@@ -230,6 +240,7 @@ class _$InitializeImpl implements Initialize {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) {
     return initialize?.call(this);
   }
@@ -242,6 +253,7 @@ class _$InitializeImpl implements Initialize {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) {
     if (initialize != null) {
@@ -348,6 +360,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) {
     return getLoggedUserDetails(lat, long);
   }
@@ -366,6 +379,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) {
     return getLoggedUserDetails?.call(lat, long);
   }
@@ -384,6 +398,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getLoggedUserDetails != null) {
@@ -400,6 +415,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) {
     return getLoggedUserDetails(this);
   }
@@ -412,6 +428,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) {
     return getLoggedUserDetails?.call(this);
   }
@@ -424,6 +441,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getLoggedUserDetails != null) {
@@ -572,6 +590,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) {
     return getDropDownData(strDocType, description, lat, long);
   }
@@ -590,6 +609,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) {
     return getDropDownData?.call(strDocType, description, lat, long);
   }
@@ -608,6 +628,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getDropDownData != null) {
@@ -624,6 +645,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) {
     return getDropDownData(this);
   }
@@ -636,6 +658,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) {
     return getDropDownData?.call(this);
   }
@@ -648,6 +671,7 @@ class _$GetDropDownDataImpl implements GetDropDownData {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getDropDownData != null) {
@@ -731,6 +755,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) {
     return getAllDropdownData();
   }
@@ -749,6 +774,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) {
     return getAllDropdownData?.call();
   }
@@ -767,6 +793,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getAllDropdownData != null) {
@@ -783,6 +810,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) {
     return getAllDropdownData(this);
   }
@@ -795,6 +823,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) {
     return getAllDropdownData?.call(this);
   }
@@ -807,6 +836,7 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getAllDropdownData != null) {
@@ -874,6 +904,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
   }) {
     return getDashboardList();
   }
@@ -892,6 +923,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
   }) {
     return getDashboardList?.call();
   }
@@ -910,6 +942,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getDashboardList != null) {
@@ -926,6 +959,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     required TResult Function(GetDropDownData value) getDropDownData,
     required TResult Function(GetAllDropdownData value) getAllDropdownData,
     required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
   }) {
     return getDashboardList(this);
   }
@@ -938,6 +972,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     TResult? Function(GetDropDownData value)? getDropDownData,
     TResult? Function(GetAllDropdownData value)? getAllDropdownData,
     TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
   }) {
     return getDashboardList?.call(this);
   }
@@ -950,6 +985,7 @@ class _$GetDashboardListImpl implements GetDashboardList {
     TResult Function(GetDropDownData value)? getDropDownData,
     TResult Function(GetAllDropdownData value)? getAllDropdownData,
     TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getDashboardList != null) {
@@ -961,6 +997,155 @@ class _$GetDashboardListImpl implements GetDashboardList {
 
 abstract class GetDashboardList implements LoggedUserHandleEvent {
   const factory GetDashboardList() = _$GetDashboardListImpl;
+}
+
+/// @nodoc
+abstract class _$$ClearDropdownDataImplCopyWith<$Res> {
+  factory _$$ClearDropdownDataImplCopyWith(
+    _$ClearDropdownDataImpl value,
+    $Res Function(_$ClearDropdownDataImpl) then,
+  ) = __$$ClearDropdownDataImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$ClearDropdownDataImplCopyWithImpl<$Res>
+    extends _$LoggedUserHandleEventCopyWithImpl<$Res, _$ClearDropdownDataImpl>
+    implements _$$ClearDropdownDataImplCopyWith<$Res> {
+  __$$ClearDropdownDataImplCopyWithImpl(
+    _$ClearDropdownDataImpl _value,
+    $Res Function(_$ClearDropdownDataImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of LoggedUserHandleEvent
+  /// with the given fields replaced by the non-null parameter values.
+}
+
+/// @nodoc
+
+class _$ClearDropdownDataImpl implements ClearDropdownData {
+  const _$ClearDropdownDataImpl();
+
+  @override
+  String toString() {
+    return 'LoggedUserHandleEvent.clearDropdownData()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$ClearDropdownDataImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initialize,
+    required TResult Function(double lat, double long) getLoggedUserDetails,
+    required TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )
+    getDropDownData,
+    required TResult Function() getAllDropdownData,
+    required TResult Function() getDashboardList,
+    required TResult Function() clearDropdownData,
+  }) {
+    return clearDropdownData();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initialize,
+    TResult? Function(double lat, double long)? getLoggedUserDetails,
+    TResult? Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
+    TResult? Function()? getAllDropdownData,
+    TResult? Function()? getDashboardList,
+    TResult? Function()? clearDropdownData,
+  }) {
+    return clearDropdownData?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initialize,
+    TResult Function(double lat, double long)? getLoggedUserDetails,
+    TResult Function(
+      String? strDocType,
+      String? description,
+      double? lat,
+      double? long,
+    )?
+    getDropDownData,
+    TResult Function()? getAllDropdownData,
+    TResult Function()? getDashboardList,
+    TResult Function()? clearDropdownData,
+    required TResult orElse(),
+  }) {
+    if (clearDropdownData != null) {
+      return clearDropdownData();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(Initialize value) initialize,
+    required TResult Function(GetLoggedUserDetails value) getLoggedUserDetails,
+    required TResult Function(GetDropDownData value) getDropDownData,
+    required TResult Function(GetAllDropdownData value) getAllDropdownData,
+    required TResult Function(GetDashboardList value) getDashboardList,
+    required TResult Function(ClearDropdownData value) clearDropdownData,
+  }) {
+    return clearDropdownData(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(Initialize value)? initialize,
+    TResult? Function(GetLoggedUserDetails value)? getLoggedUserDetails,
+    TResult? Function(GetDropDownData value)? getDropDownData,
+    TResult? Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult? Function(GetDashboardList value)? getDashboardList,
+    TResult? Function(ClearDropdownData value)? clearDropdownData,
+  }) {
+    return clearDropdownData?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(Initialize value)? initialize,
+    TResult Function(GetLoggedUserDetails value)? getLoggedUserDetails,
+    TResult Function(GetDropDownData value)? getDropDownData,
+    TResult Function(GetAllDropdownData value)? getAllDropdownData,
+    TResult Function(GetDashboardList value)? getDashboardList,
+    TResult Function(ClearDropdownData value)? clearDropdownData,
+    required TResult orElse(),
+  }) {
+    if (clearDropdownData != null) {
+      return clearDropdownData(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ClearDropdownData implements LoggedUserHandleEvent {
+  const factory ClearDropdownData() = _$ClearDropdownDataImpl;
 }
 
 /// @nodoc

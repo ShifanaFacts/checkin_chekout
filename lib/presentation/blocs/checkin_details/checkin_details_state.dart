@@ -1,19 +1,19 @@
-part of 'user_checkin_checkout_bloc.dart';
+part of 'checkin_details_bloc.dart';
 
 @freezed
-class UserCheckinCheckoutState with _$UserCheckinCheckoutState {
-  const factory UserCheckinCheckoutState({
-    CheckinModel? checkinmodel,
+class CheckinDetailsState with _$CheckinDetailsState {
+  const factory CheckinDetailsState({
+    CheckinVieModel? checkinViewmodel,
     required bool isLoading,
     required bool isError,
     required bool dataFetched,
     required bool dataSubmitted,
     required bool checkedIn,
     MainFailure? failure,
-  }) = _UserCheckinCheckoutState;
+  }) = _CheckinDetailsState;
 
-  factory UserCheckinCheckoutState.initial() => const UserCheckinCheckoutState(
-    checkinmodel: null,
+  factory CheckinDetailsState.initial() => const CheckinDetailsState(
+    checkinViewmodel: null,
     isLoading: false,
     isError: false,
     dataFetched: false,

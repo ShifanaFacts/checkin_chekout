@@ -170,7 +170,7 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
 
   // ---------------------------------------------------------------------------
   @override
-  Future<Either<MainFailure, CheckinVieModel>> getCheckOutData(
+  Future<Either<MainFailure, CheckinModel>> getCheckOutData(
     double lat,
     double long,
     String checkinTime,
@@ -211,21 +211,21 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final dynamic data = response.data;
-        CheckinVieModel checkinDataModel;
+        CheckinModel checkinModel;
 
         if (data is List && data.isNotEmpty) {
-          checkinDataModel = CheckinVieModel.fromJson(
+          checkinModel = CheckinModel.fromJson(
             data.first as Map<String, dynamic>,
           );
         } else if (data is Map<String, dynamic>) {
-          checkinDataModel = CheckinVieModel.fromJson(data);
+          checkinModel = CheckinModel.fromJson(data);
         } else {
           log('Invalid response format for technician checkout');
           return const Left(MainFailure.serverFailure());
         }
-        log('$checkinDataModel    checkinDataModel');
+        log('$checkinModel    checkinDataModel');
 
-        return Right(checkinDataModel);
+        return Right(checkinModel);
       } else {
         final description = response.data is Map
             ? response.data['description']?.toString() ?? 'Unknown error'

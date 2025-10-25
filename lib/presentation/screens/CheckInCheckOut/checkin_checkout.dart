@@ -1,4 +1,3 @@
-import 'package:checkin_checkout/presentation/blocs/checkin_details/checkin_details_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,13 @@ class CheckinCheckoutState extends State<CheckinCheckout>
   @override
   void initState() {
     super.initState();
+    // context.read<UserCheckinCheckoutBloc>().add(
+    //   GetCheckInDetails(
+    //     lat: currentLocation?.latitude ?? 0.0,
+    //     long: currentLocation?.longitude ?? 0.0,
+    //     checkinTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+    //   ),
+    // );
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -109,7 +115,7 @@ class CheckinCheckoutState extends State<CheckinCheckout>
                       ElevatedButton(
                         onPressed: () {
                           // Retry check-in details
-                          context.read<CheckinDetailsBloc>().add(
+                          context.read<UserCheckinCheckoutBloc>().add(
                             GetCheckInDetails(
                               lat: currentLocation?.latitude ?? 0.0,
                               long: currentLocation?.longitude ?? 0.0,
@@ -151,13 +157,16 @@ class CheckinCheckoutState extends State<CheckinCheckout>
                 const SizedBox(height: 10),
                 const TimeDisplay(),
                 const SizedBox(height: 10),
-                if (state.checkinmodel?.status == true)
+
+                if (state.checkinViewmodel != null)
                   Column(
                     children: [
-                      CheckinDetailsCard(
-                        latitude: currentLocation?.latitude ?? 0.0,
-                        longitude: currentLocation?.longitude ?? 0.0,
-                      ),
+                      if (state.checkinViewmodel != null)
+                        CheckinDetailsCard(
+                          latitude: currentLocation?.latitude ?? 0.0,
+                          longitude: currentLocation?.longitude ?? 0.0,
+                          checkinViewModel: state.checkinViewmodel!,
+                        ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () {
@@ -195,17 +204,14 @@ class CheckinCheckoutState extends State<CheckinCheckout>
                   Column(
                     children: [
                       // Assumed user card or other widgets above
-                      if (state.checkinmodel != null &&
-                          state.checkinmodel!.description!.isNotEmpty &&
-                          state.checkinmodel!.status == false)
+                      if ((state.checkinmodel?.description ?? '').isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 16.0,
                             vertical: 8.0,
                           ),
                           child: Text(
-                            state.checkinmodel!.description ??
-                                'Check-in failed',
+                            state.checkinmodel!.description ?? "",
                             style: const TextStyle(
                               color: Colors.redAccent,
                               fontSize: 16,

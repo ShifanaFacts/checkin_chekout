@@ -11,7 +11,7 @@ abstract class CheckinCheckoutRepo {
     String checkinTime,
   );
 
-  Future<Either<MainFailure, CheckinVieModel>> getCheckOutData(
+  Future<Either<MainFailure, CheckinModel>> getCheckOutData(
     double lat,
     double long,
     String checkinTime,

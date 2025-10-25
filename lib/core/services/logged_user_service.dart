@@ -51,6 +51,10 @@ class LoggedUserService implements Loggeduserhandlerepo {
         options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
       );
 
+      log(
+        'getLoggedUserDetails response: status=${response.statusCode}, data=${response.data}',
+      );
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data == null) {
           log('Empty response data');

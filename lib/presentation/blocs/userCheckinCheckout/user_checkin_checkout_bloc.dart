@@ -26,7 +26,7 @@ class UserCheckinCheckoutBloc
 
     on<GetCheckinData>((event, emit) async {
       emit(
-        state.copyWith(
+        UserCheckinCheckoutState(
           checkinmodel: null,
           isLoading: true,
           isError: false,
@@ -44,7 +44,7 @@ class UserCheckinCheckoutBloc
       );
 
       final newState = result.fold(
-        (MainFailure failure) => state.copyWith(
+        (failure) => UserCheckinCheckoutState(
           checkinmodel: null,
           isLoading: false,
           isError: true,
@@ -52,7 +52,7 @@ class UserCheckinCheckoutBloc
           dataFetched: false,
           checkedIn: false,
         ),
-        (CheckinModel userCheckinModel) => state.copyWith(
+        (userCheckinModel) => UserCheckinCheckoutState(
           checkinmodel: userCheckinModel,
           isLoading: false,
           isError: false,
@@ -62,7 +62,34 @@ class UserCheckinCheckoutBloc
         ),
       );
 
-      emit(newState);
+      // ✅ Only if the first call succeeded, fetch the details
+      if (newState.checkinmodel?.status == true) {
+        final detailsResult = await _checkincheckoutService
+            .getTechnicianCheckInDetails(
+              event.lat,
+              event.long,
+              event.checkinTime,
+            );
+
+        final detailsState = detailsResult.fold(
+          (MainFailure failure) => state.copyWith(
+            checkinViewmodel: null,
+            isLoading: false,
+            isError: true,
+            dataFetched: false,
+          ),
+          (CheckinVieModel userCheckinViewModel) => state.copyWith(
+            checkinViewmodel: userCheckinViewModel,
+            isLoading: false,
+            isError: false,
+            dataFetched: true,
+          ),
+        );
+
+        emit(detailsState);
+      } else {
+        emit(newState);
+      }
     });
     // ---------------------------------
     on<GetCheckOutData>((event, emit) async {
@@ -86,19 +113,56 @@ class UserCheckinCheckoutBloc
       final newState = result.fold(
         (MainFailure failure) => state.copyWith(
           checkinmodel: null,
+          checkinViewmodel: null,
           isLoading: false,
           isError: true,
           dataSubmitted: false,
           dataFetched: false,
           checkedIn: false,
         ),
-        (CheckinVieModel userCheckinModel) => state.copyWith(
-          checkinmodel: null,
+        (CheckinModel userCheckinModel) => state.copyWith(
+          checkinmodel: userCheckinModel,
+          checkinViewmodel: null,
           isLoading: false,
           isError: false,
           dataSubmitted: true,
           dataFetched: true,
           checkedIn: false,
+        ),
+      );
+
+      emit(newState);
+    });
+
+    // ----------------------------
+    on<GetCheckInDetails>((event, emit) async {
+      emit(
+        state.copyWith(
+          checkinViewmodel: null,
+          isLoading: true,
+          isError: false,
+          dataFetched: false,
+        ),
+      );
+
+      final result = await _checkincheckoutService.getTechnicianCheckInDetails(
+        event.lat,
+        event.long,
+        event.checkinTime,
+      );
+
+      final newState = result.fold(
+        (MainFailure failure) => state.copyWith(
+          checkinViewmodel: null,
+          isLoading: false,
+          isError: true,
+          dataFetched: false,
+        ),
+        (CheckinVieModel userCheckinModel) => state.copyWith(
+          checkinViewmodel: userCheckinModel,
+          isLoading: false,
+          isError: false,
+          dataFetched: true,
         ),
       );
 

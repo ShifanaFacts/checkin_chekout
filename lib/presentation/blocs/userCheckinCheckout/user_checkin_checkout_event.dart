@@ -14,4 +14,9 @@ class UserCheckinCheckoutEvent with _$UserCheckinCheckoutEvent {
     required double long,
     required String checkinTime,
   }) = GetCheckOutData;
+  const factory UserCheckinCheckoutEvent.getTechnicianCheckInDetails({
+    required double lat,
+    required double long,
+    required String checkinTime,
+  }) = GetCheckInDetails;
 }

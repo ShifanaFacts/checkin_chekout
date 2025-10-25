@@ -29,6 +29,8 @@ mixin _$UserCheckinCheckoutEvent {
     getCheckinData,
     required TResult Function(double lat, double long, String checkinTime)
     getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -42,6 +44,8 @@ mixin _$UserCheckinCheckoutEvent {
     getCheckinData,
     TResult? Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -55,6 +59,8 @@ mixin _$UserCheckinCheckoutEvent {
     getCheckinData,
     TResult Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -62,18 +68,22 @@ mixin _$UserCheckinCheckoutEvent {
     required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
+    required TResult Function(GetCheckInDetails value)
+    getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
+    TResult? Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
+    TResult Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
 }
@@ -156,6 +166,8 @@ class _$StartedImpl implements _Started {
     getCheckinData,
     required TResult Function(double lat, double long, String checkinTime)
     getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getTechnicianCheckInDetails,
   }) {
     return started();
   }
@@ -173,6 +185,8 @@ class _$StartedImpl implements _Started {
     getCheckinData,
     TResult? Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
   }) {
     return started?.call();
   }
@@ -190,6 +204,8 @@ class _$StartedImpl implements _Started {
     getCheckinData,
     TResult Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -204,6 +220,8 @@ class _$StartedImpl implements _Started {
     required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
+    required TResult Function(GetCheckInDetails value)
+    getTechnicianCheckInDetails,
   }) {
     return started(this);
   }
@@ -214,6 +232,7 @@ class _$StartedImpl implements _Started {
     TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
+    TResult? Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
   }) {
     return started?.call(this);
   }
@@ -224,6 +243,7 @@ class _$StartedImpl implements _Started {
     TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
+    TResult Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -373,6 +393,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     getCheckinData,
     required TResult Function(double lat, double long, String checkinTime)
     getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getTechnicianCheckInDetails,
   }) {
     return getCheckinData(lat, long, dropDownSelectionObject, checkinTime);
   }
@@ -390,6 +412,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     getCheckinData,
     TResult? Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
   }) {
     return getCheckinData?.call(
       lat,
@@ -412,6 +436,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     getCheckinData,
     TResult Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckinData != null) {
@@ -426,6 +452,8 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
+    required TResult Function(GetCheckInDetails value)
+    getTechnicianCheckInDetails,
   }) {
     return getCheckinData(this);
   }
@@ -436,6 +464,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
+    TResult? Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
   }) {
     return getCheckinData?.call(this);
   }
@@ -446,6 +475,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
+    TResult Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckinData != null) {
@@ -581,6 +611,8 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     getCheckinData,
     required TResult Function(double lat, double long, String checkinTime)
     getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getTechnicianCheckInDetails,
   }) {
     return getCheckOutData(lat, long, checkinTime);
   }
@@ -598,6 +630,8 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     getCheckinData,
     TResult? Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
   }) {
     return getCheckOutData?.call(lat, long, checkinTime);
   }
@@ -615,6 +649,8 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     getCheckinData,
     TResult Function(double lat, double long, String checkinTime)?
     getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckOutData != null) {
@@ -629,6 +665,8 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     required TResult Function(_Started value) started,
     required TResult Function(GetCheckinData value) getCheckinData,
     required TResult Function(GetCheckOutData value) getCheckOutData,
+    required TResult Function(GetCheckInDetails value)
+    getTechnicianCheckInDetails,
   }) {
     return getCheckOutData(this);
   }
@@ -639,6 +677,7 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     TResult? Function(_Started value)? started,
     TResult? Function(GetCheckinData value)? getCheckinData,
     TResult? Function(GetCheckOutData value)? getCheckOutData,
+    TResult? Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
   }) {
     return getCheckOutData?.call(this);
   }
@@ -649,6 +688,7 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     TResult Function(_Started value)? started,
     TResult Function(GetCheckinData value)? getCheckinData,
     TResult Function(GetCheckOutData value)? getCheckOutData,
+    TResult Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckOutData != null) {
@@ -677,8 +717,221 @@ abstract class GetCheckOutData implements UserCheckinCheckoutEvent {
 }
 
 /// @nodoc
+abstract class _$$GetCheckInDetailsImplCopyWith<$Res> {
+  factory _$$GetCheckInDetailsImplCopyWith(
+    _$GetCheckInDetailsImpl value,
+    $Res Function(_$GetCheckInDetailsImpl) then,
+  ) = __$$GetCheckInDetailsImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({double lat, double long, String checkinTime});
+}
+
+/// @nodoc
+class __$$GetCheckInDetailsImplCopyWithImpl<$Res>
+    extends
+        _$UserCheckinCheckoutEventCopyWithImpl<$Res, _$GetCheckInDetailsImpl>
+    implements _$$GetCheckInDetailsImplCopyWith<$Res> {
+  __$$GetCheckInDetailsImplCopyWithImpl(
+    _$GetCheckInDetailsImpl _value,
+    $Res Function(_$GetCheckInDetailsImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of UserCheckinCheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? lat = null,
+    Object? long = null,
+    Object? checkinTime = null,
+  }) {
+    return _then(
+      _$GetCheckInDetailsImpl(
+        lat: null == lat
+            ? _value.lat
+            : lat // ignore: cast_nullable_to_non_nullable
+                  as double,
+        long: null == long
+            ? _value.long
+            : long // ignore: cast_nullable_to_non_nullable
+                  as double,
+        checkinTime: null == checkinTime
+            ? _value.checkinTime
+            : checkinTime // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$GetCheckInDetailsImpl implements GetCheckInDetails {
+  const _$GetCheckInDetailsImpl({
+    required this.lat,
+    required this.long,
+    required this.checkinTime,
+  });
+
+  @override
+  final double lat;
+  @override
+  final double long;
+  @override
+  final String checkinTime;
+
+  @override
+  String toString() {
+    return 'UserCheckinCheckoutEvent.getTechnicianCheckInDetails(lat: $lat, long: $long, checkinTime: $checkinTime)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$GetCheckInDetailsImpl &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.long, long) || other.long == long) &&
+            (identical(other.checkinTime, checkinTime) ||
+                other.checkinTime == checkinTime));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, lat, long, checkinTime);
+
+  /// Create a copy of UserCheckinCheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$GetCheckInDetailsImplCopyWith<_$GetCheckInDetailsImpl> get copyWith =>
+      __$$GetCheckInDetailsImplCopyWithImpl<_$GetCheckInDetailsImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() started,
+    required TResult Function(
+      double lat,
+      double long,
+      Map<String, String> dropDownSelectionObject,
+      String checkinTime,
+    )
+    getCheckinData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getCheckOutData,
+    required TResult Function(double lat, double long, String checkinTime)
+    getTechnicianCheckInDetails,
+  }) {
+    return getTechnicianCheckInDetails(lat, long, checkinTime);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? started,
+    TResult? Function(
+      double lat,
+      double long,
+      Map<String, String> dropDownSelectionObject,
+      String checkinTime,
+    )?
+    getCheckinData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
+    TResult? Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
+  }) {
+    return getTechnicianCheckInDetails?.call(lat, long, checkinTime);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? started,
+    TResult Function(
+      double lat,
+      double long,
+      Map<String, String> dropDownSelectionObject,
+      String checkinTime,
+    )?
+    getCheckinData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getCheckOutData,
+    TResult Function(double lat, double long, String checkinTime)?
+    getTechnicianCheckInDetails,
+    required TResult orElse(),
+  }) {
+    if (getTechnicianCheckInDetails != null) {
+      return getTechnicianCheckInDetails(lat, long, checkinTime);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Started value) started,
+    required TResult Function(GetCheckinData value) getCheckinData,
+    required TResult Function(GetCheckOutData value) getCheckOutData,
+    required TResult Function(GetCheckInDetails value)
+    getTechnicianCheckInDetails,
+  }) {
+    return getTechnicianCheckInDetails(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Started value)? started,
+    TResult? Function(GetCheckinData value)? getCheckinData,
+    TResult? Function(GetCheckOutData value)? getCheckOutData,
+    TResult? Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
+  }) {
+    return getTechnicianCheckInDetails?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Started value)? started,
+    TResult Function(GetCheckinData value)? getCheckinData,
+    TResult Function(GetCheckOutData value)? getCheckOutData,
+    TResult Function(GetCheckInDetails value)? getTechnicianCheckInDetails,
+    required TResult orElse(),
+  }) {
+    if (getTechnicianCheckInDetails != null) {
+      return getTechnicianCheckInDetails(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class GetCheckInDetails implements UserCheckinCheckoutEvent {
+  const factory GetCheckInDetails({
+    required final double lat,
+    required final double long,
+    required final String checkinTime,
+  }) = _$GetCheckInDetailsImpl;
+
+  double get lat;
+  double get long;
+  String get checkinTime;
+
+  /// Create a copy of UserCheckinCheckoutEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$GetCheckInDetailsImplCopyWith<_$GetCheckInDetailsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
 mixin _$UserCheckinCheckoutState {
   CheckinModel? get checkinmodel => throw _privateConstructorUsedError;
+  CheckinVieModel? get checkinViewmodel => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   bool get dataFetched => throw _privateConstructorUsedError;
@@ -702,6 +955,7 @@ abstract class $UserCheckinCheckoutStateCopyWith<$Res> {
   @useResult
   $Res call({
     CheckinModel? checkinmodel,
+    CheckinVieModel? checkinViewmodel,
     bool isLoading,
     bool isError,
     bool dataFetched,
@@ -732,6 +986,7 @@ class _$UserCheckinCheckoutStateCopyWithImpl<
   @override
   $Res call({
     Object? checkinmodel = freezed,
+    Object? checkinViewmodel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? dataFetched = null,
@@ -745,6 +1000,10 @@ class _$UserCheckinCheckoutStateCopyWithImpl<
                 ? _value.checkinmodel
                 : checkinmodel // ignore: cast_nullable_to_non_nullable
                       as CheckinModel?,
+            checkinViewmodel: freezed == checkinViewmodel
+                ? _value.checkinViewmodel
+                : checkinViewmodel // ignore: cast_nullable_to_non_nullable
+                      as CheckinVieModel?,
             isLoading: null == isLoading
                 ? _value.isLoading
                 : isLoading // ignore: cast_nullable_to_non_nullable
@@ -800,6 +1059,7 @@ abstract class _$$UserCheckinCheckoutStateImplCopyWith<$Res>
   @useResult
   $Res call({
     CheckinModel? checkinmodel,
+    CheckinVieModel? checkinViewmodel,
     bool isLoading,
     bool isError,
     bool dataFetched,
@@ -831,6 +1091,7 @@ class __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? checkinmodel = freezed,
+    Object? checkinViewmodel = freezed,
     Object? isLoading = null,
     Object? isError = null,
     Object? dataFetched = null,
@@ -844,6 +1105,10 @@ class __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>
             ? _value.checkinmodel
             : checkinmodel // ignore: cast_nullable_to_non_nullable
                   as CheckinModel?,
+        checkinViewmodel: freezed == checkinViewmodel
+            ? _value.checkinViewmodel
+            : checkinViewmodel // ignore: cast_nullable_to_non_nullable
+                  as CheckinVieModel?,
         isLoading: null == isLoading
             ? _value.isLoading
             : isLoading // ignore: cast_nullable_to_non_nullable
@@ -878,6 +1143,7 @@ class __$$UserCheckinCheckoutStateImplCopyWithImpl<$Res>
 class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
   const _$UserCheckinCheckoutStateImpl({
     this.checkinmodel,
+    this.checkinViewmodel,
     required this.isLoading,
     required this.isError,
     required this.dataFetched,
@@ -888,6 +1154,8 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
 
   @override
   final CheckinModel? checkinmodel;
+  @override
+  final CheckinVieModel? checkinViewmodel;
   @override
   final bool isLoading;
   @override
@@ -903,7 +1171,7 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
 
   @override
   String toString() {
-    return 'UserCheckinCheckoutState(checkinmodel: $checkinmodel, isLoading: $isLoading, isError: $isError, dataFetched: $dataFetched, dataSubmitted: $dataSubmitted, checkedIn: $checkedIn, failure: $failure)';
+    return 'UserCheckinCheckoutState(checkinmodel: $checkinmodel, checkinViewmodel: $checkinViewmodel, isLoading: $isLoading, isError: $isError, dataFetched: $dataFetched, dataSubmitted: $dataSubmitted, checkedIn: $checkedIn, failure: $failure)';
   }
 
   @override
@@ -913,6 +1181,8 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
             other is _$UserCheckinCheckoutStateImpl &&
             (identical(other.checkinmodel, checkinmodel) ||
                 other.checkinmodel == checkinmodel) &&
+            (identical(other.checkinViewmodel, checkinViewmodel) ||
+                other.checkinViewmodel == checkinViewmodel) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.isError, isError) || other.isError == isError) &&
@@ -929,6 +1199,7 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
   int get hashCode => Object.hash(
     runtimeType,
     checkinmodel,
+    checkinViewmodel,
     isLoading,
     isError,
     dataFetched,
@@ -952,6 +1223,7 @@ class _$UserCheckinCheckoutStateImpl implements _UserCheckinCheckoutState {
 abstract class _UserCheckinCheckoutState implements UserCheckinCheckoutState {
   const factory _UserCheckinCheckoutState({
     final CheckinModel? checkinmodel,
+    final CheckinVieModel? checkinViewmodel,
     required final bool isLoading,
     required final bool isError,
     required final bool dataFetched,
@@ -962,6 +1234,8 @@ abstract class _UserCheckinCheckoutState implements UserCheckinCheckoutState {
 
   @override
   CheckinModel? get checkinmodel;
+  @override
+  CheckinVieModel? get checkinViewmodel;
   @override
   bool get isLoading;
   @override

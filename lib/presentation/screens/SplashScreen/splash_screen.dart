@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen>
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
     final baseUrl = await BaseUrlService.getBaseUrl();
     if (baseUrl.isEmpty) {
-      // Navigator.pushReplacementNamed(context, '/settings');
+      Navigator.pushReplacementNamed(context, '/settings');
       return;
     }
     // if (!isLoggedIn) {

@@ -67,8 +67,8 @@ class _UserInfoCardState extends State<UserInfoCard> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    const Color.fromARGB(255, 48, 130, 202),
-                    const Color.fromARGB(255, 212, 130, 226),
+                    const Color.fromARGB(255, 41, 129, 205),
+                    const Color.fromARGB(255, 152, 62, 225),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,

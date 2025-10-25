@@ -33,6 +33,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: false,
           dataFetched: false,
           checkedIn: false,
+          failure: null,
         ),
       );
 
@@ -51,6 +52,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: false,
           dataFetched: false,
           checkedIn: false,
+          failure: failure,
         ),
         (userCheckinModel) => UserCheckinCheckoutState(
           checkinmodel: userCheckinModel,
@@ -59,6 +61,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: true,
           dataFetched: true,
           checkedIn: true,
+          failure: null,
         ),
       );
 
@@ -77,12 +80,14 @@ class UserCheckinCheckoutBloc
             isLoading: false,
             isError: true,
             dataFetched: false,
+            failure: failure,
           ),
           (CheckinVieModel userCheckinViewModel) => state.copyWith(
             checkinViewmodel: userCheckinViewModel,
             isLoading: false,
             isError: false,
             dataFetched: true,
+            failure: null,
           ),
         );
 
@@ -101,6 +106,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: false,
           dataFetched: false,
           checkedIn: false,
+          failure: null,
         ),
       );
 
@@ -119,6 +125,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: false,
           dataFetched: false,
           checkedIn: false,
+          failure: failure,
         ),
         (CheckinModel userCheckinModel) => state.copyWith(
           checkinmodel: userCheckinModel,
@@ -128,6 +135,7 @@ class UserCheckinCheckoutBloc
           dataSubmitted: true,
           dataFetched: true,
           checkedIn: false,
+          failure: null,
         ),
       );
 
@@ -142,6 +150,7 @@ class UserCheckinCheckoutBloc
           isLoading: true,
           isError: false,
           dataFetched: false,
+          failure: null,
         ),
       );
 
@@ -157,12 +166,14 @@ class UserCheckinCheckoutBloc
           isLoading: false,
           isError: true,
           dataFetched: false,
+          failure: failure,
         ),
         (CheckinVieModel userCheckinModel) => state.copyWith(
           checkinViewmodel: userCheckinModel,
           isLoading: false,
           isError: false,
           dataFetched: true,
+          failure: null,
         ),
       );
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
-import 'dart:math';
 import 'widgets/user_info_card.dart';
 import 'widgets/time_display.dart';
 import 'widgets/dropdown_section.dart';
@@ -37,13 +38,20 @@ class CheckinCheckoutState extends State<CheckinCheckout>
   @override
   void initState() {
     super.initState();
-    // context.read<UserCheckinCheckoutBloc>().add(
-    //   GetCheckInDetails(
-    //     lat: currentLocation?.latitude ?? 0.0,
-    //     long: currentLocation?.longitude ?? 0.0,
-    //     checkinTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
-    //   ),
-    // );
+    final bloc = context.read<UserCheckinCheckoutBloc>();
+    final currentState = bloc.state;
+    log('${currentState.checkinmodel}.....check.....');
+    // Check if mode.status exists and is not false
+    if (currentState.checkinmodel == null) {
+      bloc.add(
+        GetCheckInDetails(
+          lat: currentLocation?.latitude ?? 0.0,
+          long: currentLocation?.longitude ?? 0.0,
+          checkinTime: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()),
+        ),
+      );
+    }
+
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -158,7 +166,8 @@ class CheckinCheckoutState extends State<CheckinCheckout>
                 const TimeDisplay(),
                 const SizedBox(height: 10),
 
-                if (state.checkinViewmodel != null)
+                if (state.checkinViewmodel != null &&
+                    state.checkinViewmodel!.checkintime != null)
                   Column(
                     children: [
                       if (state.checkinViewmodel != null)

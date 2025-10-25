@@ -44,6 +44,7 @@ class LoggedUserHandleBloc
             isUserLoading: false,
             isError: false,
             dataFetched: true,
+            failure: null,
           ),
         ),
       );
@@ -89,6 +90,7 @@ class LoggedUserHandleBloc
               isDropdownLoading: false,
               isError: false,
               dataFetched: true,
+              failure: null,
             ),
           );
         },
@@ -115,6 +117,7 @@ class LoggedUserHandleBloc
             isDashboardLoading: false,
             isError: false,
             dataFetched: true,
+            failure: null,
           ),
         ),
       );

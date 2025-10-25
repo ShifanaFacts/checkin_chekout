@@ -94,7 +94,7 @@ class CheckinDetailsCardState extends State<CheckinDetailsCard> {
                 title: 'Check-In Time',
                 value: checkInTime != ""
                     ? DateFormat(
-                        'HH:mm:ss dd-MM-yyyy',
+                        'hh:mm:ss dd-MM-yyyy',
                       ).format(DateTime.parse(checkInTime))
                     : "",
                 color: Colors.purple,

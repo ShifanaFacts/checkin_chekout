@@ -6,7 +6,6 @@ import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart';
 import 'package:checkin_checkout/presentation/blocs/userCheckinCheckout/user_checkin_checkout_bloc.dart';
 
 import 'package:checkin_checkout/presentation/screens/Home/home.dart';
-import 'package:checkin_checkout/presentation/screens/Location/location_enable.dart';
 import 'package:checkin_checkout/presentation/screens/Login/UserLogin.dart';
 import 'package:checkin_checkout/presentation/screens/SplashScreen/splash_screen.dart';
 import 'package:checkin_checkout/presentation/screens/UserSettings/userSettings.dart';
@@ -72,7 +71,6 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomeScreen(),
 
           '/login': (context) => UserLogin(),
-          '/location': (context) => LocationScreen(),
           '/settings': (context) => UserSettings(),
           // Add other routes here
         },

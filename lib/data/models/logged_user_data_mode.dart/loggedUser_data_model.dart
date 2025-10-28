@@ -8,12 +8,14 @@ class LoggedUserModel {
   String? Designation;
   String? Department;
   String? Division;
+  String? Employe_id;
 
   LoggedUserModel({
     this.Emp_Name,
     this.Designation,
     this.Department,
     this.Division,
+    this.Employe_id,
   });
 
   factory LoggedUserModel.fromJson(Map<String, dynamic> json) {

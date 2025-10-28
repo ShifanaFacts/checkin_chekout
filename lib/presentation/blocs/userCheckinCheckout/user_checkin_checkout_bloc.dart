@@ -38,8 +38,6 @@ class UserCheckinCheckoutBloc
       );
 
       final result = await _checkincheckoutService.getCheckinData(
-        event.lat,
-        event.long,
         event.dropDownSelectionObject,
         event.checkinTime,
       );
@@ -68,11 +66,7 @@ class UserCheckinCheckoutBloc
       // ✅ Only if the first call succeeded, fetch the details
       if (newState.checkinmodel?.status == true) {
         final detailsResult = await _checkincheckoutService
-            .getTechnicianCheckInDetails(
-              event.lat,
-              event.long,
-              event.checkinTime,
-            );
+            .getTechnicianCheckInDetails(event.checkinTime);
 
         final detailsState = detailsResult.fold(
           (MainFailure failure) => state.copyWith(
@@ -111,8 +105,6 @@ class UserCheckinCheckoutBloc
       );
 
       final result = await _checkincheckoutService.getCheckOutData(
-        event.lat,
-        event.long,
         event.checkinTime,
       );
 
@@ -155,8 +147,6 @@ class UserCheckinCheckoutBloc
       );
 
       final result = await _checkincheckoutService.getTechnicianCheckInDetails(
-        event.lat,
-        event.long,
         event.checkinTime,
       );
 

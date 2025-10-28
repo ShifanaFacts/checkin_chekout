@@ -14,11 +14,15 @@ import 'package:checkin_checkout/core/repository/checkin_checkout_repo.dart'
 import 'package:checkin_checkout/core/repository/loggedUserHandleRepo.dart'
     as _i921;
 import 'package:checkin_checkout/core/repository/loginRepo.dart' as _i694;
+import 'package:checkin_checkout/core/repository/reportrepo.dart' as _i633;
 import 'package:checkin_checkout/core/services/checkin_checkout_service.dart'
     as _i1070;
 import 'package:checkin_checkout/core/services/logged_user_service.dart'
     as _i630;
 import 'package:checkin_checkout/core/services/login_service.dart' as _i726;
+import 'package:checkin_checkout/core/services/report_service.dart' as _i801;
+import 'package:checkin_checkout/presentation/blocs/InOutReport/in_out_report_bloc.dart'
+    as _i526;
 import 'package:checkin_checkout/presentation/blocs/loggedUserHandles/logged_user_handle_bloc.dart'
     as _i994;
 import 'package:checkin_checkout/presentation/blocs/login/login_bloc.dart'
@@ -35,6 +39,7 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.lazySingleton<_i633.ReportRepo>(() => _i801.ReportService());
     gh.lazySingleton<_i921.Loggeduserhandlerepo>(
       () => _i630.LoggedUserService(),
     );
@@ -44,6 +49,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i446.CheckinCheckoutRepo>(
       () => _i1070.CheckinCheckoutService(),
+    );
+    gh.factory<_i526.InOutReportBloc>(
+      () => _i526.InOutReportBloc(gh<_i633.ReportRepo>()),
     );
     gh.factory<_i50.UserCheckinCheckoutBloc>(
       () => _i50.UserCheckinCheckoutBloc(gh<_i446.CheckinCheckoutRepo>()),

@@ -15,8 +15,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class CheckinCheckoutService implements CheckinCheckoutRepo {
   @override
   Future<Either<MainFailure, CheckinModel>> getCheckinData(
-    double lat,
-    double long,
     Map<String, String> dropDownSelectionObject,
     String checkinTime,
   ) async {
@@ -28,6 +26,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
         jsonEncode(dropDownSelectionObject),
       );
       final accessToken = prefs.getString('token');
+      final currentLat = prefs.getDouble('currentLat');
+      final currentLong = prefs.getDouble('currentLong');
 
       if (accessToken == null) {
         log('No access token found');
@@ -39,8 +39,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
         "key": "PWA.SaveTechnicianCheckInDetails",
         "data": {
           "info": {
-            "geolat": lat,
-            "geolong": long,
+            "geolat": currentLat,
+            "geolong": currentLong,
             "strheader": {...dropDownSelectionObject, "doctype": 'SDT'},
             "system_time": checkinTime,
             "deviceID": prefs.getString('DeviceId'),
@@ -93,8 +93,6 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
 
   @override
   Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails(
-    double long,
-    double lat,
     String systemTime,
   ) async {
     try {
@@ -109,14 +107,16 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
         );
       }
       final accessToken = prefs.getString('token');
+      final currentLat = prefs.getDouble('currentLat');
+      final currentLong = prefs.getDouble('currentLong');
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final request = {
         "job_id": "2786",
         "key": "PWA.GetTechnicianCheckInDetails",
         "data": {
           "info": {
-            "geolat": lat,
-            "geolong": long,
+            "geolat": currentLat,
+            "geolong": currentLong,
 
             "strheader": {...?dropDownSelectionObject, "doctype": 'SDT'},
             "system_time": systemTime,
@@ -171,8 +171,6 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
   // ---------------------------------------------------------------------------
   @override
   Future<Either<MainFailure, CheckinModel>> getCheckOutData(
-    double lat,
-    double long,
     String checkinTime,
   ) async {
     try {
@@ -180,6 +178,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
       final storedString = prefs.getString("dropDownSelectionObject");
+      final currentLat = prefs.getDouble('currentLat');
+      final currentLong = prefs.getDouble('currentLong');
       Map<String, String>? dropDownSelectionObject;
 
       if (storedString != null) {
@@ -193,8 +193,8 @@ class CheckinCheckoutService implements CheckinCheckoutRepo {
         "key": "PWA.SaveTechnicianCheckOutDetails",
         "data": {
           "info": {
-            "geolat": lat,
-            "geolong": long,
+            "geolat": currentLat,
+            "geolong": currentLong,
             "system_time": checkinTime,
             "deviceID": prefs.getString('DeviceId'),
             "strheader": {...?dropDownSelectionObject, "doctype": 'SDT'},

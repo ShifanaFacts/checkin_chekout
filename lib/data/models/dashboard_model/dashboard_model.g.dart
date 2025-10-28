@@ -21,6 +21,7 @@ DashboardItem _$DashboardItemFromJson(Map<String, dynamic> json) =>
       key: json['Key'] as String?,
       description: json['Description'] as String?,
       loadOnClick: (json['LoadOnClick'] as num?)?.toInt(),
+      depend: (json['depend'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$DashboardItemToJson(DashboardItem instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$DashboardItemToJson(DashboardItem instance) =>
       'Key': instance.key,
       'Description': instance.description,
       'LoadOnClick': instance.loadOnClick,
+      'depend': instance.depend,
     };

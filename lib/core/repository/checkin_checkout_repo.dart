@@ -5,20 +5,12 @@ import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 
 abstract class CheckinCheckoutRepo {
   Future<Either<MainFailure, CheckinModel>> getCheckinData(
-    double lat,
-    double long,
     Map<String, String> dropDownSelectionObject,
     String checkinTime,
   );
 
-  Future<Either<MainFailure, CheckinModel>> getCheckOutData(
-    double lat,
-    double long,
-    String checkinTime,
-  );
+  Future<Either<MainFailure, CheckinModel>> getCheckOutData(String checkinTime);
   Future<Either<MainFailure, CheckinVieModel>> getTechnicianCheckInDetails(
-    double lat,
-    double long,
     String systemTime,
   );
 }

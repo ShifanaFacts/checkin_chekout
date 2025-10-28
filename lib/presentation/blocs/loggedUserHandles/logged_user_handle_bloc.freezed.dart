@@ -20,13 +20,8 @@ mixin _$LoggedUserHandleEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
@@ -35,14 +30,8 @@ mixin _$LoggedUserHandleEvent {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
@@ -50,14 +39,8 @@ mixin _$LoggedUserHandleEvent {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
@@ -162,13 +145,8 @@ class _$InitializeImpl implements Initialize {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
@@ -181,14 +159,8 @@ class _$InitializeImpl implements Initialize {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
@@ -200,14 +172,8 @@ class _$InitializeImpl implements Initialize {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
@@ -273,8 +239,6 @@ abstract class _$$GetLoggedUserDetailsImplCopyWith<$Res> {
     _$GetLoggedUserDetailsImpl value,
     $Res Function(_$GetLoggedUserDetailsImpl) then,
   ) = __$$GetLoggedUserDetailsImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({double lat, double long});
 }
 
 /// @nodoc
@@ -289,120 +253,68 @@ class __$$GetLoggedUserDetailsImplCopyWithImpl<$Res>
 
   /// Create a copy of LoggedUserHandleEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? lat = null, Object? long = null}) {
-    return _then(
-      _$GetLoggedUserDetailsImpl(
-        lat: null == lat
-            ? _value.lat
-            : lat // ignore: cast_nullable_to_non_nullable
-                  as double,
-        long: null == long
-            ? _value.long
-            : long // ignore: cast_nullable_to_non_nullable
-                  as double,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
 class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
-  const _$GetLoggedUserDetailsImpl({required this.lat, required this.long});
-
-  @override
-  final double lat;
-  @override
-  final double long;
+  const _$GetLoggedUserDetailsImpl();
 
   @override
   String toString() {
-    return 'LoggedUserHandleEvent.getLoggedUserDetails(lat: $lat, long: $long)';
+    return 'LoggedUserHandleEvent.getLoggedUserDetails()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$GetLoggedUserDetailsImpl &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.long, long) || other.long == long));
+            other is _$GetLoggedUserDetailsImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lat, long);
-
-  /// Create a copy of LoggedUserHandleEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$GetLoggedUserDetailsImplCopyWith<_$GetLoggedUserDetailsImpl>
-  get copyWith =>
-      __$$GetLoggedUserDetailsImplCopyWithImpl<_$GetLoggedUserDetailsImpl>(
-        this,
-        _$identity,
-      );
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
     required TResult Function() clearDropdownData,
   }) {
-    return getLoggedUserDetails(lat, long);
+    return getLoggedUserDetails();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
   }) {
-    return getLoggedUserDetails?.call(lat, long);
+    return getLoggedUserDetails?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getLoggedUserDetails != null) {
-      return getLoggedUserDetails(lat, long);
+      return getLoggedUserDetails();
     }
     return orElse();
   }
@@ -452,19 +364,7 @@ class _$GetLoggedUserDetailsImpl implements GetLoggedUserDetails {
 }
 
 abstract class GetLoggedUserDetails implements LoggedUserHandleEvent {
-  const factory GetLoggedUserDetails({
-    required final double lat,
-    required final double long,
-  }) = _$GetLoggedUserDetailsImpl;
-
-  double get lat;
-  double get long;
-
-  /// Create a copy of LoggedUserHandleEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$GetLoggedUserDetailsImplCopyWith<_$GetLoggedUserDetailsImpl>
-  get copyWith => throw _privateConstructorUsedError;
+  const factory GetLoggedUserDetails() = _$GetLoggedUserDetailsImpl;
 }
 
 /// @nodoc
@@ -474,12 +374,7 @@ abstract class _$$GetDropDownDataImplCopyWith<$Res> {
     $Res Function(_$GetDropDownDataImpl) then,
   ) = __$$GetDropDownDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({
-    String? strDocType,
-    String? description,
-    double? lat,
-    double? long,
-  });
+  $Res call({String? strDocType, String? description});
 }
 
 /// @nodoc
@@ -495,12 +390,7 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? strDocType = freezed,
-    Object? description = freezed,
-    Object? lat = freezed,
-    Object? long = freezed,
-  }) {
+  $Res call({Object? strDocType = freezed, Object? description = freezed}) {
     return _then(
       _$GetDropDownDataImpl(
         strDocType: freezed == strDocType
@@ -511,14 +401,6 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
             ? _value.description
             : description // ignore: cast_nullable_to_non_nullable
                   as String?,
-        lat: freezed == lat
-            ? _value.lat
-            : lat // ignore: cast_nullable_to_non_nullable
-                  as double?,
-        long: freezed == long
-            ? _value.long
-            : long // ignore: cast_nullable_to_non_nullable
-                  as double?,
       ),
     );
   }
@@ -527,25 +409,16 @@ class __$$GetDropDownDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetDropDownDataImpl implements GetDropDownData {
-  const _$GetDropDownDataImpl({
-    this.strDocType,
-    this.description,
-    this.lat,
-    this.long,
-  });
+  const _$GetDropDownDataImpl({this.strDocType, this.description});
 
   @override
   final String? strDocType;
   @override
   final String? description;
-  @override
-  final double? lat;
-  @override
-  final double? long;
 
   @override
   String toString() {
-    return 'LoggedUserHandleEvent.getDropDownData(strDocType: $strDocType, description: $description, lat: $lat, long: $long)';
+    return 'LoggedUserHandleEvent.getDropDownData(strDocType: $strDocType, description: $description)';
   }
 
   @override
@@ -556,14 +429,11 @@ class _$GetDropDownDataImpl implements GetDropDownData {
             (identical(other.strDocType, strDocType) ||
                 other.strDocType == strDocType) &&
             (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.long, long) || other.long == long));
+                other.description == description));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, strDocType, description, lat, long);
+  int get hashCode => Object.hash(runtimeType, strDocType, description);
 
   /// Create a copy of LoggedUserHandleEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -580,59 +450,42 @@ class _$GetDropDownDataImpl implements GetDropDownData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
     required TResult Function() clearDropdownData,
   }) {
-    return getDropDownData(strDocType, description, lat, long);
+    return getDropDownData(strDocType, description);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
   }) {
-    return getDropDownData?.call(strDocType, description, lat, long);
+    return getDropDownData?.call(strDocType, description);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
     required TResult orElse(),
   }) {
     if (getDropDownData != null) {
-      return getDropDownData(strDocType, description, lat, long);
+      return getDropDownData(strDocType, description);
     }
     return orElse();
   }
@@ -685,14 +538,10 @@ abstract class GetDropDownData implements LoggedUserHandleEvent {
   const factory GetDropDownData({
     final String? strDocType,
     final String? description,
-    final double? lat,
-    final double? long,
   }) = _$GetDropDownDataImpl;
 
   String? get strDocType;
   String? get description;
-  double? get lat;
-  double? get long;
 
   /// Create a copy of LoggedUserHandleEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -745,13 +594,8 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
@@ -764,14 +608,8 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
@@ -783,14 +621,8 @@ class _$GetAllDropdownDataImpl implements GetAllDropdownData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
@@ -894,13 +726,8 @@ class _$GetDashboardListImpl implements GetDashboardList {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
@@ -913,14 +740,8 @@ class _$GetDashboardListImpl implements GetDashboardList {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
@@ -932,14 +753,8 @@ class _$GetDashboardListImpl implements GetDashboardList {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,
@@ -1043,13 +858,8 @@ class _$ClearDropdownDataImpl implements ClearDropdownData {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initialize,
-    required TResult Function(double lat, double long) getLoggedUserDetails,
-    required TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )
+    required TResult Function() getLoggedUserDetails,
+    required TResult Function(String? strDocType, String? description)
     getDropDownData,
     required TResult Function() getAllDropdownData,
     required TResult Function() getDashboardList,
@@ -1062,14 +872,8 @@ class _$ClearDropdownDataImpl implements ClearDropdownData {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initialize,
-    TResult? Function(double lat, double long)? getLoggedUserDetails,
-    TResult? Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult? Function()? getLoggedUserDetails,
+    TResult? Function(String? strDocType, String? description)? getDropDownData,
     TResult? Function()? getAllDropdownData,
     TResult? Function()? getDashboardList,
     TResult? Function()? clearDropdownData,
@@ -1081,14 +885,8 @@ class _$ClearDropdownDataImpl implements ClearDropdownData {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initialize,
-    TResult Function(double lat, double long)? getLoggedUserDetails,
-    TResult Function(
-      String? strDocType,
-      String? description,
-      double? lat,
-      double? long,
-    )?
-    getDropDownData,
+    TResult Function()? getLoggedUserDetails,
+    TResult Function(String? strDocType, String? description)? getDropDownData,
     TResult Function()? getAllDropdownData,
     TResult Function()? getDashboardList,
     TResult Function()? clearDropdownData,

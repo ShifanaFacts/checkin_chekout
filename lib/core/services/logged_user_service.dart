@@ -8,25 +8,20 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:checkin_checkout/core/api/endpoints.dart';
 import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
-import 'package:checkin_checkout/core/repository/userrepo.dart';
-import 'package:checkin_checkout/core/utils/storage_manager.dart';
-import 'package:checkin_checkout/data/models/user_data_model/user_data_model.dart';
-import 'package:checkin_checkout/data/publicobjects.dart';
+
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @LazySingleton(as: Loggeduserhandlerepo)
 class LoggedUserService implements Loggeduserhandlerepo {
   @override
-  Future<Either<MainFailure, LoggedUserModel>> getLoggedUserDetails(
-    double lat,
-    double long,
-  ) async {
+  Future<Either<MainFailure, LoggedUserModel>> getLoggedUserDetails() async {
     try {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
-
+      final currentLat = prefs.getDouble('currentLat');
+      final currentLong = prefs.getDouble('currentLong');
       if (accessToken == null) {
         log('No access token found');
         return const Left(MainFailure.authFailure());
@@ -37,8 +32,8 @@ class LoggedUserService implements Loggeduserhandlerepo {
         "key": "PWA.EMP_Data_OnLoad",
         "data": {
           "info": {
-            "geolat": lat,
-            "geolong": long,
+            "geolat": currentLat,
+            "geolong": currentLong,
             "strXmlHeader": {"EMP_DATA": ""},
           },
         },
@@ -49,10 +44,6 @@ class LoggedUserService implements Loggeduserhandlerepo {
         url,
         data: jsonEncode(loginRequest),
         options: Options(headers: {'Authorization': 'Bearer $accessToken'}),
-      );
-
-      log(
-        'getLoggedUserDetails response: status=${response.statusCode}, data=${response.data}',
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -170,20 +161,20 @@ class LoggedUserService implements Loggeduserhandlerepo {
   Future<Either<MainFailure, DropdownModel>> getDropDownData([
     String? strdoctype,
     String? description,
-    double? lat,
-    double? long,
   ]) async {
     try {
       final String url = await ApiEndPoints.getOpenSectionUrl();
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final accessToken = prefs.getString('token');
+      final currentLat = prefs.getDouble('currentLat');
+      final currentLong = prefs.getDouble('currentLong');
       final loginRequest = {
         "job_id": "2786",
         "key": "PWA.GetCommonList",
         "data": {
           "info": {
-            "geolat": lat,
-            "geolong": long,
+            "geolat": currentLat,
+            "geolong": currentLong,
             "strXmlHeader": {"EMP_DATA": ""},
             "strdoctype": strdoctype ?? "Dept",
             "strcommontype": "manual",
@@ -236,9 +227,6 @@ class LoggedUserService implements Loggeduserhandlerepo {
           return const Left(MainFailure.serverFailure());
         }
 
-        log(
-          'Fetched ${items.length} items for strDocType: $strdoctype, description: $description',
-        );
         return Right(
           DropdownModel(dropdownsByDescription: {strdoctype ?? 'Dept': items}),
         );

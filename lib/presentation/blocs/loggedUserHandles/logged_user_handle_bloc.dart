@@ -24,10 +24,7 @@ class LoggedUserHandleBloc
     on<GetLoggedUserDetails>((event, emit) async {
       emit(state.copyWith(isUserLoading: true, isError: false, failure: null));
 
-      final result = await _loggedUserDetailsService.getLoggedUserDetails(
-        event.lat,
-        event.long,
-      );
+      final result = await _loggedUserDetailsService.getLoggedUserDetails();
 
       result.fold(
         (MainFailure failure) => emit(
@@ -58,8 +55,6 @@ class LoggedUserHandleBloc
       final result = await _loggedUserDetailsService.getDropDownData(
         event.strDocType,
         event.description,
-        event.lat,
-        event.long,
       );
 
       result.fold(
@@ -78,9 +73,6 @@ class LoggedUserHandleBloc
           if (newDropdownModel.dropdownsByDescription != null) {
             currentDropdowns.addAll(newDropdownModel.dropdownsByDescription!);
           }
-          log(
-            'Merged dropdownsByDescription: ${currentDropdowns.keys.toList()}',
-          );
 
           emit(
             state.copyWith(

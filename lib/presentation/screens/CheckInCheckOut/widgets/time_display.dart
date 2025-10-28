@@ -30,34 +30,32 @@ class TimeDisplayState extends State<TimeDisplay> {
         return;
       }
       setState(() {
-        currentTime = DateFormat(
-          'hh:mm:ss a',
-        ).format(DateTime.now().toUtc().add(const Duration(hours: 4)));
-        // Update date only if it changes (e.g., at midnight)
-        final newDate = DateFormat(
-          'EEEE, MMMM d, yyyy',
-        ).format(DateTime.now().toUtc().add(const Duration(hours: 4)));
-        if (newDate != currentDate) {
-          currentDate = newDate;
-        }
+        final now = DateTime.now().toUtc().add(const Duration(hours: 4));
+        currentTime = DateFormat('hh:mm:ss a').format(now);
+        final newDate = DateFormat('EEEE, MMMM d, yyyy').format(now);
+        if (newDate != currentDate) currentDate = newDate;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          currentDate,
-          style: const TextStyle(color: Colors.grey, fontSize: 16),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          currentTime,
-          style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // vertically center
+        crossAxisAlignment: CrossAxisAlignment.center, // horizontally center
+        children: [
+          Text(
+            currentDate,
+            style: const TextStyle(color: Colors.grey, fontSize: 16),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            currentTime,
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
     );
   }
 }

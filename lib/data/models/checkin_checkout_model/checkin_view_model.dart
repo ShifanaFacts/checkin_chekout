@@ -4,21 +4,22 @@ part 'checkin_view_model.g.dart';
 
 @JsonSerializable()
 class CheckinVieModel {
-  String? JOBMST_DOCNO;
+  String? PJCTALLOC;
+  String? EMPCOST;
+  String? ACTALLOC;
   String? JOBMST_DESC;
-  String? COST_DESC;
-  String? ACT_DOCNO;
-  String? DEPT_DESC;
+  String? Dept;
   String? checkintime;
   String? checkouttime;
   String? partytype;
 
   CheckinVieModel({
-    this.checkintime,
-    this.JOBMST_DOCNO,
+    this.PJCTALLOC,
+    this.EMPCOST,
+    this.ACTALLOC,
     this.JOBMST_DESC,
-    this.ACT_DOCNO,
-    this.DEPT_DESC,
+    this.Dept,
+    this.checkintime,
     this.checkouttime,
     this.partytype,
   });
@@ -27,4 +28,6 @@ class CheckinVieModel {
       _$CheckinVieModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CheckinVieModelToJson(this);
+
+  void operator [](String other) {}
 }

@@ -111,6 +111,8 @@ class LoginService implements LoginRepo {
   ) async {
     await prefs.remove('isLoggedIn');
     await prefs.remove('token');
+    await prefs.remove('currentLat');
+    await prefs.remove('currentLong');
     await StorageManager.deleteToken('ftoken');
     if (context.mounted) {
       Navigator.pushReplacementNamed(context, '/login');

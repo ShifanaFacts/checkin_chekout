@@ -1,30 +1,10 @@
+import 'dart:developer';
+import 'package:checkin_checkout/data/models/report_model/report_model.dart';
+import 'package:checkin_checkout/presentation/blocs/InOutReport/in_out_report_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-import 'dart:io';
-
-class EmployeeEntry {
-  final DateTime date;
-  final String inTime;
-  final String outTime;
-  final String duration;
-  final String project;
-  final String department;
-  final String costCode;
-
-  EmployeeEntry({
-    required this.date,
-    required this.inTime,
-    required this.outTime,
-    required this.duration,
-    required this.project,
-    required this.department,
-    required this.costCode,
-  });
-}
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmployeeReport extends StatefulWidget {
   @override
@@ -33,291 +13,205 @@ class EmployeeReport extends StatefulWidget {
 
 class _EmployeeReportState extends State<EmployeeReport> {
   bool isDaily = true;
-  DateTime selectedDate = DateTime(2023, 10, 26);
-  late List<EmployeeEntry> entries;
+  DateTimeRange? selectedDateRange; // Changed to DateTimeRange
+  DateTime selectedDate = DateTime.now(); // For daily mode
+  List<ReportDataModel> currentEntries = [];
 
   @override
   void initState() {
     super.initState();
-    // Mock data for demonstration. In a real app, this would come from an API or database.
-    entries = [
-      EmployeeEntry(
-        date: DateTime(2023, 10, 1),
-        inTime: '09:00 AM',
-        outTime: '05:00 PM',
-        duration: '8h 0m',
-        project: 'Project A',
-        department: 'IT',
-        costCode: 'C001',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 2),
-        inTime: '08:45 AM',
-        outTime: '05:15 PM',
-        duration: '8h 30m',
-        project: 'Project B',
-        department: 'HR',
-        costCode: 'C002',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 26),
-        inTime: '09:02 AM',
-        outTime: '05:30 PM',
-        duration: '8h 28m',
-        project: 'Project A',
-        department: 'IT',
-        costCode: 'C001',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 27),
-        inTime: '08:55 AM',
-        outTime: '05:00 PM',
-        duration: '8h 5m',
-        project: 'Project B',
-        department: 'HR',
-        costCode: 'C002',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 28),
-        inTime: '09:10 AM',
-        outTime: '06:20 PM',
-        duration: '9h 10m',
-        project: 'Project C',
-        department: 'Finance',
-        costCode: 'C003',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 29),
-        inTime: '08:48 AM',
-        outTime: '06:20 PM',
-        duration: '9h 32m',
-        project: 'Project A',
-        department: 'IT',
-        costCode: 'C001',
-      ),
-      EmployeeEntry(
-        date: DateTime(2023, 10, 30),
-        inTime: '09:00 AM',
-        outTime: '05:00 PM',
-        duration: '8h 0m',
-        project: 'Project B',
-        department: 'HR',
-        costCode: 'C002',
-      ),
-    ];
-  }
-
-  List<EmployeeEntry> get currentEntries {
-    if (isDaily) {
-      return entries
-          .where(
-            (e) =>
-                e.date.year == selectedDate.year &&
-                e.date.month == selectedDate.month &&
-                e.date.day == selectedDate.day,
-          )
-          .toList();
-    } else {
-      return entries
-          .where(
-            (e) =>
-                e.date.year == selectedDate.year &&
-                e.date.month == selectedDate.month,
-          )
-          .toList();
-    }
-  }
-
-  String get totalHours {
-    Duration total = Duration.zero;
-    for (var entry in currentEntries) {
-      total += parseDuration(entry.duration);
-    }
-    return '${total.inHours}h ${total.inMinutes % 60}m';
-  }
-
-  Duration parseDuration(String s) {
-    var parts = s.split(' ');
-    int hours = int.parse(parts[0].replaceAll('h', ''));
-    int minutes = int.parse(parts[1].replaceAll('m', ''));
-    return Duration(hours: hours, minutes: minutes);
+    // Initialize with today's date for daily mode
+    selectedDateRange = DateTimeRange(
+      start: DateTime.now(),
+      end: DateTime.now(),
+    );
+    _fetchReportData();
   }
 
   String get dateDisplay {
     if (isDaily) {
-      return '${selectedDate.day}, ${selectedDate.month}, ${selectedDate.year}';
+      return DateFormat('dd-MM-yyyy').format(selectedDate);
     } else {
-      return '${DateFormat('MMMM').format(selectedDate)}, ${selectedDate.year}';
+      final start = selectedDateRange!.start;
+      final end = selectedDateRange!.end;
+      return '${DateFormat('dd-MM-yyyy').format(start)} to ${DateFormat('dd-MM-yyyy').format(end)}';
     }
+  }
+
+  void _fetchReportData() {
+    String fmdateStr;
+    String todateStr;
+
+    if (isDaily) {
+      fmdateStr = DateFormat('yyyy-MM-dd').format(selectedDate);
+      todateStr = DateFormat('yyyy-MM-dd').format(selectedDate);
+    } else {
+      fmdateStr = DateFormat('yyyy-MM-dd').format(selectedDateRange!.start);
+      todateStr = DateFormat('yyyy-MM-dd').format(selectedDateRange!.end);
+    }
+
+    log('Fetching report: $fmdateStr to $todateStr');
+
+    context.read<InOutReportBloc>().add(
+      GetInoutReport(
+        ReportType: isDaily ? "Daily" : "Range",
+        fmdate: fmdateStr,
+        todate: todateStr,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Reports',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+        title: const Text(
+          'Reports',
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
         ),
-
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 2,
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          // Toggle buttons
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                _buildToggleButton('Daily', isDaily, true),
-                SizedBox(width: 8),
-                _buildToggleButton('Monthly', !isDaily, false),
-              ],
-            ),
-          ),
+      body: BlocBuilder<InOutReportBloc, InOutReportState>(
+        builder: (context, state) {
+          // Handle auth failure
+          state.failure?.maybeWhen(
+            authFailure: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              await prefs.clear();
+              await prefs.setBool('isLoggedIn', false);
+              if (context.mounted) {
+                Navigator.of(
+                  context,
+                ).pushNamedAndRemoveUntil('/login', (route) => false);
+              }
+            },
+            orElse: () {},
+          );
 
-          // Date selector
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 12,
-                      ),
-                      child: Text(dateDisplay, style: TextStyle(fontSize: 16)),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.calendar_today, color: Colors.grey[600]),
-                    onPressed: () => _selectDate(context),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Update currentEntries based on state
+          currentEntries = state.inOutTimeReport?.reportModel ?? [];
 
-          SizedBox(height: 24),
-
-          // Total hours card with additional details for daily
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Total Hours',
-                    style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    totalHours,
-                    style: TextStyle(
-                      color: Color(0xFF1DA1F2),
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      height: 1.0,
-                    ),
-                  ),
-                  if (isDaily && currentEntries.isNotEmpty) ...[
-                    SizedBox(height: 16),
-                    Text(
-                      'Check-in: ${currentEntries[0].inTime}',
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                    ),
-                    Text(
-                      'Check-out: ${currentEntries[0].outTime}',
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                    ),
-                    Text(
-                      'Project: ${currentEntries[0].project}',
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                    ),
-                    Text(
-                      'Department: ${currentEntries[0].department}',
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                    ),
-                    Text(
-                      'Cost Code: ${currentEntries[0].costCode}',
-                      style: TextStyle(color: Colors.grey[800], fontSize: 14),
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-
-          SizedBox(height: 24),
-
-          // History section
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Text(
-                  'History',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                ),
-                Spacer(),
-                IconButton(
-                  icon: Icon(Icons.download, color: Color(0xFF1DA1F2)),
-                  onPressed: _downloadReport,
-                ),
-              ],
-            ),
-          ),
-
-          SizedBox(height: 16),
-
-          // History items
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              itemCount: currentEntries.length,
-              itemBuilder: (context, index) {
-                final entry = currentEntries[index];
-                return Column(
+          return Column(
+            children: [
+              // Toggle buttons
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
                   children: [
-                    _buildHistoryItem(
-                      DateFormat('EEE, MMM d').format(entry.date),
-                      entry.duration,
-                      entry.inTime,
-                      entry.outTime,
-                      entry.project,
-                      entry.department,
-                      entry.costCode,
-                    ),
-                    SizedBox(height: 12),
+                    _buildToggleButton('Daily', isDaily, true),
+                    const SizedBox(width: 8),
+                    _buildToggleButton(
+                      'Range',
+                      !isDaily,
+                      false,
+                    ), // Changed text
                   ],
-                );
-              },
-            ),
-          ),
-        ],
+                ),
+              ),
+
+              // Date/Range selector
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: GestureDetector(
+                  onTap: () => _selectDateRange(context),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            dateDisplay,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        const Icon(
+                          Icons.date_range, // Changed to range icon
+                          color: Color(0xFF1DA1F2),
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // History section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: const [
+                    Text(
+                      'History',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // History items
+              Expanded(
+                child: state.isLoading
+                    ? _buildSkeletonLoader()
+                    : state.isError
+                    ? _buildErrorWidget()
+                    : currentEntries.isEmpty
+                    ? _buildEmptyState()
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        itemCount: currentEntries.length,
+                        itemBuilder: (context, index) {
+                          final entry = currentEntries[index];
+                          return _buildHistoryItem(
+                            entry.effectivedate,
+                            entry.checkInTime,
+                            entry.checkOutTime,
+                            entry.project,
+                            entry.department,
+                            entry.activity,
+                          );
+                        },
+                      ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -328,20 +222,31 @@ class _EmployeeReportState extends State<EmployeeReport> {
         onTap: () {
           setState(() {
             isDaily = setToDaily;
+            _fetchReportData();
           });
         },
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? Color(0xFF1DA1F2) : Colors.grey[200],
-            borderRadius: BorderRadius.circular(8),
+            color: isSelected ? const Color(0xFF1DA1F2) : Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
           ),
           child: Text(
             text,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: isSelected ? Colors.white : Colors.grey[600],
+              color: isSelected ? Colors.white : Colors.grey[700],
               fontWeight: FontWeight.w600,
+              fontSize: 16,
             ),
           ),
         ),
@@ -349,186 +254,387 @@ class _EmployeeReportState extends State<EmployeeReport> {
     );
   }
 
-  Widget _buildHistoryItem(
-    String date,
-    String duration,
-    String inTime,
-    String outTime,
-    String project,
-    String department,
-    String costCode,
-  ) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  date,
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                ),
-                SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(Icons.login, size: 14, color: Colors.grey[600]),
-                    SizedBox(width: 4),
-                    Text(
-                      inTime,
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                    ),
-                    SizedBox(width: 16),
-                    Icon(Icons.logout, size: 14, color: Colors.grey[600]),
-                    SizedBox(width: 4),
-                    Text(
-                      outTime,
-                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Project: $project',
-                  style: TextStyle(color: Colors.grey[800], fontSize: 12),
-                ),
-                Text(
-                  'Department: $department',
-                  style: TextStyle(color: Colors.grey[800], fontSize: 12),
-                ),
-                Text(
-                  'Cost Code: $costCode',
-                  style: TextStyle(color: Colors.grey[800], fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Color(0xFF1DA1F2).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              duration,
-              style: TextStyle(
-                color: Color(0xFF1DA1F2),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // ────────────────────── DATE RANGE PICKER ──────────────────────
+  Future<void> _selectDateRange(BuildContext context) async {
+    final DateTimeRange? picked;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null && picked != selectedDate) {
+    if (isDaily) {
+      // For daily mode, use single date picker
+      final DateTime? singleDate = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+        builder: (context, child) => _buildDatePickerTheme(child!),
+      );
+
+      if (singleDate != null && singleDate != selectedDate) {
+        setState(() {
+          selectedDate = singleDate;
+          _fetchReportData();
+        });
+      }
+      return;
+    } else {
+      // For range mode, use range picker
+      picked = await showDateRangePicker(
+        context: context,
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+        initialDateRange: selectedDateRange,
+        builder: (context, child) => _buildDatePickerTheme(child!),
+      );
+    }
+
+    if (picked != null && picked != selectedDateRange) {
       setState(() {
-        if (!isDaily) {
-          // Normalize to first of the month for monthly view
-          selectedDate = DateTime(picked.year, picked.month, 1);
-        } else {
-          selectedDate = picked;
-        }
+        selectedDateRange = picked;
+        _fetchReportData();
       });
     }
   }
 
-  Future<void> _downloadReport() async {
-    final data = currentEntries;
-    final pdf = pw.Document();
+  Widget _buildDatePickerTheme(Widget child) {
+    return Theme(
+      data: ThemeData.light().copyWith(
+        colorScheme: const ColorScheme.light(
+          primary: Color(0xFF1DA1F2),
+          onPrimary: Colors.white,
+          surface: Colors.white,
+        ),
+        dialogBackgroundColor: Colors.white,
+      ),
+      child: child,
+    );
+  }
 
-    pdf.addPage(
-      pw.MultiPage(
-        pageFormat: PdfPageFormat.a4,
-        margin: pw.EdgeInsets.all(32),
-        build: (pw.Context context) {
-          return [
-            pw.Header(
-              level: 0,
-              child: pw.Text(
-                isDaily
-                    ? 'Daily Employee Report - ${DateFormat('MMMM d, yyyy').format(selectedDate)}'
-                    : 'Monthly Employee Report - ${DateFormat('MMMM yyyy').format(selectedDate)}',
-                style: pw.TextStyle(
-                  fontSize: 20,
-                  fontWeight: pw.FontWeight.bold,
+  // ────────────── REST OF THE METHODS (UNCHANGED) ──────────────
+
+  Widget _buildHistoryItem(
+    String? effectiveDate,
+    String? checkInTime,
+    String? checkOutTime,
+    String? project,
+    String? department,
+    String? costCode,
+  ) {
+    String date = "";
+    String inTimeFormatted = "";
+    String outTimeFormatted = "";
+    String duration = "";
+
+    if (effectiveDate != null) {
+      try {
+        final parsedDate = DateTime.parse(effectiveDate);
+        date = DateFormat('dd-MM-yyyy').format(parsedDate);
+      } catch (e) {
+        log('Error parsing effectiveDate: $e');
+      }
+    }
+
+    if (checkInTime != null) {
+      try {
+        final parsedInTime = DateTime.parse(checkInTime);
+        inTimeFormatted = DateFormat('HH:mm').format(parsedInTime);
+      } catch (e) {
+        log('Error parsing checkInTime: $e');
+      }
+    }
+
+    if (checkOutTime != null) {
+      try {
+        final parsedOutTime = DateTime.parse(checkOutTime);
+        outTimeFormatted = DateFormat('HH:mm').format(parsedOutTime);
+      } catch (e) {
+        log('Error parsing checkOutTime: $e');
+      }
+    }
+
+    if (checkInTime != null && checkOutTime != null) {
+      try {
+        final inDateTime = DateTime.parse(checkInTime);
+        final outDateTime = DateTime.parse(checkOutTime);
+        final diff = outDateTime.difference(inDateTime);
+        final hours = diff.inHours;
+        final minutes = diff.inMinutes % 60;
+        duration = '$hours hrs ${minutes}m';
+      } catch (e) {
+        log('Error calculating duration: $e');
+      }
+    }
+
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    date,
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      const Icon(Icons.login, size: 16, color: Colors.grey),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          inTimeFormatted,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      const Icon(Icons.logout, size: 16, color: Colors.grey),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          outTimeFormatted,
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Project: ${project ?? "N/A"}',
+                    style: const TextStyle(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Department: ${department ?? "N/A"}',
+                    style: const TextStyle(color: Colors.black87, fontSize: 14),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Cost Code: ${costCode ?? "N/A"}',
+                    style: const TextStyle(color: Colors.black87, fontSize: 14),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1DA1F2).withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                duration,
+                style: const TextStyle(
+                  color: Color(0xFF1DA1F2),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
                 ),
               ),
             ),
-            pw.SizedBox(height: 20),
-            pw.Text(
-              'Total Hours: $totalHours',
-              style: pw.TextStyle(fontSize: 16),
-            ),
-            if (isDaily && data.isNotEmpty) ...[
-              pw.SizedBox(height: 10),
-              pw.Text('Check-in: ${data[0].inTime}'),
-              pw.Text('Check-out: ${data[0].outTime}'),
-              pw.Text('Project: ${data[0].project}'),
-              pw.Text('Department: ${data[0].department}'),
-              pw.Text('Cost Code: ${data[0].costCode}'),
-            ],
-            pw.SizedBox(height: 20),
-            pw.Table.fromTextArray(
-              headers: [
-                'Date',
-                'In Time',
-                'Out Time',
-                'Duration',
-                'Project',
-                'Department',
-                'Cost Code',
-              ],
-              data: data
-                  .map(
-                    (e) => [
-                      DateFormat('MMM d, yyyy').format(e.date),
-                      e.inTime,
-                      e.outTime,
-                      e.duration,
-                      e.project,
-                      e.department,
-                      e.costCode,
-                    ],
-                  )
-                  .toList(),
-              border: pw.TableBorder.all(),
-              headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-              cellAlignment: pw.Alignment.centerLeft,
-              cellPadding: pw.EdgeInsets.all(8),
-            ),
-          ];
-        },
+          ],
+        ),
       ),
     );
+  }
 
-    try {
-      final dir = await getDownloadsDirectory();
-      final path =
-          '${dir!.path}/employee_report_${isDaily ? 'daily' : 'monthly'}_${DateFormat('yyyyMMdd').format(selectedDate)}.pdf';
-      final file = File(path);
-      await file.writeAsBytes(await pdf.save());
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('PDF report downloaded to $path')));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error downloading PDF report: $e')),
-      );
-    }
+  Widget _buildSkeletonLoader() {
+    return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      itemCount: 5,
+      itemBuilder: (context, index) {
+        return AnimatedContainer(
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.easeInOut,
+          margin: const EdgeInsets.only(bottom: 12),
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 14,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Container(
+                              width: 16,
+                              height: 16,
+                              color: Colors.grey[300],
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              width: 60,
+                              height: 14,
+                              color: Colors.grey[300],
+                            ),
+                            const SizedBox(width: 16),
+                            Container(
+                              width: 16,
+                              height: 16,
+                              color: Colors.grey[300],
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              width: 60,
+                              height: 14,
+                              color: Colors.grey[300],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Container(
+                          width: double.infinity,
+                          height: 14,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: double.infinity,
+                          height: 14,
+                          color: Colors.grey[300],
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: 150,
+                          height: 14,
+                          color: Colors.grey[300],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(width: 60, height: 30, color: Colors.grey[300]),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorWidget() {
+    return Center(
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                size: 48,
+                color: Colors.redAccent,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                "Something went wrong",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "An error occurred while processing your request.",
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _fetchReportData,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1DA1F2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+                child: const Text(
+                  'Retry',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.history_toggle_off, size: 64, color: Colors.grey[400]),
+          const SizedBox(height: 16),
+          Text(
+            'No records found',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Try selecting a different date range.',
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
   }
 }

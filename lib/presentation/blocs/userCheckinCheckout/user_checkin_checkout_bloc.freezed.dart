@@ -21,46 +21,34 @@ mixin _$UserCheckinCheckoutEvent {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getCheckOutData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getTechnicianCheckInDetails,
+    required TResult Function(String checkinTime) getCheckOutData,
+    required TResult Function(String checkinTime) getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult? Function(String checkinTime)? getCheckOutData,
+    TResult? Function(String checkinTime)? getTechnicianCheckInDetails,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult Function(String checkinTime)? getCheckOutData,
+    TResult Function(String checkinTime)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -158,16 +146,12 @@ class _$StartedImpl implements _Started {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getCheckOutData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getTechnicianCheckInDetails,
+    required TResult Function(String checkinTime) getCheckOutData,
+    required TResult Function(String checkinTime) getTechnicianCheckInDetails,
   }) {
     return started();
   }
@@ -177,16 +161,12 @@ class _$StartedImpl implements _Started {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult? Function(String checkinTime)? getCheckOutData,
+    TResult? Function(String checkinTime)? getTechnicianCheckInDetails,
   }) {
     return started?.call();
   }
@@ -196,16 +176,12 @@ class _$StartedImpl implements _Started {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult Function(String checkinTime)? getCheckOutData,
+    TResult Function(String checkinTime)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (started != null) {
@@ -264,12 +240,7 @@ abstract class _$$GetCheckinDataImplCopyWith<$Res> {
     $Res Function(_$GetCheckinDataImpl) then,
   ) = __$$GetCheckinDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({
-    double lat,
-    double long,
-    Map<String, String> dropDownSelectionObject,
-    String checkinTime,
-  });
+  $Res call({Map<String, String> dropDownSelectionObject, String checkinTime});
 }
 
 /// @nodoc
@@ -286,21 +257,11 @@ class __$$GetCheckinDataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? lat = null,
-    Object? long = null,
     Object? dropDownSelectionObject = null,
     Object? checkinTime = null,
   }) {
     return _then(
       _$GetCheckinDataImpl(
-        lat: null == lat
-            ? _value.lat
-            : lat // ignore: cast_nullable_to_non_nullable
-                  as double,
-        long: null == long
-            ? _value.long
-            : long // ignore: cast_nullable_to_non_nullable
-                  as double,
         dropDownSelectionObject: null == dropDownSelectionObject
             ? _value._dropDownSelectionObject
             : dropDownSelectionObject // ignore: cast_nullable_to_non_nullable
@@ -318,16 +279,10 @@ class __$$GetCheckinDataImplCopyWithImpl<$Res>
 
 class _$GetCheckinDataImpl implements GetCheckinData {
   const _$GetCheckinDataImpl({
-    required this.lat,
-    required this.long,
     required final Map<String, String> dropDownSelectionObject,
     required this.checkinTime,
   }) : _dropDownSelectionObject = dropDownSelectionObject;
 
-  @override
-  final double lat;
-  @override
-  final double long;
   final Map<String, String> _dropDownSelectionObject;
   @override
   Map<String, String> get dropDownSelectionObject {
@@ -342,7 +297,7 @@ class _$GetCheckinDataImpl implements GetCheckinData {
 
   @override
   String toString() {
-    return 'UserCheckinCheckoutEvent.getCheckinData(lat: $lat, long: $long, dropDownSelectionObject: $dropDownSelectionObject, checkinTime: $checkinTime)';
+    return 'UserCheckinCheckoutEvent.getCheckinData(dropDownSelectionObject: $dropDownSelectionObject, checkinTime: $checkinTime)';
   }
 
   @override
@@ -350,8 +305,6 @@ class _$GetCheckinDataImpl implements GetCheckinData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetCheckinDataImpl &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.long, long) || other.long == long) &&
             const DeepCollectionEquality().equals(
               other._dropDownSelectionObject,
               _dropDownSelectionObject,
@@ -363,8 +316,6 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    lat,
-    long,
     const DeepCollectionEquality().hash(_dropDownSelectionObject),
     checkinTime,
   );
@@ -385,18 +336,14 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getCheckOutData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getTechnicianCheckInDetails,
+    required TResult Function(String checkinTime) getCheckOutData,
+    required TResult Function(String checkinTime) getTechnicianCheckInDetails,
   }) {
-    return getCheckinData(lat, long, dropDownSelectionObject, checkinTime);
+    return getCheckinData(dropDownSelectionObject, checkinTime);
   }
 
   @override
@@ -404,23 +351,14 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult? Function(String checkinTime)? getCheckOutData,
+    TResult? Function(String checkinTime)? getTechnicianCheckInDetails,
   }) {
-    return getCheckinData?.call(
-      lat,
-      long,
-      dropDownSelectionObject,
-      checkinTime,
-    );
+    return getCheckinData?.call(dropDownSelectionObject, checkinTime);
   }
 
   @override
@@ -428,20 +366,16 @@ class _$GetCheckinDataImpl implements GetCheckinData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult Function(String checkinTime)? getCheckOutData,
+    TResult Function(String checkinTime)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckinData != null) {
-      return getCheckinData(lat, long, dropDownSelectionObject, checkinTime);
+      return getCheckinData(dropDownSelectionObject, checkinTime);
     }
     return orElse();
   }
@@ -487,14 +421,10 @@ class _$GetCheckinDataImpl implements GetCheckinData {
 
 abstract class GetCheckinData implements UserCheckinCheckoutEvent {
   const factory GetCheckinData({
-    required final double lat,
-    required final double long,
     required final Map<String, String> dropDownSelectionObject,
     required final String checkinTime,
   }) = _$GetCheckinDataImpl;
 
-  double get lat;
-  double get long;
   Map<String, String> get dropDownSelectionObject;
   String get checkinTime;
 
@@ -512,7 +442,7 @@ abstract class _$$GetCheckOutDataImplCopyWith<$Res> {
     $Res Function(_$GetCheckOutDataImpl) then,
   ) = __$$GetCheckOutDataImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({double lat, double long, String checkinTime});
+  $Res call({String checkinTime});
 }
 
 /// @nodoc
@@ -528,21 +458,9 @@ class __$$GetCheckOutDataImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? lat = null,
-    Object? long = null,
-    Object? checkinTime = null,
-  }) {
+  $Res call({Object? checkinTime = null}) {
     return _then(
       _$GetCheckOutDataImpl(
-        lat: null == lat
-            ? _value.lat
-            : lat // ignore: cast_nullable_to_non_nullable
-                  as double,
-        long: null == long
-            ? _value.long
-            : long // ignore: cast_nullable_to_non_nullable
-                  as double,
         checkinTime: null == checkinTime
             ? _value.checkinTime
             : checkinTime // ignore: cast_nullable_to_non_nullable
@@ -555,22 +473,14 @@ class __$$GetCheckOutDataImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetCheckOutDataImpl implements GetCheckOutData {
-  const _$GetCheckOutDataImpl({
-    required this.lat,
-    required this.long,
-    required this.checkinTime,
-  });
+  const _$GetCheckOutDataImpl({required this.checkinTime});
 
-  @override
-  final double lat;
-  @override
-  final double long;
   @override
   final String checkinTime;
 
   @override
   String toString() {
-    return 'UserCheckinCheckoutEvent.getCheckOutData(lat: $lat, long: $long, checkinTime: $checkinTime)';
+    return 'UserCheckinCheckoutEvent.getCheckOutData(checkinTime: $checkinTime)';
   }
 
   @override
@@ -578,14 +488,12 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetCheckOutDataImpl &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.long, long) || other.long == long) &&
             (identical(other.checkinTime, checkinTime) ||
                 other.checkinTime == checkinTime));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lat, long, checkinTime);
+  int get hashCode => Object.hash(runtimeType, checkinTime);
 
   /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -603,18 +511,14 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getCheckOutData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getTechnicianCheckInDetails,
+    required TResult Function(String checkinTime) getCheckOutData,
+    required TResult Function(String checkinTime) getTechnicianCheckInDetails,
   }) {
-    return getCheckOutData(lat, long, checkinTime);
+    return getCheckOutData(checkinTime);
   }
 
   @override
@@ -622,18 +526,14 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult? Function(String checkinTime)? getCheckOutData,
+    TResult? Function(String checkinTime)? getTechnicianCheckInDetails,
   }) {
-    return getCheckOutData?.call(lat, long, checkinTime);
+    return getCheckOutData?.call(checkinTime);
   }
 
   @override
@@ -641,20 +541,16 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult Function(String checkinTime)? getCheckOutData,
+    TResult Function(String checkinTime)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getCheckOutData != null) {
-      return getCheckOutData(lat, long, checkinTime);
+      return getCheckOutData(checkinTime);
     }
     return orElse();
   }
@@ -699,14 +595,9 @@ class _$GetCheckOutDataImpl implements GetCheckOutData {
 }
 
 abstract class GetCheckOutData implements UserCheckinCheckoutEvent {
-  const factory GetCheckOutData({
-    required final double lat,
-    required final double long,
-    required final String checkinTime,
-  }) = _$GetCheckOutDataImpl;
+  const factory GetCheckOutData({required final String checkinTime}) =
+      _$GetCheckOutDataImpl;
 
-  double get lat;
-  double get long;
   String get checkinTime;
 
   /// Create a copy of UserCheckinCheckoutEvent
@@ -723,7 +614,7 @@ abstract class _$$GetCheckInDetailsImplCopyWith<$Res> {
     $Res Function(_$GetCheckInDetailsImpl) then,
   ) = __$$GetCheckInDetailsImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({double lat, double long, String checkinTime});
+  $Res call({String checkinTime});
 }
 
 /// @nodoc
@@ -740,21 +631,9 @@ class __$$GetCheckInDetailsImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? lat = null,
-    Object? long = null,
-    Object? checkinTime = null,
-  }) {
+  $Res call({Object? checkinTime = null}) {
     return _then(
       _$GetCheckInDetailsImpl(
-        lat: null == lat
-            ? _value.lat
-            : lat // ignore: cast_nullable_to_non_nullable
-                  as double,
-        long: null == long
-            ? _value.long
-            : long // ignore: cast_nullable_to_non_nullable
-                  as double,
         checkinTime: null == checkinTime
             ? _value.checkinTime
             : checkinTime // ignore: cast_nullable_to_non_nullable
@@ -767,22 +646,14 @@ class __$$GetCheckInDetailsImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$GetCheckInDetailsImpl implements GetCheckInDetails {
-  const _$GetCheckInDetailsImpl({
-    required this.lat,
-    required this.long,
-    required this.checkinTime,
-  });
+  const _$GetCheckInDetailsImpl({required this.checkinTime});
 
-  @override
-  final double lat;
-  @override
-  final double long;
   @override
   final String checkinTime;
 
   @override
   String toString() {
-    return 'UserCheckinCheckoutEvent.getTechnicianCheckInDetails(lat: $lat, long: $long, checkinTime: $checkinTime)';
+    return 'UserCheckinCheckoutEvent.getTechnicianCheckInDetails(checkinTime: $checkinTime)';
   }
 
   @override
@@ -790,14 +661,12 @@ class _$GetCheckInDetailsImpl implements GetCheckInDetails {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetCheckInDetailsImpl &&
-            (identical(other.lat, lat) || other.lat == lat) &&
-            (identical(other.long, long) || other.long == long) &&
             (identical(other.checkinTime, checkinTime) ||
                 other.checkinTime == checkinTime));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, lat, long, checkinTime);
+  int get hashCode => Object.hash(runtimeType, checkinTime);
 
   /// Create a copy of UserCheckinCheckoutEvent
   /// with the given fields replaced by the non-null parameter values.
@@ -815,18 +684,14 @@ class _$GetCheckInDetailsImpl implements GetCheckInDetails {
   TResult when<TResult extends Object?>({
     required TResult Function() started,
     required TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )
     getCheckinData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getCheckOutData,
-    required TResult Function(double lat, double long, String checkinTime)
-    getTechnicianCheckInDetails,
+    required TResult Function(String checkinTime) getCheckOutData,
+    required TResult Function(String checkinTime) getTechnicianCheckInDetails,
   }) {
-    return getTechnicianCheckInDetails(lat, long, checkinTime);
+    return getTechnicianCheckInDetails(checkinTime);
   }
 
   @override
@@ -834,18 +699,14 @@ class _$GetCheckInDetailsImpl implements GetCheckInDetails {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? started,
     TResult? Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult? Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult? Function(String checkinTime)? getCheckOutData,
+    TResult? Function(String checkinTime)? getTechnicianCheckInDetails,
   }) {
-    return getTechnicianCheckInDetails?.call(lat, long, checkinTime);
+    return getTechnicianCheckInDetails?.call(checkinTime);
   }
 
   @override
@@ -853,20 +714,16 @@ class _$GetCheckInDetailsImpl implements GetCheckInDetails {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? started,
     TResult Function(
-      double lat,
-      double long,
       Map<String, String> dropDownSelectionObject,
       String checkinTime,
     )?
     getCheckinData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getCheckOutData,
-    TResult Function(double lat, double long, String checkinTime)?
-    getTechnicianCheckInDetails,
+    TResult Function(String checkinTime)? getCheckOutData,
+    TResult Function(String checkinTime)? getTechnicianCheckInDetails,
     required TResult orElse(),
   }) {
     if (getTechnicianCheckInDetails != null) {
-      return getTechnicianCheckInDetails(lat, long, checkinTime);
+      return getTechnicianCheckInDetails(checkinTime);
     }
     return orElse();
   }
@@ -911,14 +768,9 @@ class _$GetCheckInDetailsImpl implements GetCheckInDetails {
 }
 
 abstract class GetCheckInDetails implements UserCheckinCheckoutEvent {
-  const factory GetCheckInDetails({
-    required final double lat,
-    required final double long,
-    required final String checkinTime,
-  }) = _$GetCheckInDetailsImpl;
+  const factory GetCheckInDetails({required final String checkinTime}) =
+      _$GetCheckInDetailsImpl;
 
-  double get lat;
-  double get long;
   String get checkinTime;
 
   /// Create a copy of UserCheckinCheckoutEvent

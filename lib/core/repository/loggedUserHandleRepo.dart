@@ -6,16 +6,11 @@ import 'package:checkin_checkout/core/exceptions/failures/main_failure.dart';
 import 'package:checkin_checkout/data/models/user_data_model/user_data_model.dart';
 
 abstract class Loggeduserhandlerepo {
-  Future<Either<MainFailure, LoggedUserModel>> getLoggedUserDetails(
-    double lat,
-    double long,
-  );
+  Future<Either<MainFailure, LoggedUserModel>> getLoggedUserDetails();
   Future<Either<MainFailure, DashboardModel>> getDashboardList();
 
-  Future<Either<MainFailure, DropdownModel>> getDropDownData([
+  Future<Either<MainFailure, DropdownModel>> getDropDownData(
     String? strdoctype,
     String? description,
-    double? lat,
-    double? long,
-  ]);
+  );
 }

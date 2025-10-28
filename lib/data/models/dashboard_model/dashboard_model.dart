@@ -23,7 +23,7 @@ class DashboardModel {
         }
       } catch (e) {
         print('Error decoding jsonResult: $e');
-        json['jsonResult'] = null; // or handle as needed
+        json['jsonResult'] = 'no Data'; // or handle as needed
       }
     }
     return _$DashboardModelFromJson(json);
@@ -42,8 +42,9 @@ class DashboardItem {
 
   @JsonKey(name: 'LoadOnClick')
   int? loadOnClick;
+  int? depend;
 
-  DashboardItem({this.key, this.description, this.loadOnClick});
+  DashboardItem({this.key, this.description, this.loadOnClick, this.depend});
 
   factory DashboardItem.fromJson(Map<String, dynamic> json) =>
       _$DashboardItemFromJson(json);

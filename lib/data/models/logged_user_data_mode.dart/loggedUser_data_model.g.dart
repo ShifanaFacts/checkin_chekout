@@ -12,6 +12,7 @@ LoggedUserModel _$LoggedUserModelFromJson(Map<String, dynamic> json) =>
       Designation: json['Designation'] as String?,
       Department: json['Department'] as String?,
       Division: json['Division'] as String?,
+      Employe_id: json['Employe_id'] as String?,
     );
 
 Map<String, dynamic> _$LoggedUserModelToJson(LoggedUserModel instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$LoggedUserModelToJson(LoggedUserModel instance) =>
       'Designation': instance.Designation,
       'Department': instance.Department,
       'Division': instance.Division,
+      'Employe_id': instance.Employe_id,
     };

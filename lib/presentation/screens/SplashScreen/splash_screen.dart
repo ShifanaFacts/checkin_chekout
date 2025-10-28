@@ -28,7 +28,9 @@ class _SplashScreenState extends State<SplashScreen>
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
     _controller.forward();
-    _checkNavigation();
+
+    // Start the whole flow (location + navigation)
+    _initializeApp();
   }
 
   @override
@@ -37,30 +39,89 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
+  /// --------------------------------------------------------------
+  /// 1. Get location → save to SharedPreferences
+  /// 2. Then run the original navigation logic
+  /// --------------------------------------------------------------
+  Future<void> _initializeApp() async {
+    // 1. Get & store location
+    await _fetchAndSaveCurrentLocation();
+
+    // 2. Continue with the original navigation checks
+    await _checkNavigation();
+  }
+
+  /// -----------------------------------------------------------
+  /// Get current position (with permission handling) and store it
+  /// -----------------------------------------------------------
+  Future<void> _fetchAndSaveCurrentLocation() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // You can show a dialog here if you want
+      log('Location services are disabled.');
+      return;
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        log('Location permission denied.');
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      log('Location permission denied forever.');
+      return;
+    }
+
+    // Permission granted → fetch position
+    try {
+      final Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      final double lat = position.latitude;
+      final double lng = position.longitude;
+
+      await prefs.setDouble('currentLat', lat);
+      await prefs.setDouble('currentLong', lng);
+
+      log('Location saved → lat: $lat, long: $lng');
+    } catch (e) {
+      log('Error getting location: $e');
+    }
+  }
+
+  /// --------------------------------------------------------------
+  /// Original navigation logic (kept unchanged except for removal
+  /// of the duplicated permission request)
+  /// --------------------------------------------------------------
   Future<void> _checkNavigation() async {
     final prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    final baseUrl = await BaseUrlService.getBaseUrl();
+    final bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    final String baseUrl = await BaseUrlService.getBaseUrl();
+
     if (baseUrl.isEmpty) {
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/settings');
       return;
     }
-    // if (!isLoggedIn) {
-    //   // Case 1: Not logged in
-    //   Navigator.pushReplacementNamed(context, '/login');
-    //   return;
-    // }
-    log('$isLoggedIn isLoggedInisLoggedIn');
 
-    LocationPermission permission = await Geolocator.checkPermission();
     if (isLoggedIn) {
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-      // Go to home if permission granted (or already granted)
+      // We already asked for permission in _fetchAndSaveCurrentLocation()
+      // so just go to home
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/home');
     } else {
-      // Device not validated, go to device validation screen
+      if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/login');
     }
   }

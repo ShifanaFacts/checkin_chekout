@@ -165,13 +165,8 @@ class _UserLoginState extends State<UserLogin> {
           setState(() {
             loginFeedback = state.userDataModel?.description ?? "";
           });
-
-          log(
-            '${state.userDataModel!.description}state.userDataModel!.description ',
-          );
         } else if (state.loginSucceeded &&
             state.userDataModel!.username != "") {
-          log('${state.userDataModel!.DID}state.userDataModel!.DID....... ');
           final prefs = await SharedPreferences.getInstance();
           await prefs.setBool('isLoggedIn', true);
           // Navigate to home
@@ -204,6 +199,7 @@ class _UserLoginState extends State<UserLogin> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
@@ -347,74 +343,74 @@ class _UserLoginState extends State<UserLogin> {
                   },
                 ),
               ),
-              const SizedBox(height: 16),
+              // const SizedBox(height: 16),
 
-              // Biometric & NFC
-              FadeInDown(
-                delay: const Duration(milliseconds: 600),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (_canUseBiometrics)
-                      IconButton(
-                        icon: _isBiometricLoading
-                            ? const SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.blueAccent,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Icon(
-                                Icons.fingerprint,
-                                size: 40,
-                                color: Colors.blueAccent,
-                              ),
-                        onPressed: _isBiometricLoading
-                            ? null
-                            : _performBiometricLogin,
-                        tooltip: 'Biometric Login',
-                      ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      icon: _isNfcLoading
-                          ? const SizedBox(
-                              height: 24,
-                              width: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.blueAccent,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Icon(
-                              Icons.nfc,
-                              size: 40,
-                              color: Colors.blueAccent,
-                            ),
-                      onPressed: _isNfcLoading ? null : _performNfcLogin,
-                      tooltip: 'NFC Login',
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
+              // // Biometric & NFC
+              // FadeInDown(
+              //   delay: const Duration(milliseconds: 600),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       if (_canUseBiometrics)
+              //         IconButton(
+              //           icon: _isBiometricLoading
+              //               ? const SizedBox(
+              //                   height: 24,
+              //                   width: 24,
+              //                   child: CircularProgressIndicator(
+              //                     color: Colors.blueAccent,
+              //                     strokeWidth: 2,
+              //                   ),
+              //                 )
+              //               : const Icon(
+              //                   Icons.fingerprint,
+              //                   size: 40,
+              //                   color: Colors.blueAccent,
+              //                 ),
+              //           onPressed: _isBiometricLoading
+              //               ? null
+              //               : _performBiometricLogin,
+              //           tooltip: 'Biometric Login',
+              //         ),
+              //       const SizedBox(width: 16),
+              //       IconButton(
+              //         icon: _isNfcLoading
+              //             ? const SizedBox(
+              //                 height: 24,
+              //                 width: 24,
+              //                 child: CircularProgressIndicator(
+              //                   color: Colors.blueAccent,
+              //                   strokeWidth: 2,
+              //                 ),
+              //               )
+              //             : const Icon(
+              //                 Icons.nfc,
+              //                 size: 40,
+              //                 color: Colors.blueAccent,
+              //               ),
+              //         onPressed: _isNfcLoading ? null : _performNfcLogin,
+              //         tooltip: 'NFC Login',
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              // const SizedBox(height: 16),
 
-              // Forgot Password
-              FadeInDown(
-                delay: const Duration(milliseconds: 700),
-                child: TextButton(
-                  onPressed: () =>
-                      _showSnackBar('Forgot password? Contact admin.'),
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: Colors.blueGrey[700],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ),
+              // // Forgot Password
+              // FadeInDown(
+              //   delay: const Duration(milliseconds: 700),
+              //   child: TextButton(
+              //     onPressed: () =>
+              //         _showSnackBar('Forgot password? Contact admin.'),
+              //     child: Text(
+              //       'Forgot Password?',
+              //       style: TextStyle(
+              //         color: Colors.blueGrey[700],
+              //         fontWeight: FontWeight.w500,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               FadeInUp(
                 delay: const Duration(milliseconds: 100),
                 child: Padding(
